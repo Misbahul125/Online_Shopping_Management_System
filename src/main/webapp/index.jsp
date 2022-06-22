@@ -15,6 +15,9 @@
         <%@include file="components/common_css_js.jsp" %>
     </head>
     <body>
+        
+        <%@include file="components/navbar.jsp" %>
+        
         <h1>Hello World!</h1>
         <h1>Creating session factory object</h1>
 

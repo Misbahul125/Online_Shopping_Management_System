@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.UniqueConstraint;
 
 /**
  *
@@ -25,13 +26,13 @@ public class User {
     @Column(length = 100 , name = "user_name")
     private String userName;
     
-    @Column(length = 100 , name = "user_email")
+    @Column(unique = true , length = 100 , name = "user_email")
     private String userEmail;
     
     @Column(length = 100 , name = "user_password")
     private String userPassword;
     
-    @Column(length = 13 , name = "user_phone")
+    @Column(unique = true , length = 13 , name = "user_phone")
     private String userPhone;
     
     @Column(length = 100 , name = "user_pic")
@@ -39,8 +40,11 @@ public class User {
     
     @Column(length = 1500 , name = "user_address")
     private String userAddress;
+    
+    @Column(name = "user_type")
+    private String userType;
 
-    public User(int userId, String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress) {
+    public User(int userId, String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
@@ -48,15 +52,17 @@ public class User {
         this.userPhone = userPhone;
         this.userPic = userPic;
         this.userAddress = userAddress;
+        this.userType = userType;
     }
 
-    public User(String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress) {
+    public User(String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userPhone = userPhone;
         this.userPic = userPic;
         this.userAddress = userAddress;
+        this.userType = userType;
     }
 
     public User() {
@@ -116,6 +122,14 @@ public class User {
 
     public void setUserAddress(String userAddress) {
         this.userAddress = userAddress;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     @Override

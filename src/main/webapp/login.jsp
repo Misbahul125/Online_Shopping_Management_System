@@ -33,6 +33,9 @@
                         </div>
 
                         <div class="card-body">
+                            
+                            <%@include file="components/positiveMessage.jsp" %>
+                            <%@include file="components/negativeMessage.jsp" %>
 
                             <form action="LogInServlet" method="post">
                                 <div class="form-group">

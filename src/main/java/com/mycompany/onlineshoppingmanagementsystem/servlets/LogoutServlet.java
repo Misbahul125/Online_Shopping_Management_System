@@ -4,10 +4,6 @@
  */
 package com.mycompany.onlineshoppingmanagementsystem.servlets;
 
-import com.mycompany.onlineshoppingmanagementsystem.dao.UserDAO;
-import com.mycompany.onlineshoppingmanagementsystem.entities.User;
-import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
-import com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -20,7 +16,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Misbahul Haque
  */
-public class LogInServlet extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,41 +31,10 @@ public class LogInServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-
-            String userEmail = request.getParameter("user_email");
-            String userPassword = request.getParameter("user_password");
-
-            UserDAO userDAO = new UserDAO(FactoryProvider.getFactory());
-            User user = userDAO.getUserByEmailAndPassword(userEmail, userPassword);
-            System.out.println(user);
-
+           
             HttpSession httpSession = request.getSession();
-
-            if (user != null) {
-                System.out.println("1");
-
-                httpSession.setAttribute("current-user", user);
-                
-                if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
-                    System.out.println("2");
-                    response.sendRedirect("admin/admin_home.jsp");
-                    return;
-                } else if (user.getUserType().matches(Constants.NORMAL_USER.toString())) {
-                    System.out.println("3");
-                    response.sendRedirect("client/client_home.jsp");
-                    return;
-                } else {
-                    System.out.println("4");
-                    out.println("Sorry you are not a verified user.");
-                    //httpSession.removeAttribute("current-user");
-                }
-
-            } else {
-                System.out.println(5);
-                httpSession.setAttribute("negativeMessage", "Invalid email or password.");
-                response.sendRedirect("./login.jsp");
-            }
-
+            httpSession.removeAttribute("current-user");
+            response.sendRedirect("login.jsp");
         }
     }
 

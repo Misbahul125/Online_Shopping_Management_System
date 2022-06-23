@@ -26,13 +26,13 @@ public class User {
     @Column(length = 100 , name = "user_name")
     private String userName;
     
-    @Column(unique = true , length = 100 , name = "user_email")
+    @Column(length = 100 , name = "user_email")
     private String userEmail;
     
     @Column(length = 100 , name = "user_password")
     private String userPassword;
     
-    @Column(unique = true , length = 13 , name = "user_phone")
+    @Column(length = 13 , name = "user_phone")
     private String userPhone;
     
     @Column(length = 100 , name = "user_pic")

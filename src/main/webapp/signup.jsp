@@ -26,7 +26,8 @@
 
                     <div class="card">
                         
-                        <%@include file="components/message.jsp" %>
+                        <%@include file="components/positiveMessage.jsp" %>
+                        <%@include file="components/negativeMessage.jsp" %>
                         
                         <div class="card-body px-5">
 

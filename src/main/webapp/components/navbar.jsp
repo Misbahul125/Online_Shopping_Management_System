@@ -49,7 +49,7 @@
                 </li>
 
                 <li class="nav-item active">
-                    <a class="nav-link" href="../LogoutServlet">Log Out </a>
+                    <a class="nav-link" href="LogoutServlet">Log Out </a>
                 </li>
                 
                 <%

@@ -52,11 +52,11 @@ public class LogInServlet extends HttpServlet {
                 
                 if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
                     System.out.println("2");
-                    response.sendRedirect("admin/admin_home.jsp");
+                    response.sendRedirect("admin_home.jsp");
                     return;
                 } else if (user.getUserType().matches(Constants.NORMAL_USER.toString())) {
                     System.out.println("3");
-                    response.sendRedirect("client/client_home.jsp");
+                    response.sendRedirect("client_home.jsp");
                     return;
                 } else {
                     System.out.println("4");

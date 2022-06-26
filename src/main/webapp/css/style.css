@@ -7,3 +7,12 @@
     background: #E91E63!important;
 }
 
+.admin .card{
+    border: 1px solid #E91E63;
+}
+
+.admin .card:hover{
+    background: #e2e2e2;
+    cursor: pointer;
+}
+

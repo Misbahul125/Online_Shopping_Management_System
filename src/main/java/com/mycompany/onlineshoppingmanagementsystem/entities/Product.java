@@ -29,9 +29,6 @@ public class Product {
     @Column(length = 1500, name = "product_description")
     private String productDescription;
     
-    @Column(length = 100, name = "product_pic")
-    private String productPic;
-    
     @Column(name = "product_price")
     private float productPrice;
     
@@ -43,25 +40,29 @@ public class Product {
     
     @ManyToOne
     private Category category;
+    
+    @Column(length = 100, name = "product_pic")
+    private String productPic;
 
-    public Product(int productId, String productName, String productDescription, String productPic, float productPrice, float productDiscount, int productQuantity) {
+    public Product(int productId, String productName, String productDescription, float productPrice, float productDiscount, int productQuantity, Category category, String productPic) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
-        this.productPic = productPic;
-        this.productPrice = productPrice;
-        this.productDiscount = productDiscount;
-        this.productQuantity = productQuantity;
-    }
-
-    public Product(String productName, String productDescription, String productPic, float productPrice, float productDiscount, int productQuantity, Category category) {
-        this.productName = productName;
-        this.productDescription = productDescription;
-        this.productPic = productPic;
         this.productPrice = productPrice;
         this.productDiscount = productDiscount;
         this.productQuantity = productQuantity;
         this.category = category;
+        this.productPic = productPic;
+    }
+
+    public Product(String productName, String productDescription, float productPrice, float productDiscount, int productQuantity, Category category, String productPic) {
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.productPrice = productPrice;
+        this.productDiscount = productDiscount;
+        this.productQuantity = productQuantity;
+        this.category = category;
+        this.productPic = productPic;
     }
 
     public Product() {
@@ -89,14 +90,6 @@ public class Product {
 
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
-    }
-
-    public String getProductPic() {
-        return productPic;
-    }
-
-    public void setProductPic(String productPic) {
-        this.productPic = productPic;
     }
 
     public float getProductPrice() {
@@ -129,6 +122,14 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getProductPic() {
+        return productPic;
+    }
+
+    public void setProductPic(String productPic) {
+        this.productPic = productPic;
     }
 
     @Override

@@ -13,7 +13,6 @@
 <%
     User user = (User) session.getAttribute("current-user");
     if (user != null) {
-        System.out.println("1");
         if (user.getUserType().matches(Constants.NORMAL_USER.toString())) {
             session.setAttribute("negativeMessage", "You are not a valid user to access this page.");
             session.removeAttribute("current-user");
@@ -21,7 +20,6 @@
             return;
         }
     } else {
-        System.out.println("2");
         session.setAttribute("negativeMessage", "Please login to continue !!");
         response.sendRedirect("login.jsp");
         return;

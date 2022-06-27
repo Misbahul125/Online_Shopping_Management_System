@@ -6,9 +6,11 @@ package com.mycompany.onlineshoppingmanagementsystem.dao;
 
 import com.mycompany.onlineshoppingmanagementsystem.entities.Category;
 import com.mycompany.onlineshoppingmanagementsystem.entities.Product;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -61,5 +63,53 @@ public class ProductDAO {
 
     }
 
+    //get all products
+    public List<Product> getAllProducts() {
+        
+        Session session = null;
+        List<Product> products = null;
+
+        try {
+            
+            session = this.sessionFactory.openSession();
+            Query query = session.createQuery("from Product");
+            products = query.list();
+            
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+            
+        } finally {
+            
+            session.close();
+            return products;
+        }
+        
+    }
     
+    
+    //get all products with category id
+    public List<Product> getAllProductsByCategoryId(int categoryId) {
+        
+        Session session = null;
+        List<Product> products = null;
+
+        try {
+            
+            session = this.sessionFactory.openSession();
+            Query query = session.createQuery("from Product as p where p.category.categoryId =: id");
+            query.setParameter("id", categoryId);
+            products = query.list();
+            
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+            
+        } finally {
+            
+            session.close();
+            return products;
+        }
+        
+    }
 }

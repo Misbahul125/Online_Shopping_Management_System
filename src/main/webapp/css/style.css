@@ -16,3 +16,8 @@
     cursor: pointer;
 }
 
+.list-group-item.active{
+    background: #E91E63!important;
+    border-color: #E91E63!important;
+}
+

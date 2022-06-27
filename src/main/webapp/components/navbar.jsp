@@ -7,7 +7,6 @@
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.User"%>
 <%
     User user1 = (User) session.getAttribute("current-user");
-    System.out.println("navbar");
 %>
 
 <nav class="navbar navbar-expand-lg navbar-dark custom-bg">

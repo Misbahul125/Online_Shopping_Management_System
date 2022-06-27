@@ -7,7 +7,11 @@ package com.mycompany.onlineshoppingmanagementsystem.servlets;
 import com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO;
 import com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO;
 import com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilterOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -41,7 +45,7 @@ public class ProductOperationServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
 
             httpSession = request.getSession();
-            
+
             String operationType = request.getParameter("productOperation");
 
             if (operationType.trim().matches("add_category")) {
@@ -72,22 +76,49 @@ public class ProductOperationServlet extends HttpServlet {
                 float productDiscount = Float.parseFloat(request.getParameter("product_discount"));
                 int productQuantity = Integer.parseInt(request.getParameter("product_quantity"));
                 int productCategory = Integer.parseInt(request.getParameter("productCategories"));
-                String productImage = request.getPart("product_image").getSubmittedFileName();
-                
-                //System.out.println("Image : "+productImage);
-                
-                ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
-                int id = productDAO.createProduct(productName, productDescription, productPrice, productDiscount, productQuantity, productImage, productCategory);
-                
-                if (id != 0) {
-                    httpSession.setAttribute("positiveMessage", "Product is added successfully with ID : " + id);
-                    response.sendRedirect("admin_home.jsp");
-                    return;
-                } else {
+
+                Part part = request.getPart("product_image");
+                String productImage = part.getSubmittedFileName();
+
+                FileOutputStream fos = null;
+
+                //upload product image
+                try {
+
+                    //upload image
+                    String path = getServletContext().getRealPath("pictures") + File.separator + "products" + File.separator + productImage;
+                    System.out.println(path);
+
+                    fos = new FileOutputStream(path);
+                    InputStream is = part.getInputStream();
+
+                    byte data[] = new byte[is.available()];
+                    is.read(data);
+                    fos.write(data);
+                    fos.close();
+
+                    //upload data
+                    ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
+                    int id = productDAO.createProduct(productName, productDescription, productPrice, productDiscount, productQuantity, productImage, productCategory);
+
+                    if (id != 0) {
+                        httpSession.setAttribute("positiveMessage", "Product is added successfully with ID : " + id);
+                        response.sendRedirect("admin_home.jsp");
+                        return;
+                    } else {
+                        httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
+                        response.sendRedirect("admin_home.jsp");
+                        return;
+                    }
+
+                } catch (Exception e) {
                     httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
                     response.sendRedirect("admin_home.jsp");
-                    return;
+                    if(fos != null)
+                        fos.close();
+                    e.printStackTrace();
                 }
+
             }
 
         }

@@ -46,26 +46,21 @@ public class LogInServlet extends HttpServlet {
             HttpSession httpSession = request.getSession();
 
             if (user != null) {
-                System.out.println("1");
 
                 httpSession.setAttribute("current-user", user);
                 
                 if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
-                    System.out.println("2");
                     response.sendRedirect("admin_home.jsp");
                     return;
                 } else if (user.getUserType().matches(Constants.NORMAL_USER.toString())) {
-                    System.out.println("3");
                     response.sendRedirect("client_home.jsp");
                     return;
                 } else {
-                    System.out.println("4");
                     out.println("Sorry you are not a verified user.");
                     //httpSession.removeAttribute("current-user");
                 }
 
             } else {
-                System.out.println(5);
                 httpSession.setAttribute("negativeMessage", "Invalid email or password.");
                 response.sendRedirect("./login.jsp");
             }

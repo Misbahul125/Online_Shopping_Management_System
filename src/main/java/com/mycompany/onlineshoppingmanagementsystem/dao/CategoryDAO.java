@@ -37,8 +37,8 @@ public class CategoryDAO {
             category.setCategoryDescription(categoryDescription);
 
             session = this.sessionFactory.openSession();
-
             transaction = session.beginTransaction();
+            
             categoryId = (int) session.save(category);
             transaction.commit();
             

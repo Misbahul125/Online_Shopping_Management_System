@@ -29,83 +29,73 @@ public class SignUpServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    Session hibernateSession;
-    Transaction t;
-    HttpSession httpSession;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
 
-            httpSession = request.getSession();
+            HttpSession httpSession = request.getSession();
 
-            try {
-                String userName = request.getParameter("user_name");
-                String userEmail = request.getParameter("user_email");
-                String userPassword = request.getParameter("user_password");
-                String userPhone = request.getParameter("user_phone");
-                String userAddress = request.getParameter("user_address");
-                String userType = null;
+            String userName = request.getParameter("user_name");
+            String userEmail = request.getParameter("user_email");
+            String userPassword = request.getParameter("user_password");
+            String userPhone = request.getParameter("user_phone");
+            String userImage = "default.png";
+            String userAddress = request.getParameter("user_address");
+            String userType = null;
 
-                hibernateSession = FactoryProvider.getFactory().openSession();
-                t = hibernateSession.beginTransaction();
+            if (userEmail.contains("@uem.edu.in")) {
+                userType = Constants.ADMIN_USER.toString();
+            } else {
+                userType = Constants.NORMAL_USER.toString();
+            }
 
-                //check user exists or not
-                UserDAO userDAO = new UserDAO(FactoryProvider.getFactory());
+            UserDAO userDAO = new UserDAO(FactoryProvider.getFactory());
+            int status = userDAO.createUserWithEmailAndPassword(userName, userEmail, userPassword, userPhone, userImage, userAddress, userType);
+
+            if (status == 0 || status == 001) {
+
+                if (status == 0) {
+
+                    //if user already exists
+                    httpSession.setAttribute("negativeMessage", "User already exists. Please try to login.");
+                    response.sendRedirect("login.jsp");
+
+                } else {
+
+                    //if something goes wrong
+                    httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
+                    httpSession.removeAttribute("current-user");
+                    response.sendRedirect("signup.jsp");
+
+                }
+
+            } else {
+
                 User user = userDAO.getUserByEmailAndPassword(userEmail, userPassword);
-                System.out.println(user);
 
                 if (user != null) {
-                    // user already exits
-
-                    httpSession.setAttribute("negativeMessage", "User already exists. Please try to login");
-                    response.sendRedirect("login.jsp");
-                } else {
-                    //new user
-
-                    if (userEmail.contains("@uem.edu.in")) {
-                        userType = Constants.ADMIN_USER.toString();
-                    } else {
-                        userType = Constants.NORMAL_USER.toString();
-                    }
-
-                    user = new User(userName, userEmail, userPassword, userPhone, "default.png", userAddress, userType);
-
-                    int userId = (int) hibernateSession.save(user);
-
-                    t.commit();
+                    
+                    //if user signup is succssful, log in user
 
                     httpSession.setAttribute("current-user", user);
 
-                    if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
-                        System.out.println("2");
+                    if (userType.matches(Constants.ADMIN_USER.toString())) {
                         response.sendRedirect("admin_home.jsp");
                         return;
-                    } else if (user.getUserType().matches(Constants.NORMAL_USER.toString())) {
-                        System.out.println("3");
+                    } else if (userType.matches(Constants.NORMAL_USER.toString())) {
                         response.sendRedirect("client_home.jsp");
                         return;
                     } else {
-                        t.rollback();
-                        httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-                        httpSession.removeAttribute("current-user");
-                        response.sendRedirect("signup.jsp");
+                        out.println("Sorry you are not a verified user.");
+                        //httpSession.removeAttribute("current-user");
                     }
 
-//                out.println("Signup successful");
-//                out.println("<br> User Id is "+userId);
+                } else {
+                    httpSession.setAttribute("negativeMessage", "Something went wong! Please try to login.");
+                    response.sendRedirect("login.jsp");
                 }
-
-            } catch (Exception e) {
-                t.rollback();
-                httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-                response.sendRedirect("signup.jsp");
-
-                e.printStackTrace();
-            } finally {
-                hibernateSession.close();
-                System.out.println("closed");
             }
 
         }

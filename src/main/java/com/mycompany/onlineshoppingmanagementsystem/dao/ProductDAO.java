@@ -33,7 +33,6 @@ public class ProductDAO {
 
         try {
             session = this.sessionFactory.openSession();
-
             transaction = session.beginTransaction();
             
             CategoryDAO categoryDAO = new CategoryDAO(this.sessionFactory);

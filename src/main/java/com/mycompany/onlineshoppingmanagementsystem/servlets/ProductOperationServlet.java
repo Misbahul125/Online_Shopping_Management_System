@@ -72,8 +72,8 @@ public class ProductOperationServlet extends HttpServlet {
                 //fetching product data
                 String productName = request.getParameter("product_name");
                 String productDescription = request.getParameter("product_description");
-                float productPrice = Float.parseFloat(request.getParameter("product_price"));
-                float productDiscount = Float.parseFloat(request.getParameter("product_discount"));
+                int productPrice = Integer.parseInt(request.getParameter("product_price"));
+                int productDiscount = Integer.parseInt(request.getParameter("product_discount"));
                 int productQuantity = Integer.parseInt(request.getParameter("product_quantity"));
                 int productCategory = Integer.parseInt(request.getParameter("productCategories"));
 

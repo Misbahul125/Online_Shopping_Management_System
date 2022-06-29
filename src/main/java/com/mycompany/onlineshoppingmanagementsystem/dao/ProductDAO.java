@@ -26,7 +26,7 @@ public class ProductDAO {
     
     //add product
     public int createProduct(String productName , String productDescription ,
-                        float productPrice , float productDiscount , int productQuantity ,
+                        int productPrice , int productDiscount , int productQuantity ,
                         String productImage , int categoryId) {
 
         Session session = null;
@@ -42,7 +42,7 @@ public class ProductDAO {
             
             if(category != null) {
             
-                Product product = new Product(productName, productDescription, productPrice, productDiscount, productQuantity, category, productImage);
+                Product product = new Product(productName, productDescription, productPrice, productDiscount, productQuantity, category, productImage, null);
                 
                 productId = (int) session.save(product);
                 transaction.commit();
@@ -69,8 +69,7 @@ public class ProductDAO {
         Session session = null;
         List<Product> products = null;
 
-        try {
-            
+        try {            
             session = this.sessionFactory.openSession();
             Query query = session.createQuery("from Product");
             products = query.list();
@@ -80,7 +79,6 @@ public class ProductDAO {
             e.printStackTrace();
             
         } finally {
-            
             session.close();
             return products;
         }

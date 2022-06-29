@@ -31,9 +31,12 @@
             true
         </property>
         
-        <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.User" />
+        <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.Address" />
+        <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.Cart" />
         <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.Category" />
+        <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.Orders" />
         <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.Product" />
+        <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.User" />
         
     </session-factory>
 </hibernate-configuration>

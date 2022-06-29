@@ -4,12 +4,14 @@
  */
 package com.mycompany.onlineshoppingmanagementsystem.entities;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -30,21 +32,27 @@ public class Product {
     private String productDescription;
     
     @Column(name = "product_price")
-    private float productPrice;
+    private int productPrice;
     
     @Column(name = "product_discount")
-    private float productDiscount;
+    private int productDiscount;
     
     @Column(name = "product_quantity")
     private int productQuantity;
     
+    @Column(length = 100, name = "product_pic")
+    private String productPic;
+    
     @ManyToOne
     private Category category;
     
-    @Column(length = 100, name = "product_pic")
-    private String productPic;
+    @OneToMany
+    private List<Cart> carts;
+    
+    @OneToMany(mappedBy = "product")
+    private List<Orders> orders;
 
-    public Product(int productId, String productName, String productDescription, float productPrice, float productDiscount, int productQuantity, Category category, String productPic) {
+    public Product(int productId, String productName, String productDescription, int productPrice, int productDiscount, int productQuantity, Category category, String productPic, List<Cart> carts) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -53,9 +61,10 @@ public class Product {
         this.productQuantity = productQuantity;
         this.category = category;
         this.productPic = productPic;
+        this.carts = carts;
     }
 
-    public Product(String productName, String productDescription, float productPrice, float productDiscount, int productQuantity, Category category, String productPic) {
+    public Product(String productName, String productDescription, int productPrice, int productDiscount, int productQuantity, Category category, String productPic, List<Cart> carts) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
@@ -63,6 +72,7 @@ public class Product {
         this.productQuantity = productQuantity;
         this.category = category;
         this.productPic = productPic;
+        this.carts = carts;
     }
 
     public Product() {
@@ -92,19 +102,19 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public float getProductPrice() {
+    public int getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(float productPrice) {
+    public void setProductPrice(int productPrice) {
         this.productPrice = productPrice;
     }
 
-    public float getProductDiscount() {
+    public int getProductDiscount() {
         return productDiscount;
     }
 
-    public void setProductDiscount(float productDiscount) {
+    public void setProductDiscount(int productDiscount) {
         this.productDiscount = productDiscount;
     }
 
@@ -132,9 +142,35 @@ public class Product {
         this.productPic = productPic;
     }
 
+    public List<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
+    }
+
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
+
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productName=" + productName + ", productDescription=" + productDescription + ", productPic=" + productPic + ", productPrice=" + productPrice + ", productDiscount=" + productDiscount + ", productQuantity=" + productQuantity + '}';
+        return "Product{" + "productId=" + productId + ", productName=" + productName + ", productDescription=" + productDescription + ", productPrice=" + productPrice + ", productDiscount=" + productDiscount + ", productQuantity=" + productQuantity + ", productPic=" + productPic + ", category=" + category + ", carts=" + carts + ", orders=" + orders + '}';
+    }
+
+    
+    //function to calculate discount
+    public int getPriceAfterApplyingDiscount() {
+        
+        int d = (int)((this.getProductDiscount()/100.0)*this.getProductPrice());
+        
+        return this.getProductPrice()-d;
+        
     }
     
 }

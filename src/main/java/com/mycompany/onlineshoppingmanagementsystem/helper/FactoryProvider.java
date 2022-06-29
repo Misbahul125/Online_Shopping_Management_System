@@ -9,6 +9,7 @@ public class FactoryProvider {
     public static SessionFactory getFactory() {
         try{
             if (sessionFactory == null) {
+                System.out.println("if fp");
                 sessionFactory = new Configuration()
                         .configure("hibernate.cfg.xml")
                         .buildSessionFactory();
@@ -16,6 +17,7 @@ public class FactoryProvider {
         }
         catch(Exception e) {
             e.printStackTrace();
+            System.out.println("catch fp");
         }
         
         return sessionFactory;

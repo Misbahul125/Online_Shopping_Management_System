@@ -4,11 +4,14 @@
  */
 package com.mycompany.onlineshoppingmanagementsystem.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -42,8 +45,17 @@ public class User {
     
     @Column(name = "user_type")
     private String userType;
+    
+    @OneToMany(mappedBy = "user")
+    private List<Address> addresses = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user")
+    private List<Cart> carts = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user")
+    private List<Orders> orders = new ArrayList<>();
 
-    public User(int userId, String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType) {
+    public User(int userId, String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType, List<Address> addresses, List<Cart> carts) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
@@ -52,6 +64,8 @@ public class User {
         this.userPic = userPic;
         this.userAddress = userAddress;
         this.userType = userType;
+        this.addresses = addresses;
+        this.carts = carts;
     }
 
     public User(String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType) {
@@ -63,6 +77,21 @@ public class User {
         this.userAddress = userAddress;
         this.userType = userType;
     }
+    
+    public User(String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType, List<Address> addresses, List<Cart> carts, List<Orders> orders) {
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userPhone = userPhone;
+        this.userPic = userPic;
+        this.userAddress = userAddress;
+        this.userType = userType;
+        this.addresses = addresses;
+        this.carts = carts;
+        this.orders = orders;
+    }
+    
+    
 
     public User() {
     }
@@ -131,9 +160,33 @@ public class User {
         this.userType = userType;
     }
 
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public List<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
+    }
+
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
+
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", userName=" + userName + ", userEmail=" + userEmail + ", userPassword=" + userPassword + ", userPhone=" + userPhone + ", userPic=" + userPic + ", userAddress=" + userAddress + '}';
+        return "User{" + "userId=" + userId + ", userName=" + userName + ", userEmail=" + userEmail + ", userPassword=" + userPassword + ", userPhone=" + userPhone + ", userPic=" + userPic + ", userAddress=" + userAddress + ", userType=" + userType + ", addresses=" + addresses + '}';
     }
     
 }

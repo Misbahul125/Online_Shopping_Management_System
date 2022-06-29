@@ -91,7 +91,7 @@
                                 <%  for (Product p : products) {
                                 %>
 
-                                <div class="card">
+                                <div class="card product-card">
 
                                     <div class="container text-center">
                                         <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 200px; max-width: 100%; width: auto" class="card-img-top m-2" alt="">
@@ -105,10 +105,16 @@
 
                                     </div>
 
-                                    <div class="card-footer">
+                                    <div class="card-footer text-center">
 
                                         <button class="btn custom-bg text-white">Add to Cart</button>
-                                        <button class="btn btn-outline-success"> &#8377; <%= String.valueOf(p.getProductPrice())%></button>
+                                        <button class="btn btn-outline-success"> 
+                                            &#8377; <%= p.getPriceAfterApplyingDiscount() %>
+                                            /- <span class="text-secondary discount-label">
+                                                    &#8377; <%= p.getProductPrice() %>
+                                                    <%= p.getProductDiscount() %>% off
+                                                </span>
+                                        </button>
 
                                     </div>
 

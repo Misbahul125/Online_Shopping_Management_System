@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +32,7 @@ public class Category {
     @Column(length = 1500 , name = "category_description")
     private String categoryDescription;
     
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category" , fetch = FetchType.EAGER)
     private List<Product> products = new ArrayList<>();
 
     public Category(int categoryId, String categoryTitle, String categoryDescription) {

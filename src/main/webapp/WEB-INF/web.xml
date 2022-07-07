@@ -16,6 +16,14 @@
         <servlet-name>ProductOperationServlet</servlet-name>
         <servlet-class>com.mycompany.onlineshoppingmanagementsystem.servlets.ProductOperationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CartOperationServlet</servlet-name>
+        <servlet-class>com.mycompany.onlineshoppingmanagementsystem.servlets.CartOperationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PaymentOperationServlet</servlet-name>
+        <servlet-class>com.mycompany.onlineshoppingmanagementsystem.helper.payment.PaymentOperationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/SignUpServlet</url-pattern>
@@ -31,6 +39,14 @@
     <servlet-mapping>
         <servlet-name>ProductOperationServlet</servlet-name>
         <url-pattern>/ProductOperationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartOperationServlet</servlet-name>
+        <url-pattern>/CartOperationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaymentOperationServlet</servlet-name>
+        <url-pattern>/PaymentOperationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

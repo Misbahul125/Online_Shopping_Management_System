@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +32,7 @@ public class User {
     @Column(length = 100 , name = "user_email")
     private String userEmail;
     
-    @Column(length = 100 , name = "user_password")
+    @Column(name = "user_password")
     private String userPassword;
     
     @Column(length = 13 , name = "user_phone")
@@ -43,19 +44,22 @@ public class User {
     @Column(length = 1500 , name = "user_address")
     private String userAddress;
     
+    @Column(name = "user_cart_count")
+    private int userCartCount;
+    
     @Column(name = "user_type")
     private String userType;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user" , fetch = FetchType.LAZY)
     private List<Address> addresses = new ArrayList<>();
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user" , fetch = FetchType.LAZY)
     private List<Cart> carts = new ArrayList<>();
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user" , fetch = FetchType.LAZY)
     private List<Orders> orders = new ArrayList<>();
 
-    public User(int userId, String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType, List<Address> addresses, List<Cart> carts) {
+    public User(int userId, String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, int userCartCount, String userType, List<Address> addresses, List<Cart> carts) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
@@ -63,28 +67,31 @@ public class User {
         this.userPhone = userPhone;
         this.userPic = userPic;
         this.userAddress = userAddress;
+        this.userCartCount = userCartCount;
         this.userType = userType;
         this.addresses = addresses;
         this.carts = carts;
     }
 
-    public User(String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType) {
+    public User(String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, int userCartCount, String userType) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userPhone = userPhone;
         this.userPic = userPic;
         this.userAddress = userAddress;
+        this.userCartCount = userCartCount;
         this.userType = userType;
     }
     
-    public User(String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType, List<Address> addresses, List<Cart> carts, List<Orders> orders) {
+    public User(String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, int userCartCount, String userType, List<Address> addresses, List<Cart> carts, List<Orders> orders) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userPhone = userPhone;
         this.userPic = userPic;
         this.userAddress = userAddress;
+        this.userCartCount = userCartCount;
         this.userType = userType;
         this.addresses = addresses;
         this.carts = carts;
@@ -152,6 +159,14 @@ public class User {
         this.userAddress = userAddress;
     }
 
+    public int getUserCartCount() {
+        return userCartCount;
+    }
+
+    public void setUserCartCount(int userCartCount) {
+        this.userCartCount = userCartCount;
+    }
+    
     public String getUserType() {
         return userType;
     }
@@ -186,7 +201,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", userName=" + userName + ", userEmail=" + userEmail + ", userPassword=" + userPassword + ", userPhone=" + userPhone + ", userPic=" + userPic + ", userAddress=" + userAddress + ", userType=" + userType + ", addresses=" + addresses + '}';
+        return "User{" + "userId=" + userId + ", userName=" + userName + ", userEmail=" + userEmail + ", userPassword=" + userPassword + ", userPhone=" + userPhone + ", userPic=" + userPic + ", userAddress=" + userAddress + ", userCartCount=" + userCartCount + ", userType=" + userType + '}';
     }
     
 }

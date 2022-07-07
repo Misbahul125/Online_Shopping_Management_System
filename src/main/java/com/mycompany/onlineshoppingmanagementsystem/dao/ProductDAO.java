@@ -26,7 +26,7 @@ public class ProductDAO {
     
     //add product
     public int createProduct(String productName , String productDescription ,
-                        int productPrice , int productDiscount , int productQuantity ,
+                        int productMarkedPrice , int productDiscount , int productSellingPrice , int productQuantity ,
                         String productImage , int categoryId) {
 
         Session session = null;
@@ -42,7 +42,7 @@ public class ProductDAO {
             
             if(category != null) {
             
-                Product product = new Product(productName, productDescription, productPrice, productDiscount, productQuantity, category, productImage, null);
+                Product product = new Product(productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, category, null, null);
                 
                 productId = (int) session.save(product);
                 transaction.commit();
@@ -61,6 +61,27 @@ public class ProductDAO {
             return productId;
         }
 
+    }
+    
+    //get product by id
+    public Product getProductById(int productId) {
+        
+        Session session = null;
+        Product product = null;
+
+        try {            
+            session = this.sessionFactory.openSession();
+            product = session.get(Product.class, productId);
+            
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+            
+        } finally {
+            session.close();
+            return product;
+        }
+        
     }
 
     //get all products

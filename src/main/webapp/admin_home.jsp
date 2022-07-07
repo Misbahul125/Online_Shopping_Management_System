@@ -241,14 +241,31 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="productPrice">Price</label>
-                                <input type="number" class="form-control" name="product_price" placeholder="Enter product price" required/>
+                                <label for="productMarkedPrice">Marked Price</label>
+                                <input type="number" id="mp" class="form-control" name="product_marked_price" placeholder="Enter product marked price" required/>
+                                <small id="emailHelp" class="form-text text-muted">*Please input Marked Price without decimal.</small>
                             </div>
                             
                             <div class="form-group">
                                 <label for="productDiscount">Discount</label>
-                                <input type="number" class="form-control" name="product_discount" placeholder="Enter product discount" required/>
+                                <input type="number" id="disc" class="form-control" name="product_discount" placeholder="Enter product discount" required/>
+                                <small id="emailHelp" class="form-text text-muted">*Please input Discount without decimal & % sign.</small>
                             </div>
+                            
+                            <div class="form-group">
+                                <label for="productSellingPrice">Selling Price</label>
+                                <input type="number" id="sp" class="form-control" name="product_selling_price" placeholder="Enter product selling price" readonly required/>
+                            </div>
+                            
+                            <script>
+                                $("#disc").keyup(function() { 
+                                    console.log("discount");
+                                   var m = Number($("#mp").val()) ;
+                                   var d = Number($(this).val());
+                                   var s = Math.trunc(((d/100.0)*m));
+                                   $("#sp").val(m-s);
+                                });
+                            </script>
                             
                             <div class="form-group">
                                 <label for="productQuantity">Quantity</label>

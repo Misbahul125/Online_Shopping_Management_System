@@ -5,13 +5,13 @@
 --%>
 
 <%
-    String m2 = (String) session.getAttribute("negativeMessage");
+    String m3 = (String) session.getAttribute("negativeMessage");
 
-    if (m2 != null) {
+    if (m3 != null) {
 %>
 
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong><%=m2%></strong>
+    <strong><%=m3%></strong>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>

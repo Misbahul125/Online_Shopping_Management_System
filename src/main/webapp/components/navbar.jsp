@@ -46,6 +46,14 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#!"><%=user1.getUserName() %> </a>
                 </li>
+                 
+                <li class="nav-item active">
+                    <a class="nav-link" href="cart.jsp"> 
+                        <i class="fas fa-cart-plus"></i> 
+                        <span class="ml-0">My Cart ( <%= user1.getUserCartCount() %> )
+                        </span> 
+                    </a>
+                </li>
 
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet">Log Out </a>

@@ -4,6 +4,7 @@
     Author     : Misbahul Haque
 --%>
 
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.Constants"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.SentenceHelper"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Product"%>
@@ -20,9 +21,24 @@
 
         <%@include file="components/common_css_js.jsp" %>
     </head>
+
     <body>
 
         <%@include file="components/navbar.jsp" %>
+        
+        <%
+            if(session.getAttribute("current-user") != null) {
+                User u = (User) session.getAttribute("current-user");
+                if(u.getUserType().matches(Constants.ADMIN_USER.toString())) {
+                    response.sendRedirect("admin_home.jsp");
+                    return;
+                }
+                else {
+                    response.sendRedirect("client_home.jsp");
+                    return;
+                }
+            }
+        %>
 
         <div class="container-fluid text-center">
 
@@ -78,11 +94,10 @@
 
                             <%
                                 //check if a particular category has more than 0 products, then display specific message
-                                if(session.getAttribute("negativeMessage") != null) {
+                                if (session.getAttribute("negativeMessage") != null) {
                             %>
-                                    <%@include file="components/negativeMessage.jsp" %>
-                            <%
-                                return;
+                            <%@include file="components/negativeMessage.jsp" %>
+                            <%                                    return;
                                 }
                             %>
 
@@ -107,13 +122,14 @@
 
                                     <div class="card-footer text-center">
 
-                                        <button class="btn custom-bg text-white">Add to Cart</button>
+                                        <button class="btn custom-bg text-white" data-toggle="modal" data-target="#login-modal">Add to Cart</button>
+
                                         <button class="btn btn-outline-success"> 
-                                            &#8377; <%= p.getPriceAfterApplyingDiscount() %>
+                                            &#8377; <%= p.getProductSellingPrice() %>
                                             /- <span class="text-secondary discount-label">
-                                                    &#8377; <%= p.getProductPrice() %>
-                                                    <%= p.getProductDiscount() %>% off
-                                                </span>
+                                                &#8377; <%= p.getProductMarkedPrice() %>
+                                                <%= p.getProductDiscount()%>% off
+                                            </span>
                                         </button>
 
                                     </div>
@@ -142,6 +158,49 @@
         </div>
 
     </div>
+
+
+    <%
+        if (session.getAttribute("current-user") == null) {
+            System.out.println("user null");
+
+    %>
+
+    <!-- Modal -->
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Oops! User not found</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Please login or signup to facilitate cart.
+                </div>
+                <div class="modal-footer">
+
+                    <a href="login.jsp">
+                        <button type="button" class="btn btn-secondary">
+                            Login
+                        </button>
+                    </a>
+
+                    <a href="signup.jsp">
+                        <button type="button" class="btn btn-primary">
+                            Signup
+                        </button>
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%        }
+    %>
+
 
 </body>
 </html>

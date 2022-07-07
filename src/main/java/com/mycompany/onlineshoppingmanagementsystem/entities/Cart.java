@@ -26,9 +26,6 @@ public class Cart {
     @Column(length = 2, name = "quantity")
     private int quantity;
     
-    @Column(length = 10, name = "price")
-    private int price;
-    
     @Column(length = 10, name = "total")
     private int total;
     
@@ -38,18 +35,16 @@ public class Cart {
     @ManyToOne
     private User user;
 
-    public Cart(int cartId, int quantity, int price, int total, Product product, User user) {
+    public Cart(int cartId, int quantity, int total, Product product, User user) {
         this.cartId = cartId;
         this.quantity = quantity;
-        this.price = price;
         this.total = total;
         this.product = product;
         this.user = user;
     }
 
-    public Cart(int quantity, int price, int total, Product product, User user) {
+    public Cart(int quantity, int total, Product product, User user) {
         this.quantity = quantity;
-        this.price = price;
         this.total = total;
         this.product = product;
         this.user = user;
@@ -72,14 +67,6 @@ public class Cart {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public int getTotal() {
@@ -108,7 +95,7 @@ public class Cart {
 
     @Override
     public String toString() {
-        return "Cart{" + "cartId=" + cartId + ", quantity=" + quantity + ", price=" + price + ", total=" + total + ", product=" + product + ", user=" + user + '}';
+        return "Cart{" + "cartId=" + cartId + ", quantity=" + quantity + ", total=" + total + ", product=" + product + ", user=" + user + '}';
     }
     
 }

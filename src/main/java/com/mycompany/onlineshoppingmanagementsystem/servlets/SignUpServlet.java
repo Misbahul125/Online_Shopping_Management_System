@@ -2,10 +2,13 @@ package com.mycompany.onlineshoppingmanagementsystem.servlets;
 
 import com.mycompany.onlineshoppingmanagementsystem.dao.UserDAO;
 import com.mycompany.onlineshoppingmanagementsystem.entities.User;
+import com.mycompany.onlineshoppingmanagementsystem.helper.PasswordHelper.AESHelper;
 import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
 import com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +47,13 @@ public class SignUpServlet extends HttpServlet {
             String userImage = "default.png";
             String userAddress = request.getParameter("user_address");
             String userType = null;
+            String encryptedPassword = null;
+            
+            try {
+                encryptedPassword = AESHelper.encrypt(userPassword);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
             if (userEmail.contains("@uem.edu.in")) {
                 userType = Constants.ADMIN_USER.toString();
@@ -52,7 +62,7 @@ public class SignUpServlet extends HttpServlet {
             }
 
             UserDAO userDAO = new UserDAO(FactoryProvider.getFactory());
-            int status = userDAO.createUserWithEmailAndPassword(userName, userEmail, userPassword, userPhone, userImage, userAddress, userType);
+            int status = userDAO.createUserWithEmailAndPassword(userName, userEmail, encryptedPassword, userPhone, userImage, userAddress, userType);
 
             if (status == 0 || status == 001) {
 
@@ -73,7 +83,7 @@ public class SignUpServlet extends HttpServlet {
 
             } else {
 
-                User user = userDAO.getUserByEmailAndPassword(userEmail, userPassword);
+                User user = userDAO.getUserByEmailAndPassword(userEmail, encryptedPassword);
 
                 if (user != null) {
                     

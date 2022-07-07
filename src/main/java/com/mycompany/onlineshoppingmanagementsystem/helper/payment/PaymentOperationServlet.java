@@ -2,12 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.onlineshoppingmanagementsystem.servlets;
+package com.mycompany.onlineshoppingmanagementsystem.helper.payment;
 
-import com.mycompany.onlineshoppingmanagementsystem.dao.UserDAO;
-import com.mycompany.onlineshoppingmanagementsystem.entities.User;
-import com.mycompany.onlineshoppingmanagementsystem.helper.PasswordHelper.AESHelper;
-import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
+import com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO;
+import com.mycompany.onlineshoppingmanagementsystem.entities.Product;
 import com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,13 +13,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import com.razorpay.*;
+import java.io.BufferedReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.JSONObject;
 
 /**
  *
  * @author Misbahul Haque
  */
-public class LogInServlet extends HttpServlet {
+public class PaymentOperationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,53 +31,48 @@ public class LogInServlet extends HttpServlet {
      *
      * @param request servlet request
      * @param response servlet response
+     * @return
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws com.razorpay.RazorpayException
      */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, RazorpayException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
 
-            String userEmail = request.getParameter("user_email");
-            String userPassword = request.getParameter("user_password");
-            
-            String encryptedPassword = null;
-            
-            try {
-                encryptedPassword = AESHelper.encrypt(userPassword);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            System.out.println("payment initiated-2");
 
-            UserDAO userDAO = new UserDAO(FactoryProvider.getFactory());
-            User user = userDAO.getUserByEmailAndPassword(userEmail, encryptedPassword);
-            
-            if(user != null) {
-                System.out.println(user.toString());
-            }
+            int amount = Integer.parseInt(request.getParameter("amount"));
+            String info = request.getParameter("info");
 
-            HttpSession httpSession = request.getSession();
+            System.out.println(amount);
+            System.out.println(info);
 
-            if (user != null) {
+            RazorpayClient razorpayClient = new RazorpayClient("rzp_test_XZmCccoknEaBos", "mRoXJ7MdsPxG7bGjdH3SOuAZ");
 
-                httpSession.setAttribute("current-user", user);
+                //generate transaction id
+                JSONObject jSONObject = new JSONObject();
+                jSONObject.put("amount", amount * 100);
+                jSONObject.put("currency", "INR");
                 
-                if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
-                    response.sendRedirect("admin_home.jsp");
-                    return;
-                } else if (user.getUserType().matches(Constants.NORMAL_USER.toString())) {
-                    response.sendRedirect("client_home.jsp");
-                    return;
-                } else {
-                    out.println("Sorry you are not a verified user.");
-                    //httpSession.removeAttribute("current-user");
-                }
+                String receiptId = "OSMSRID"+(System.currentTimeMillis());
+                jSONObject.put("receipt", receiptId);
 
-            } else {
-                httpSession.setAttribute("negativeMessage", "Invalid email or password.");
-                response.sendRedirect("login.jsp");
-            }
+                //send order request to the razorpay server
+                Order order = razorpayClient.orders.create(jSONObject);
+                System.out.println(order);
+
+                if (order != null) {
+
+                    //save order details to the database
+                    System.out.println("order created successfully...");
+
+                    response.getWriter().append(order.toString());
+
+                }
+                
 
         }
     }
@@ -92,7 +89,11 @@ public class LogInServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (RazorpayException ex) {
+            Logger.getLogger(PaymentOperationServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -106,7 +107,11 @@ public class LogInServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (RazorpayException ex) {
+            Logger.getLogger(PaymentOperationServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

@@ -6,6 +6,7 @@ package com.mycompany.onlineshoppingmanagementsystem.servlets;
 
 import com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO;
 import com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO;
+import com.mycompany.onlineshoppingmanagementsystem.helper.CalculateDiscount;
 import com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,8 +73,9 @@ public class ProductOperationServlet extends HttpServlet {
                 //fetching product data
                 String productName = request.getParameter("product_name");
                 String productDescription = request.getParameter("product_description");
-                int productPrice = Integer.parseInt(request.getParameter("product_price"));
+                int productMarkedPrice = Integer.parseInt(request.getParameter("product_marked_price"));
                 int productDiscount = Integer.parseInt(request.getParameter("product_discount"));
+                int productSellingPrice = Integer.parseInt(request.getParameter("product_selling_price"));
                 int productQuantity = Integer.parseInt(request.getParameter("product_quantity"));
                 int productCategory = Integer.parseInt(request.getParameter("productCategories"));
 
@@ -99,7 +101,7 @@ public class ProductOperationServlet extends HttpServlet {
 
                     //upload data
                     ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
-                    int id = productDAO.createProduct(productName, productDescription, productPrice, productDiscount, productQuantity, productImage, productCategory);
+                    int id = productDAO.createProduct(productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, productCategory);
 
                     if (id != 0) {
                         httpSession.setAttribute("positiveMessage", "Product is added successfully with ID : " + id);
@@ -114,8 +116,9 @@ public class ProductOperationServlet extends HttpServlet {
                 } catch (Exception e) {
                     httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
                     response.sendRedirect("admin_home.jsp");
-                    if(fos != null)
+                    if (fos != null) {
                         fos.close();
+                    }
                     e.printStackTrace();
                 }
 

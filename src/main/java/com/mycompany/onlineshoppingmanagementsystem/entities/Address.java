@@ -7,6 +7,7 @@ package com.mycompany.onlineshoppingmanagementsystem.entities;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,7 +47,7 @@ public class Address {
     @ManyToOne
     private User user;
     
-    @OneToMany(mappedBy = "address")
+    @OneToMany(mappedBy = "address" , fetch = FetchType.LAZY)
     private List<Orders> orders;
 
     public Address(int addressId, String locality, int pincode, String landmark, String city, String state, String country, User user) {
@@ -146,9 +147,4 @@ public class Address {
         this.orders = orders;
     }
 
-    @Override
-    public String toString() {
-        return "Address{" + "addressId=" + addressId + ", locality=" + locality + ", pincode=" + pincode + ", landmark=" + landmark + ", city=" + city + ", state=" + state + ", country=" + country + ", user=" + user + ", orders=" + orders + '}';
-    }
-    
 }

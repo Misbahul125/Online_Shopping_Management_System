@@ -7,6 +7,7 @@ package com.mycompany.onlineshoppingmanagementsystem.entities;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,11 +32,14 @@ public class Product {
     @Column(length = 1500, name = "product_description")
     private String productDescription;
     
-    @Column(name = "product_price")
-    private int productPrice;
+    @Column(name = "product_marked_price")
+    private int productMarkedPrice;
     
     @Column(name = "product_discount")
     private int productDiscount;
+    
+    @Column(name = "product_selling_price")
+    private int productSellingPrice;
     
     @Column(name = "product_quantity")
     private int productQuantity;
@@ -46,34 +50,39 @@ public class Product {
     @ManyToOne
     private Category category;
     
-    @OneToMany
+    @OneToMany(mappedBy = "product" , fetch = FetchType.LAZY)
     private List<Cart> carts;
     
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product" , fetch = FetchType.LAZY)
     private List<Orders> orders;
 
-    public Product(int productId, String productName, String productDescription, int productPrice, int productDiscount, int productQuantity, Category category, String productPic, List<Cart> carts) {
+    public Product(int productId, String productName, String productDescription, int productMarkedPrice, int productDiscount, int productSellingPrice, int productQuantity, String productPic, Category category, List<Cart> carts, List<Orders> orders) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
-        this.productPrice = productPrice;
+        this.productMarkedPrice = productMarkedPrice;
         this.productDiscount = productDiscount;
+        this.productSellingPrice = productSellingPrice;
         this.productQuantity = productQuantity;
-        this.category = category;
         this.productPic = productPic;
+        this.category = category;
         this.carts = carts;
+        this.orders = orders;
     }
 
-    public Product(String productName, String productDescription, int productPrice, int productDiscount, int productQuantity, Category category, String productPic, List<Cart> carts) {
+    public Product(String productName, String productDescription, int productMarkedPrice, int productDiscount, int productSellingPrice, int productQuantity, String productPic, Category category, List<Cart> carts, List<Orders> orders) {
         this.productName = productName;
         this.productDescription = productDescription;
-        this.productPrice = productPrice;
+        this.productMarkedPrice = productMarkedPrice;
         this.productDiscount = productDiscount;
+        this.productSellingPrice = productSellingPrice;
         this.productQuantity = productQuantity;
-        this.category = category;
         this.productPic = productPic;
+        this.category = category;
         this.carts = carts;
+        this.orders = orders;
     }
+    
 
     public Product() {
     }
@@ -102,12 +111,12 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public int getProductPrice() {
-        return productPrice;
+    public int getProductMarkedPrice() {
+        return productMarkedPrice;
     }
 
-    public void setProductPrice(int productPrice) {
-        this.productPrice = productPrice;
+    public void setProductMarkedPrice(int productMarkedPrice) {
+        this.productMarkedPrice = productMarkedPrice;
     }
 
     public int getProductDiscount() {
@@ -116,6 +125,14 @@ public class Product {
 
     public void setProductDiscount(int productDiscount) {
         this.productDiscount = productDiscount;
+    }
+
+    public int getProductSellingPrice() {
+        return productSellingPrice;
+    }
+
+    public void setProductSellingPrice(int productSellingPrice) {
+        this.productSellingPrice = productSellingPrice;
     }
 
     public int getProductQuantity() {
@@ -156,21 +173,6 @@ public class Product {
 
     public void setOrders(List<Orders> orders) {
         this.orders = orders;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" + "productId=" + productId + ", productName=" + productName + ", productDescription=" + productDescription + ", productPrice=" + productPrice + ", productDiscount=" + productDiscount + ", productQuantity=" + productQuantity + ", productPic=" + productPic + ", category=" + category + ", carts=" + carts + ", orders=" + orders + '}';
-    }
-
-    
-    //function to calculate discount
-    public int getPriceAfterApplyingDiscount() {
-        
-        int d = (int)((this.getProductDiscount()/100.0)*this.getProductPrice());
-        
-        return this.getProductPrice()-d;
-        
     }
     
 }

@@ -10,5 +10,8 @@ package com.mycompany.onlineshoppingmanagementsystem.helper;
  */
 public enum Constants {
     ADMIN_USER,
-    NORMAL_USER
+    NORMAL_USER,
+    CART_INCREMENT,
+    CART_DECREMENT,
+    CART_DELETE,
 }

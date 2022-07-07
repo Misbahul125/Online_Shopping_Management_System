@@ -41,7 +41,7 @@ public class UserDAO {
             } else {
                 //new user
 
-                user = new User(userName, userEmail, userPassword, userPhone, userImage, userAddress, userType);
+                user = new User(userName, userEmail, userPassword, userPhone, userImage, userAddress, 0, userType);
 
                 session = this.sessionFactory.openSession();
                 transaction = session.beginTransaction();
@@ -85,7 +85,6 @@ public class UserDAO {
             Query q = session.createQuery(query);
             q.setParameter("e", email);
             q.setParameter("p", password);
-
             user = (User) q.uniqueResult();
 
         } catch (Exception e) {
@@ -95,6 +94,43 @@ public class UserDAO {
         }
 
         return user;
+
+    }
+
+    public int updateCartCountByUserId(User user, int count) {
+
+        int status = 0;
+
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+
+            //String query = "update User set userCartCount =: n where userId =: u";
+
+            session = this.sessionFactory.openSession();
+            tx = session.beginTransaction();
+            
+//            Query q = session.createQuery(query);
+//            q.setParameter("n", count);
+//            q.setParameter("u", uid);
+//            status = q.executeUpdate();
+
+            user.setUserCartCount(count);
+            session.saveOrUpdate(user);
+
+            tx.commit();
+            status = 1;
+
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+            status = 0;
+        } finally {
+            session.close();
+        }
+        
+        return status;
 
     }
 

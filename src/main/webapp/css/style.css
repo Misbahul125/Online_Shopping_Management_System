@@ -3,6 +3,12 @@
     Author     : Misbahul Haque
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300&display=swap');
+
+* {
+    font-family: 'Mulish', sans-serif;
+}
+
 .custom-bg{
     background: #E91E63!important;
 }

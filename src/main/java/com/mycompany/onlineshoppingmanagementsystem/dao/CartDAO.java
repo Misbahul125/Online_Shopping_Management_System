@@ -5,7 +5,6 @@
 package com.mycompany.onlineshoppingmanagementsystem.dao;
 
 import com.mycompany.onlineshoppingmanagementsystem.entities.Cart;
-import com.mycompany.onlineshoppingmanagementsystem.entities.Category;
 import com.mycompany.onlineshoppingmanagementsystem.entities.Product;
 import com.mycompany.onlineshoppingmanagementsystem.entities.User;
 import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;

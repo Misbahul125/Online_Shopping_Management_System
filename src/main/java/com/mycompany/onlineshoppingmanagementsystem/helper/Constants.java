@@ -14,4 +14,11 @@ public enum Constants {
     CART_INCREMENT,
     CART_DECREMENT,
     CART_DELETE,
+    CART_NONE,
+    OP,
+    COD,
+    IN_PROGRESS,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED
 }

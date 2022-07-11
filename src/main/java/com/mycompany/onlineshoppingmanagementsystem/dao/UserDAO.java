@@ -96,6 +96,31 @@ public class UserDAO {
         return user;
 
     }
+    
+    public User getUserByEmail(String email) {
+
+        User user = null;
+
+        Session session = null;
+
+        try {
+
+            String query = "from User where userEmail =: e";
+
+            session = this.sessionFactory.openSession();
+            Query q = session.createQuery(query);
+            q.setParameter("e", email);
+            user = (User) q.uniqueResult();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return user;
+
+    }
 
     public int updateCartCountByUserId(User user, int count) {
 
@@ -107,15 +132,13 @@ public class UserDAO {
         try {
 
             //String query = "update User set userCartCount =: n where userId =: u";
-
             session = this.sessionFactory.openSession();
             tx = session.beginTransaction();
-            
+
 //            Query q = session.createQuery(query);
 //            q.setParameter("n", count);
 //            q.setParameter("u", uid);
 //            status = q.executeUpdate();
-
             user.setUserCartCount(count);
             session.saveOrUpdate(user);
 
@@ -129,7 +152,43 @@ public class UserDAO {
         } finally {
             session.close();
         }
-        
+
+        return status;
+
+    }
+
+    public int resetPasswordByEmail(String userEmail, String userPassword) {
+
+        int status = 0;
+
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+
+            session = this.sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            String query = "update User set userPassword =: p where userEmail =: e";
+            
+            Query q = session.createQuery(query);
+            q.setParameter("p", userPassword);
+            q.setParameter("e", userEmail);
+            status = q.executeUpdate();
+            
+//            user.setUserCartCount(count);
+//            session.saveOrUpdate(user);
+
+            tx.commit();
+
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+            status = 0;
+        } finally {
+            session.close();
+        }
+
         return status;
 
     }

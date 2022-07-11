@@ -1,0 +1,66 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 08-Jul-2022, 7:41:46 pm
+    Author     : Misbahul Haque
+*/
+
+.card {
+  /* Add shadows to create the "card" effect */
+  margin-top: 10px;
+  width: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 5px 16px;
+}
+
+div.cards-heading{
+    color: white;
+    font-weight: bolder;
+    background: #E91E63;
+}
+
+.order-footer{
+    white-space: pre
+}
+
+.btn-change-address{
+    background: white!important;
+    color: #E91E63!important;
+    border-color: #E91E63!important;
+}
+
+.btn-change-address:hover{
+    background: lightgrey!important;
+    color: white!important;
+}
+
+.custom-radio{
+    font-size: 20px;
+    color: black;
+    font-weight: normal;
+}
+
+.custom-bg{
+    background: #E91E63!important;
+}
+
+button.custom-btn{
+    font-weight: bold; 
+    font-size: 20px;
+}
+
+button.custom-btn:hover{
+    background: green!important;
+}
+
+.place-order{
+    margin-top: 50px;
+    margin-bottom: 30px;
+}

@@ -13,7 +13,6 @@
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.Constants"%>
 <%
     User user = (User) session.getAttribute("current-user");
-    int tItem = 0, tUnit = 0, tAmount = 0, netAmount = 0;
     if (user != null) {
         if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
             session.setAttribute("negativeMessage", "You are not a valid user to access this page.");
@@ -27,6 +26,8 @@
         return;
     }
 
+    int tItem = 0, tUnit = 0, tAmount = 0, netAmount = 0;
+    
     DateHelper dh = new DateHelper();
     String deliveryDate = dh.getDeliveryDate();
 
@@ -59,8 +60,7 @@
 
             <div class="row">
 
-                <%
-                    if (carts.size() != 0 && carts != null) {
+                <%                    if (carts.size() != 0 && carts != null) {
                 %>
 
                 <div class="col-md-10 col-11 mx-auto">
@@ -69,19 +69,19 @@
 
                         <!-- left side div -->
                         <div class="col-md-12 col-lg-8 col-11 mx-auto main_cart mb-lg-0 mb-5 shadow">
-                            
+
                             <%
-                                if(user.getUserCartCount() == 1) {                                
+                                if (user.getUserCartCount() == 1) {
                             %>
 
                             <h2 class="py-4 font-weight-bold">Cart (<%= user.getUserCartCount()%> item)</h2>
-                            
+
                             <%
-                                } else {
+                            } else {
                             %>
-                            
+
                             <h2 class="py-4 font-weight-bold">Cart (<%= user.getUserCartCount()%> items)</h2>
-                            
+
                             <%
                                 }
                             %>
@@ -158,10 +158,13 @@
 
                                             <div class="col-8 d-flex justify-content-between remove_wish">
                                                 <h3 id="itemval"> &#8377; <%= c.getProduct().getProductSellingPrice()%>
-                                                    /- <span class="text-secondary discount-label">
+                                                    /- <span class="cart-marked-price cart-discount">
                                                         &#8377; <%= c.getProduct().getProductMarkedPrice()%>
+                                                    </span>
+                                                    <span class="cart-discount">
                                                         <%= c.getProduct().getProductDiscount()%>% off
-                                                    </span></h3>
+                                                    </span>
+                                                </h3>
                                             </div>
 
                                             <div class="col-4 d-flex justify-content-end price_money">
@@ -226,7 +229,9 @@
                                     <p>&#8377; <span id="total_cart_amt"><%= netAmount%>.00</span></p>
                                 </div>
 
-                                <button class="btn custom-bg text-white text-uppercase">Checkout</button>
+                                <a href="checkout.jsp?source=cart">
+                                    <button class="btn custom-bg text-white text-uppercase">Checkout</button>
+                                </a>
 
                             </div>
                             <!-- discount code part -->
@@ -267,12 +272,16 @@
                 } else {
                 %>
 
-                <h1>You have no products to show in your cart.</h1>
-                <p>Please add products in your cart</p>
-                <a href="client_home.jsp">
-                    <button class="btn btn-primary custom-bg">View Products</button>
-                </a>
-                
+                <div class="container-fluid text-center">
+
+                    <h1>You have no products to show in your cart.</h1>
+                    <h4>Please add products in your cart</h4>
+                    <a href="client_home.jsp">
+                        <button class="btn btn-primary custom-bg">View Products</button>
+                    </a>
+
+                </div>
+
                 <%
                     }
                 %>

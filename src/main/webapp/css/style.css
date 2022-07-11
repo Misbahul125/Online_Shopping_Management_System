@@ -3,11 +3,7 @@
     Author     : Misbahul Haque
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300&display=swap');
 
-* {
-    font-family: 'Mulish', sans-serif;
-}
 
 .custom-bg{
     background: #E91E63!important;
@@ -27,12 +23,48 @@
     border-color: #E91E63!important;
 }
 
-.discount-label{
-    font-size: 10px!important;
+button.custom-btn{
+    font-weight: bold; 
+    font-size: 20px;
+}
+
+.btn-go-to-cart{
+    background: white!important;
+    color: #E91E63!important;
+    border-color: #E91E63!important;
+}
+
+.btn-go-to-cart:hover{
+    background: lightgrey!important;
+}
+
+span.custom-btn{
+    font-weight: bold; 
+    font-size: 20px;
+}
+
+span.marked-price{
+    color : white;
+    font-size: 15px;
+    font-style: italic!important;
+    text-decoration: line-through;
+}
+
+span.discount{
+    color : white;
+    font-size: 15px;
     font-style: italic!important;
 }
 
 .product-card:hover{
     background: #e2e2e2;
     cursor: pointer;
+}
+
+label.heading {
+    font-weight: bold;
+}
+
+.login-footer{
+    white-space: pre;
 }

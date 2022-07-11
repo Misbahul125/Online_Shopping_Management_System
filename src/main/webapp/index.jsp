@@ -19,21 +19,20 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>OSMS - Home</title>
 
+        <link rel="stylesheet" href="css/style.css">
         <%@include file="components/common_css_js.jsp" %>
     </head>
 
     <body>
 
         <%@include file="components/navbar.jsp" %>
-        
-        <%
-            if(session.getAttribute("current-user") != null) {
+
+        <%            if (session.getAttribute("current-user") != null) {
                 User u = (User) session.getAttribute("current-user");
-                if(u.getUserType().matches(Constants.ADMIN_USER.toString())) {
+                if (u.getUserType().matches(Constants.ADMIN_USER.toString())) {
                     response.sendRedirect("admin_home.jsp");
                     return;
-                }
-                else {
+                } else {
                     response.sendRedirect("client_home.jsp");
                     return;
                 }
@@ -109,7 +108,7 @@
                                 <div class="card product-card">
 
                                     <div class="container text-center">
-                                        <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 200px; max-width: 100%; width: auto" class="card-img-top m-2" alt="">
+                                        <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 200px; max-width: 100%; width: auto" class="card-img-top" alt="">
                                     </div>
 
                                     <div class="card-body">
@@ -122,12 +121,14 @@
 
                                     <div class="card-footer text-center">
 
-                                        <button class="btn custom-bg text-white" data-toggle="modal" data-target="#login-modal">Add to Cart</button>
+                                        <button class="btn custom-bg text-white custom-btn" data-toggle="modal" data-target="#login-modal">Add to Cart</button>
 
-                                        <button class="btn btn-outline-success"> 
-                                            &#8377; <%= p.getProductSellingPrice() %>
-                                            /- <span class="text-secondary discount-label">
-                                                &#8377; <%= p.getProductMarkedPrice() %>
+                                        <button class="btn btn-success"> 
+                                            <span class="custom-btn">&#8377; <%= p.getProductSellingPrice()%></span>
+                                            /- <span class="marked-price discount">
+                                                &#8377; <%= p.getProductMarkedPrice()%>
+                                            </span>
+                                            <span class="discount">
                                                 <%= p.getProductDiscount()%>% off
                                             </span>
                                         </button>
@@ -157,50 +158,48 @@
 
         </div>
 
-    </div>
 
+        <%
+            if (session.getAttribute("current-user") == null) {
+                System.out.println("user null");
 
-    <%
-        if (session.getAttribute("current-user") == null) {
-            System.out.println("user null");
+        %>
 
-    %>
-
-    <!-- Modal -->
-    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Oops! User not found</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Please login or signup to facilitate cart.
-                </div>
-                <div class="modal-footer">
-
-                    <a href="login.jsp">
-                        <button type="button" class="btn btn-secondary">
-                            Login
+        <!-- Modal -->
+        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Oops! User not found</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
-                    </a>
+                    </div>
+                    <div class="modal-body">
+                        Please login or signup to facilitate cart.
+                    </div>
+                    <div class="modal-footer">
 
-                    <a href="signup.jsp">
-                        <button type="button" class="btn btn-primary">
-                            Signup
-                        </button>
-                    </a>
-                    
+                        <a href="login.jsp">
+                            <button type="button" class="btn btn-secondary">
+                                Login
+                            </button>
+                        </a>
+
+                        <a href="signup.jsp">
+                            <button type="button" class="btn btn-primary">
+                                Signup
+                            </button>
+                        </a>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <%        }
-    %>
+        <%        }
+        %>
 
 
-</body>
+    </body>
 </html>

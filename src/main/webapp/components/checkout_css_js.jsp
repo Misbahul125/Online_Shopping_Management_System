@@ -1,6 +1,6 @@
 <%-- 
-    Document   : common_css_js
-    Created on : 21-Jun-2022, 5:26:58 pm
+    Document   : checkout_css_js
+    Created on : 08-Jul-2022, 7:46:59 pm
     Author     : Misbahul Haque
 --%>
 
@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
 
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/checkout.css">
 
 <!--js-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -17,6 +18,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="js/script.js"></script>
-<script src="js/form_validation.js"></script>
+
+<script src="js/order.js"></script>

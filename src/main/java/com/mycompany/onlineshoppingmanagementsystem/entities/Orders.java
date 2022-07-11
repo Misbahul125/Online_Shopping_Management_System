@@ -27,16 +27,25 @@ public class Orders {
     private String actualOrderId;
     
     @Column(length = 30, name = "payment_method")
-    private String paymentMethod;
+    private int paymentMethod;
     
-    @Column(length = 50, name = "transaction_id")
-    private int transactionId;
+    @Column(name = "razorpay_order_id")
+    private int razorpayOrderId;
+    
+    @Column(name = "razorpay_payment_id")
+    private int razorpayPaymentId;
+    
+    @Column(name = "razorpay_signature")
+    private int razorpaySignature;
     
     @Column(length = 30, name = "order_status")
     private String orderStatus;
     
-    @Column(length = 30, name = "delivery_date")
+    @Column(name = "delivery_date")
     private String deliveryDate;
+    
+    @Column(name = "user_address")
+    private String userAddress;
     
     @ManyToOne
     private Product product;
@@ -47,30 +56,33 @@ public class Orders {
     @ManyToOne
     private Address address;
 
-    public Orders(int orderId, String actualOrderId, String paymentMethod, int transactionId, String orderStatus, String deliveryDate, Product product, User user, Address address) {
+    public Orders(int orderId, String actualOrderId, int paymentMethod, int razorpayOrderId, int razorpayPaymentId, int razorpaySignature, String orderStatus, String deliveryDate, String userAddress, Product product, User user, Address address) {
         this.orderId = orderId;
         this.actualOrderId = actualOrderId;
         this.paymentMethod = paymentMethod;
-        this.transactionId = transactionId;
+        this.razorpayOrderId = razorpayOrderId;
+        this.razorpayPaymentId = razorpayPaymentId;
+        this.razorpaySignature = razorpaySignature;
         this.orderStatus = orderStatus;
         this.deliveryDate = deliveryDate;
+        this.userAddress = userAddress;
         this.product = product;
         this.user = user;
         this.address = address;
     }
 
-    public Orders(String actualOrderId, String paymentMethod, int transactionId, String orderStatus, String deliveryDate, Product product, User user, Address address) {
+    public Orders(String actualOrderId, int paymentMethod, int razorpayOrderId, int razorpayPaymentId, int razorpaySignature, String orderStatus, String deliveryDate, String userAddress, Product product, User user, Address address) {
         this.actualOrderId = actualOrderId;
         this.paymentMethod = paymentMethod;
-        this.transactionId = transactionId;
+        this.razorpayOrderId = razorpayOrderId;
+        this.razorpayPaymentId = razorpayPaymentId;
+        this.razorpaySignature = razorpaySignature;
         this.orderStatus = orderStatus;
         this.deliveryDate = deliveryDate;
+        this.userAddress = userAddress;
         this.product = product;
         this.user = user;
         this.address = address;
-    }
-
-    public Orders() {
     }
 
     public int getOrderId() {
@@ -89,20 +101,36 @@ public class Orders {
         this.actualOrderId = actualOrderId;
     }
 
-    public String getPaymentMethod() {
+    public int getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
+    public void setPaymentMethod(int paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
-    public int getTransactionId() {
-        return transactionId;
+    public int getRazorpayOrderId() {
+        return razorpayOrderId;
     }
 
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
+    public void setRazorpayOrderId(int razorpayOrderId) {
+        this.razorpayOrderId = razorpayOrderId;
+    }
+
+    public int getRazorpayPaymentId() {
+        return razorpayPaymentId;
+    }
+
+    public void setRazorpayPaymentId(int razorpayPaymentId) {
+        this.razorpayPaymentId = razorpayPaymentId;
+    }
+
+    public int getRazorpaySignature() {
+        return razorpaySignature;
+    }
+
+    public void setRazorpaySignature(int razorpaySignature) {
+        this.razorpaySignature = razorpaySignature;
     }
 
     public String getOrderStatus() {
@@ -119,6 +147,14 @@ public class Orders {
 
     public void setDeliveryDate(String deliveryDate) {
         this.deliveryDate = deliveryDate;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
 
     public Product getProduct() {
@@ -143,11 +179,6 @@ public class Orders {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    @Override
-    public String toString() {
-        return "Orders{" + "orderId=" + orderId + ", actualOrderId=" + actualOrderId + ", paymentMethod=" + paymentMethod + ", transactionId=" + transactionId + ", orderStatus=" + orderStatus + ", deliveryDate=" + deliveryDate + ", product=" + product + ", user=" + user + ", address=" + address + '}';
     }
     
 }

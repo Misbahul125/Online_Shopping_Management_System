@@ -130,12 +130,12 @@
 
                                         <%
                                             List<Cart> carts = cartDAO.getCartItemWithProductAndUserId(p.getProductId(), user.getUserId());
-                                            if (carts.get(0) != null) {
+                                            if (carts != null && !carts.isEmpty()) {
                                         %>
 
 
-                                        <a href="CartOperationServlet?productId=<%=p.getProductId()%>&action=<%= Constants.CART_INCREMENT.toString()%>">
-                                            <button class="btn btn-outline-success">Go to Cart</button>
+                                        <a href="CartOperationServlet?productId=<%=p.getProductId()%>&action=none">
+                                            <button class="btn btn-go-to-cart custom-btn">Go to Cart</button>
                                         </a>
 
                                         <%
@@ -143,7 +143,7 @@
                                         %> 
 
                                         <a href="CartOperationServlet?productId=<%=p.getProductId()%>&action=<%= Constants.CART_INCREMENT.toString()%>">
-                                            <button class="btn custom-bg text-white">Add to Cart</button>
+                                            <button class="btn custom-bg text-white custom-btn">Add to Cart</button>
                                         </a>
 
                                         <%
@@ -151,10 +151,12 @@
                                         %>
 
 
-                                        <button id="amt" class="btn btn-outline-success" value="<%= p.getProductSellingPrice()%>" data-toggle="modal" data-target="#buyModal"> 
-                                            &#8377; <%= p.getProductSellingPrice()%>
-                                            /- <span class="text-secondary discount-label">
+                                        <button id="amt" class="btn btn-success" value="<%= p.getProductSellingPrice()%>" data-toggle="modal" data-target="#buyModal"> 
+                                            <span class="custom-btn">&#8377; <%= p.getProductSellingPrice()%></span>
+                                            /- <span class="marked-price">
                                                 &#8377; <%= p.getProductMarkedPrice()%>
+                                            </span>
+                                            <span class="discount">
                                                 <%= p.getProductDiscount()%>% off
                                             </span>
                                         </button>
@@ -205,11 +207,9 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
 
-                        <button onclick="initiatePayment()" type="button" class="btn btn-primary">Yes</button>
-
-<!--                    <a href="PaymentOperationServlet?productId=<%=p.getProductId()%>&src=client_home">
+                    <a href="checkout.jsp?productId=<%=p.getProductId()%>&source=client_home">
                         <button type="button" class="btn btn-primary">Yes</button>
-                    </a>-->
+                    </a>
 
                     </div>
                 </div>

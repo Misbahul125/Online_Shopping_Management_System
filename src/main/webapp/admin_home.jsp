@@ -259,7 +259,7 @@
                             
                             <script>
                                 $("#disc").keyup(function() { 
-                                    console.log("discount");
+                                   console.log("discount");
                                    var m = Number($("#mp").val()) ;
                                    var d = Number($(this).val());
                                    var s = Math.trunc(((d/100.0)*m));

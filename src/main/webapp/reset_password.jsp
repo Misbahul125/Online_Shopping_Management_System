@@ -1,6 +1,6 @@
 <%-- 
-    Document   : login
-    Created on : 21-Jun-2022, 7:23:57 pm
+    Document   : forgot_password
+    Created on : 09-Jul-2022, 4:07:57 pm
     Author     : Misbahul Haque
 --%>
 
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>OSMS - Login</title>
+        <title>OSMS - Reset Password</title>
 
         <%@include file="components/common_css_js.jsp" %>
 
@@ -28,7 +28,7 @@
 
                         <div class="card-header custom-bg text-white">
 
-                            <h3>Please enter your login credentials</h3>
+                            <h3>Please enter your credentials</h3>
 
                         </div>
 
@@ -37,7 +37,7 @@
                             <%@include file="components/positiveMessage.jsp" %>
                             <%@include file="components/negativeMessage.jsp" %>
 
-                            <form action="LogInServlet" method="post">
+                            <form onsubmit="return validatePassword()" action="ResetPasswordServlet" method="post">
                                 <div class="form-group">
                                     <label style="font-weight: bold;" class="heading" for="exampleInputEmail1">Email address</label>
                                     <input name="user_email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
@@ -45,22 +45,26 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label style="font-weight: bold;" for="exampleInputPassword1">Password</label>
-                                    <input name="user_password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+                                    <label style="font-weight: bold;" for="newPassword">New Password</label>
+                                    <input name="user_new_password" type="password" class="form-control" id="newPassword" placeholder="Password" required>
+                                    <span id="message1" style="color: red;">*Password should be of atleast 8 characters</span>
                                 </div>
 
+                                <div class="form-group">
+                                    <label style="font-weight: bold;" for="confirmPassword">Confirm New Password</label>
+                                    <input name="user_confirm_password" type="password" class="form-control" id="confirmPassword" placeholder="Password" required>
+                                    <span id="message2" style="color: red;">*This should be same as the new password</span>
+                                </div>
+                                
                                 <div class="container text-center">
-                                    <button type="submit" class="btn custom-bg text-white border-0">Login</button>
-                                    <button type="reset" class="btn btn-primary border-0">Reset</button>
+                                    <button type="submit" class="btn btn-danger border-0">Reset Password</button>
                                 </div>
 
                             </form>
 
                             <div class="container mt-4">
 
-                                <h6 class="login-footer">Forgot your password?   <a href="reset_password.jsp" class="mb-2">Click here to reset</a></h6>
-
-                                <h6 class="login-footer">Don't have an account?   <a href="signup.jsp" class="mb-2">Click here to signup</a></h6>
+                                <h6 class="login-footer">Don't want to reset password?   <a href="login.jsp" class="mb-2">Click here to login</a></h6>
 
                             </div>
 

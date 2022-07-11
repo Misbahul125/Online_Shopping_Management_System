@@ -40,60 +40,90 @@ public class CartOperationServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
 
-            User user = (User) request.getSession().getAttribute("current-user");
-            int productId = Integer.parseInt(request.getParameter("productId"));
             String action = request.getParameter("action");
-
-            ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
-            Product product = productDAO.getProductById(productId);
-            
-            HttpSession httpSession = request.getSession();
 
 //            System.out.println(product.getProductName());
 //            System.out.println(user.getUserName());
-            if (user != null && product != null) {
+            if (!action.matches("none")) {
 
-                CartDAO cartDAO = new CartDAO(FactoryProvider.getFactory());
-                List<Cart> carts = cartDAO.getCartItemWithProductAndUserId(productId, user.getUserId());
-                //System.out.println(carts);
+                User user = (User) request.getSession().getAttribute("current-user");
+                int productId = Integer.parseInt(request.getParameter("productId"));
 
-                //check if particular item exists for the particular user in cart or not , if exists then increase/decrease the quantity
-                if (carts != null && !carts.isEmpty()) {
+                ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
+                Product product = productDAO.getProductById(productId);
 
-                    //check if user wants to either remove or update quantity of cart item
-                    if (action.matches(Constants.CART_DELETE.toString())) {
+                HttpSession httpSession = request.getSession();
 
-                        int cartId = cartDAO.deleteCartItem(user , carts.get(0));
+                if (user != null && product != null) {
+
+                    CartDAO cartDAO = new CartDAO(FactoryProvider.getFactory());
+                    List<Cart> carts = cartDAO.getCartItemWithProductAndUserId(productId, user.getUserId());
+                    //System.out.println(carts);
+
+                    //check if particular item exists for the particular user in cart or not , if exists then increase/decrease the quantity
+                    if (carts != null && !carts.isEmpty()) {
+
+                        //check if user wants to either remove or update quantity of cart item
+                        if (action.matches(Constants.CART_DELETE.toString())) {
+
+                            int cartId = cartDAO.deleteCartItem(user, carts.get(0));
+
+                            if (cartId > 0) {
+
+                                httpSession.setAttribute("positiveMessage", "Cart item have been deleted.");
+                                response.sendRedirect("cart.jsp");
+
+                            } else {
+
+                                httpSession.setAttribute("negativeMessage", "Something went wrong! Please try again later.");
+                                response.sendRedirect("cart.jsp");
+
+                            }
+
+                        } //update cart quantity
+                        else {
+
+                            int q = cartDAO.updateCartQuantity(user, carts.get(0), action);
+                            //System.out.println(carts.get(0));
+
+                            if (action.matches(Constants.CART_INCREMENT.toString())) {
+
+                                httpSession.setAttribute("positiveMessage", "Cart item have been increased to " + q);
+                                response.sendRedirect("cart.jsp");
+
+                            } else if (action.matches(Constants.CART_DECREMENT.toString())) {
+
+                                httpSession.setAttribute("negativeMessage", "Cart item have been decreased to " + q);
+                                response.sendRedirect("cart.jsp");
+
+                            } else {
+
+                                httpSession.setAttribute("negativeMessage", "Something went wrong! Please try again later.");
+                                response.sendRedirect("cart.jsp");
+
+                            }
+
+                        }
+
+                    } //no item with particular user id exists in cart, add new row(with user id and product id in cart table)
+                    else {
+
+                        System.out.println("Add1");
+
+                        int cartId = cartDAO.addNewItemToCart(user, product);
+                        //System.out.println("Cart id is : " + cartId);
+                        System.out.println("Add15");
 
                         if (cartId > 0) {
 
-                            httpSession.setAttribute("positiveMessage", "Cart item have been deleted.");
+                            System.out.println("Add16");
+
+                            httpSession.setAttribute("positiveMessage", "Item added to cart. ");
                             response.sendRedirect("cart.jsp");
 
                         } else {
 
-                            httpSession.setAttribute("negativeMessage", "Something went wrong! Please try again later.");
-                            response.sendRedirect("cart.jsp");
-
-                        }
-
-                    } //update cart quantity
-                    else {
-
-                        int q = cartDAO.updateCartQuantity(user , carts.get(0), action);
-                        //System.out.println(carts.get(0));
-
-                        if (action.matches(Constants.CART_INCREMENT.toString())) {
-
-                            httpSession.setAttribute("positiveMessage", "Cart item have been increased to " + q);
-                            response.sendRedirect("cart.jsp");
-
-                        } else if (action.matches(Constants.CART_DECREMENT.toString())) {
-
-                            httpSession.setAttribute("negativeMessage", "Cart item have been decreased to " + q);
-                            response.sendRedirect("cart.jsp");
-
-                        } else {
+                            System.out.println("Add17");
 
                             httpSession.setAttribute("negativeMessage", "Something went wrong! Please try again later.");
                             response.sendRedirect("cart.jsp");
@@ -102,38 +132,16 @@ public class CartOperationServlet extends HttpServlet {
 
                     }
 
-                } //no item with particular user id exists in cart, add new row(with user id and product id in cart table)
-                else {
-                    
-                    System.out.println("Add1");
+                } else {
 
-                    int cartId = cartDAO.addNewItemToCart(user , product);
-                    //System.out.println("Cart id is : " + cartId);
-                    System.out.println("Add15");
-
-                    if (cartId > 0) {
-                        
-                        System.out.println("Add16");
-
-                        httpSession.setAttribute("positiveMessage", "Item added to cart. ");
-                        response.sendRedirect("cart.jsp");
-
-                    } else {
-                        
-                        System.out.println("Add17");
-
-                        httpSession.setAttribute("negativeMessage", "Something went wrong! Please try again later.");
-                        response.sendRedirect("cart.jsp");
-
-                    }
+                    httpSession.setAttribute("negativeMessage", "Something went wrong! Please try again later.");
+                    response.sendRedirect("cart.jsp");
 
                 }
 
-            } else {
-
-                httpSession.setAttribute("negativeMessage", "Something went wrong! Please try again later.");
+            } //only show cart items
+            else {
                 response.sendRedirect("cart.jsp");
-
             }
 
         }

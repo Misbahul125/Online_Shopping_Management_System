@@ -9,26 +9,43 @@ package com.mycompany.onlineshoppingmanagementsystem.helper;
  * @author Misbahul Haque
  */
 public class SentenceHelper {
-    
-    public static String get10Words(String longText) {
-        
-        String str[] = longText.split(" ");
-        
-        if(str.length > 10) {
-            
-            String res = "";
-            
-            for(int i=0 ; i<10 ; i++) {
-                res = res+str[i]+" ";
-            }
-            
-            return res+"...";
-            
-        }
-        else {
-            return longText+"...";
-        }
-        
+
+    public SentenceHelper() {
     }
-    
+
+    public String getWords(String longText, int state) {
+
+        String str[] = longText.split(" ");
+
+        if (str.length > 10) {
+
+            String res = "";
+
+            //if show less is toggled
+            if (state == 0) {
+                System.out.println("0");
+
+                for (int i = 0; i < 10; i++) {
+                    res = res + str[i] + " ";
+                }
+
+                return res+" ";
+            }
+            else if(state == 1) {
+                System.out.println("1");
+                for (int i = 10; i < str.length; i++) {
+                    res = res + str[i] + " ";
+                }
+
+                return res;
+            }
+
+        } else {
+            return longText;
+        }
+        
+        return "";
+
+    }
+
 }

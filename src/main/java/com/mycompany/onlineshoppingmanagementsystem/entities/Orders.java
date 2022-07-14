@@ -26,17 +26,26 @@ public class Orders {
     @Column(length = 20, name = "actual_order_id") 
     private String actualOrderId;
     
+    @Column(name = "quantity")
+    private int quantity;
+    
+    @Column(length = 10, name = "total")
+    private int total;
+    
+    @Column(length = 10, name = "net_amount")
+    private int netAmount;
+    
     @Column(length = 30, name = "payment_method")
-    private int paymentMethod;
+    private String paymentMethod;
     
     @Column(name = "razorpay_order_id")
-    private int razorpayOrderId;
+    private String razorpayOrderId;
     
     @Column(name = "razorpay_payment_id")
-    private int razorpayPaymentId;
+    private String razorpayPaymentId;
     
-    @Column(name = "razorpay_signature")
-    private int razorpaySignature;
+    @Column(name = "razorpay_signature_id")
+    private String razorpaySignatureId;
     
     @Column(length = 30, name = "order_status")
     private String orderStatus;
@@ -56,13 +65,16 @@ public class Orders {
     @ManyToOne
     private Address address;
 
-    public Orders(int orderId, String actualOrderId, int paymentMethod, int razorpayOrderId, int razorpayPaymentId, int razorpaySignature, String orderStatus, String deliveryDate, String userAddress, Product product, User user, Address address) {
+    public Orders(int orderId, String actualOrderId, int quantity, int total, int netAmount, String paymentMethod, String razorpayOrderId, String razorpayPaymentId, String razorpaySignatureId, String orderStatus, String deliveryDate, String userAddress, Product product, User user, Address address) {
         this.orderId = orderId;
         this.actualOrderId = actualOrderId;
+        this.quantity = quantity;
+        this.total = total;
+        this.netAmount = netAmount;
         this.paymentMethod = paymentMethod;
         this.razorpayOrderId = razorpayOrderId;
         this.razorpayPaymentId = razorpayPaymentId;
-        this.razorpaySignature = razorpaySignature;
+        this.razorpaySignatureId = razorpaySignatureId;
         this.orderStatus = orderStatus;
         this.deliveryDate = deliveryDate;
         this.userAddress = userAddress;
@@ -71,18 +83,24 @@ public class Orders {
         this.address = address;
     }
 
-    public Orders(String actualOrderId, int paymentMethod, int razorpayOrderId, int razorpayPaymentId, int razorpaySignature, String orderStatus, String deliveryDate, String userAddress, Product product, User user, Address address) {
+    public Orders(String actualOrderId, int quantity, int total, int netAmount, String paymentMethod, String razorpayOrderId, String razorpayPaymentId, String razorpaySignatureId, String orderStatus, String deliveryDate, String userAddress, Product product, User user, Address address) {
         this.actualOrderId = actualOrderId;
+        this.quantity = quantity;
+        this.total = total;
+        this.netAmount = netAmount;
         this.paymentMethod = paymentMethod;
         this.razorpayOrderId = razorpayOrderId;
         this.razorpayPaymentId = razorpayPaymentId;
-        this.razorpaySignature = razorpaySignature;
+        this.razorpaySignatureId = razorpaySignatureId;
         this.orderStatus = orderStatus;
         this.deliveryDate = deliveryDate;
         this.userAddress = userAddress;
         this.product = product;
         this.user = user;
         this.address = address;
+    }
+
+    public Orders() {
     }
 
     public int getOrderId() {
@@ -101,36 +119,60 @@ public class Orders {
         this.actualOrderId = actualOrderId;
     }
 
-    public int getPaymentMethod() {
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public int getNetAmount() {
+        return netAmount;
+    }
+
+    public void setNetAmount(int netAmount) {
+        this.netAmount = netAmount;
+    }
+
+    public String getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(int paymentMethod) {
+    public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
-    public int getRazorpayOrderId() {
+    public String getRazorpayOrderId() {
         return razorpayOrderId;
     }
 
-    public void setRazorpayOrderId(int razorpayOrderId) {
+    public void setRazorpayOrderId(String razorpayOrderId) {
         this.razorpayOrderId = razorpayOrderId;
     }
 
-    public int getRazorpayPaymentId() {
+    public String getRazorpayPaymentId() {
         return razorpayPaymentId;
     }
 
-    public void setRazorpayPaymentId(int razorpayPaymentId) {
+    public void setRazorpayPaymentId(String razorpayPaymentId) {
         this.razorpayPaymentId = razorpayPaymentId;
     }
 
-    public int getRazorpaySignature() {
-        return razorpaySignature;
+    public String getRazorpaySignatureId() {
+        return razorpaySignatureId;
     }
 
-    public void setRazorpaySignature(int razorpaySignature) {
-        this.razorpaySignature = razorpaySignature;
+    public void setRazorpaySignatureId(String razorpaySignatureId) {
+        this.razorpaySignatureId = razorpaySignatureId;
     }
 
     public String getOrderStatus() {

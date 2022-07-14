@@ -20,5 +20,5 @@ public enum Constants {
     IN_PROGRESS,
     SHIPPED,
     DELIVERED,
-    CANCELLED
+    CANCELLED,
 }

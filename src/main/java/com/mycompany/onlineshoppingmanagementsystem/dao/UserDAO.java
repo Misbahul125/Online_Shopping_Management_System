@@ -131,20 +131,25 @@ public class UserDAO {
 
         try {
 
-            //String query = "update User set userCartCount =: n where userId =: u";
             session = this.sessionFactory.openSession();
             tx = session.beginTransaction();
 
-//            Query q = session.createQuery(query);
-//            q.setParameter("n", count);
-//            q.setParameter("u", uid);
-//            status = q.executeUpdate();
-            user.setUserCartCount(count);
-            session.saveOrUpdate(user);
+            String q = "update User set userCartCount =: n where userId =: u";
+            
+            Query query = session.createQuery(q);
+            query.setParameter("n", count);
+            query.setParameter("u", user.getUserId());
+            status = query.executeUpdate();
+            //user.setUserCartCount(count);
+            //session.saveOrUpdate(user);
 
-            tx.commit();
-            status = 1;
-
+            if(status > 0) {
+                tx.commit();
+            }
+            else {
+                tx.rollback();
+            }
+            
         } catch (Exception e) {
             tx.rollback();
             e.printStackTrace();

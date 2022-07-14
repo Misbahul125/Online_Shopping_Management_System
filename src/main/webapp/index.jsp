@@ -102,7 +102,8 @@
 
                             <div class="card-columns">
 
-                                <%  for (Product p : products) {
+                                <%  SentenceHelper sh = new SentenceHelper();
+                                    for (Product p : products) {
                                 %>
 
                                 <div class="card product-card">
@@ -115,15 +116,23 @@
 
                                         <<h5 class="card-title"><%= p.getProductName()%></h5>
 
-                                        <p class="card-text"><%= SentenceHelper.get10Words(p.getProductDescription())%></p>
+                                        <p id="wholeText" data-id="<%= p.getProductId() %>" class="card-text whole-text">
+                                            <%= sh.getWords(p.getProductDescription(), 0)%>
+                                            <span class="dots">...</span>
+                                            <span class="more-text">
+                                                <%= sh.getWords(p.getProductDescription(), 1)%>
+                                            </span>
+                                            <button data-target-id="<%= p.getProductId() %>" onclick="changeText(event)" type="button" id="readMoreBtn" class="btn read-more">Read More</button>
+
+                                        </p>
 
                                     </div>
 
                                     <div class="card-footer text-center">
 
-                                        <button class="btn custom-bg text-white custom-btn" data-toggle="modal" data-target="#login-modal">Add to Cart</button>
+                                        <button class="btn custom-bg text-white custom-btn" data-toggle="modal" data-target="#cart-login-modal">Add to Cart</button>
 
-                                        <button class="btn btn-success"> 
+                                        <button class="btn btn-success" data-toggle="modal" data-target="#buy-login-modal"> 
                                             <span class="custom-btn">&#8377; <%= p.getProductSellingPrice()%></span>
                                             /- <span class="marked-price discount">
                                                 &#8377; <%= p.getProductMarkedPrice()%>
@@ -166,7 +175,7 @@
         %>
 
         <!-- Modal -->
-        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="cart-login-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -177,6 +186,38 @@
                     </div>
                     <div class="modal-body">
                         Please login or signup to facilitate cart.
+                    </div>
+                    <div class="modal-footer">
+
+                        <a href="login.jsp">
+                            <button type="button" class="btn btn-secondary">
+                                Login
+                            </button>
+                        </a>
+
+                        <a href="signup.jsp">
+                            <button type="button" class="btn btn-primary">
+                                Signup
+                            </button>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="modal fade" id="buy-login-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Oops! User not found</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Please login or signup to buy a product.
                     </div>
                     <div class="modal-footer">
 

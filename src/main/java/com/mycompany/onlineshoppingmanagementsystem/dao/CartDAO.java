@@ -29,15 +29,12 @@ public class CartDAO {
     //add new item into cart
     public int addNewItemToCart(User user, Product product) {
         
-        System.out.println("Add2");
-
         Session session = null;
         Transaction transaction = null;
         int cartId = 0;
         int status = 0;
 
         try {
-            System.out.println("Add3");
             
             session = this.sessionFactory.openSession();
             transaction = session.beginTransaction();
@@ -50,13 +47,9 @@ public class CartDAO {
 
             cartId = (int) session.save(cart);
             
-            System.out.println("Add4");
-
             int c = (getCartItemsForUser(user.getUserId())).size();
             System.out.println("cart items : "+c);
             
-            System.out.println("Add5");
-
 //            UserDAO userDAO = new UserDAO(this.sessionFactory);
 //            status = userDAO.updateCartCountByUserId(user, c);
 
@@ -65,33 +58,23 @@ public class CartDAO {
             session.saveOrUpdate(user);
             status = 1;
             
-            System.out.println("Add6");
-
             if (status > 0) {
-                System.out.println("Add7");
                 transaction.commit();
-                System.out.println("Add8");
             } else {
-                System.out.println("Add9");
                 transaction.rollback();
-                System.out.println("Add10");
                 return 0;
             }
 
         } catch (Exception e) {
-            System.out.println("Add11");
 
             transaction.rollback();
             cartId = 0;
             status = 0;
             e.printStackTrace();
-            System.out.println("Add12");
 
         } finally {
 
-            System.out.println("Add13");
             session.close();
-            System.out.println("Add14");
             return status;
         }
 
@@ -240,6 +223,44 @@ public class CartDAO {
             } else {
                 transaction.rollback();
                 return 0;
+            }
+
+        } catch (Exception e) {
+
+            transaction.rollback();
+            status = 0;
+            e.printStackTrace();
+
+        } finally {
+
+            session.close();
+            return status;
+        }
+
+    }
+    
+    //delete multiple cart items especially after placing order from cart
+    public int deleteCartItemsAfterOrder(int userId) {
+
+        Session session = null;
+        Transaction transaction = null;
+        int status = 0;
+
+        try {
+            session = this.sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            
+            String q1 = "delete from Cart as c where c.user.userId =: u";
+            
+            Query query = session.createQuery(q1);
+            query.setParameter("u", userId);
+            status = query.executeUpdate();
+            
+            if (status > 0) {
+                transaction.commit();
+            } else {
+                transaction.rollback();
+                status = 0;
             }
 
         } catch (Exception e) {

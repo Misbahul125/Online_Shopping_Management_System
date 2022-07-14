@@ -28,6 +28,10 @@
         <servlet-name>ResetPasswordServlet</servlet-name>
         <servlet-class>com.mycompany.onlineshoppingmanagementsystem.servlets.ResetPasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrderOperationServlet</servlet-name>
+        <servlet-class>com.mycompany.onlineshoppingmanagementsystem.servlets.OrderOperationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/SignUpServlet</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>ResetPasswordServlet</servlet-name>
         <url-pattern>/ResetPasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderOperationServlet</servlet-name>
+        <url-pattern>/OrderOperationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -23,6 +23,31 @@
     border-color: #E91E63!important;
 }
 
+.whole-text{
+}
+
+.more-text{
+    display: none;
+}
+
+.read-more{
+    font-size: 17px;
+    margin: 0px;
+    color: #E91E63!important;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.whole-text.show-more .more-text{
+    display: inline;
+}
+
+.whole-text.show-more .dots{
+    display: none;
+}
+
 button.custom-btn{
     font-weight: bold; 
     font-size: 20px;

@@ -19,4 +19,3 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="js/script.js"></script>
-<script src="js/form_validation.js"></script>

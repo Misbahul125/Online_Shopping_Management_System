@@ -4,6 +4,8 @@
     Author     : Misbahul Haque
 --%>
 
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Cart"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.CartDAO"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.SentenceHelper"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Product"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO"%>
@@ -14,7 +16,6 @@
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.Constants"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.User"%>
 <%
-    Product p = null;
     User user = (User) session.getAttribute("current-user");
     if (user != null) {
         if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
@@ -108,8 +109,9 @@
 
                             <div class="card-columns">
 
-                                <%  for (Product p1 : products) {
-                                        p = p1;
+                                <%
+                                    SentenceHelper sh = new SentenceHelper();
+                                    for (Product p : products) {
                                 %>
 
                                 <div class="card product-card">
@@ -122,7 +124,15 @@
 
                                         <<h5 class="card-title"><%= p.getProductName()%></h5>
 
-                                        <p class="card-text"><%= SentenceHelper.get10Words(p.getProductDescription())%></p>
+                                        <p id="wholeText" data-id="<%= p.getProductId()%>" class="card-text whole-text">
+                                            <%= sh.getWords(p.getProductDescription(), 0)%>
+                                            <span class="dots">...</span>
+                                            <span class="more-text">
+                                                <%= sh.getWords(p.getProductDescription(), 1)%>
+                                            </span>
+                                            <button data-target-id="<%= p.getProductId()%>" onclick="changeText(event)" type="button" id="readMoreBtn" class="btn read-more">Read More</button>
+
+                                        </p>
 
                                     </div>
 
@@ -150,16 +160,17 @@
                                             }
                                         %>
 
-
-                                        <button id="amt" class="btn btn-success" value="<%= p.getProductSellingPrice()%>" data-toggle="modal" data-target="#buyModal"> 
-                                            <span class="custom-btn">&#8377; <%= p.getProductSellingPrice()%></span>
-                                            /- <span class="marked-price">
-                                                &#8377; <%= p.getProductMarkedPrice()%>
-                                            </span>
-                                            <span class="discount">
-                                                <%= p.getProductDiscount()%>% off
-                                            </span>
-                                        </button>
+                                        <a href="checkout.jsp?productId=<%=p.getProductId()%>&source=client_home">
+                                            <button id="amt" class="btn btn-success" value="<%= p.getProductSellingPrice() %>">
+                                                <span class="custom-btn">&#8377; <%= p.getProductSellingPrice()%></span>
+                                                /- <span class="marked-price">
+                                                    &#8377; <%= p.getProductMarkedPrice()%>
+                                                </span>
+                                                <span class="discount">
+                                                    <%= p.getProductDiscount()%>% off
+                                                </span>
+                                            </button>
+                                        </a>
 
                                     </div>
 
@@ -186,11 +197,9 @@
 
         </div>
 
-        <%@include file="components/common_modals.jsp" %>
-
 
         <!-- Modal -->
-        <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--        <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -207,14 +216,12 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
 
-                    <a href="checkout.jsp?productId=<%=p.getProductId()%>&source=client_home">
-                        <button type="button" class="btn btn-primary">Yes</button>
-                    </a>
+                        
 
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
     </body>
 </html>

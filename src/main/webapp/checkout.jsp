@@ -15,7 +15,7 @@
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.User"%>
 <%
     User user = (User) session.getAttribute("current-user");
-
+    
     if (user != null) {
         if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
             session.setAttribute("negativeMessage", "You are not a valid user to access this page.");
@@ -253,6 +253,8 @@
                             <h5 class="order-footer">Shipping Address   :   <%= user.getUserAddress()%></h5>
 
                             <h5 class="order-footer">Delivery Between   :   <%= deliveryDate%></h5>
+                            
+                            <input type="hidden" id="dDate" value="<%= deliveryDate %>" />
 
                             <div class="container text-center" style="margin-top: 5px; margin-bottom: 3px;">
                                 <a href="#">
@@ -342,17 +344,20 @@
                         <script>
                             function checkPaymentMethod() {
 
+                                $('#orderModal').modal('hide');
+
                                 //if user chooses online payment
                                 let npa = Number(document.getElementById("npa").value);
+                                let dDate = document.getElementById("dDate").value;
                                 if (document.getElementById("radioIP").checked) {
 
                                     //if single product send productid
                                     if (document.getElementById("source").value === "1") {
                                         let pid = Number(document.getElementById("pid").value);
-                                        initiateOrder(pid, npa, 1);
+                                        initiateOrder(pid, npa, 1, dDate);
 
                                     } else {
-                                        initiateOrder(0, npa, 1);
+                                        initiateOrder(0, npa, 1, dDate);
                                     }
 
                                 }
@@ -362,10 +367,10 @@
                                     //if single product send productid
                                     if (document.getElementById("source").value === "1") {
                                         let pid = Number(document.getElementById("pid").value);
-                                        initiateOrder(pid, npa, 0);
+                                        initiateOrder(pid, npa, 0, dDate);
 
                                     } else {
-                                        initiateOrder(0, npa, 0);
+                                        initiateOrder(0, npa, 0, dDate);
                                     }
 
                                 }

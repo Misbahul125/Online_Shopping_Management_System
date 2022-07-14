@@ -23,7 +23,7 @@ public class Cart {
     @Column(length = 10, name = "cart_id")
     private int cartId;
     
-    @Column(length = 2, name = "quantity")
+    @Column(name = "quantity")
     private int quantity;
     
     @Column(length = 10, name = "total")

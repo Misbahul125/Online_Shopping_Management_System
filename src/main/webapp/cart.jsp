@@ -27,7 +27,7 @@
     }
 
     int tItem = 0, tUnit = 0, tAmount = 0, netAmount = 0;
-    
+
     DateHelper dh = new DateHelper();
     String deliveryDate = dh.getDeliveryDate();
 
@@ -89,6 +89,7 @@
                             <!--start loop-->
 
                             <%
+                                SentenceHelper sh = new SentenceHelper();
                                 for (Cart c : carts) {
                                     ++tItem;
                                     tUnit = tUnit + c.getQuantity();
@@ -111,7 +112,15 @@
                                             <div class="col-6 card-title">
                                                 <h1 class="mb-4 product_name"><%= c.getProduct().getProductName()%></h1>
 
-                                                <p class="card-text mb-2"><%= SentenceHelper.get10Words(c.getProduct().getProductDescription())%></p>
+                                                <p id="wholeText" data-id="<%= c.getProduct().getProductId()%>" class="card-text whole-text">
+                                                    <%= sh.getWords(c.getProduct().getProductDescription(), 0)%>
+                                                    <span class="dots">...</span>
+                                                    <span class="more-text">
+                                                        <%= sh.getWords(c.getProduct().getProductDescription(), 1)%>
+                                                    </span>
+                                                    <button data-target-id="<%= c.getProduct().getProductId()%>" onclick="changeText(event)" type="button" id="readMoreBtn" class="btn read-more">Read More</button>
+
+                                                </p>
 
                                             </div>
                                             <!-- quantity inc dec -->

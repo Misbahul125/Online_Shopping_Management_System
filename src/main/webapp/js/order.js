@@ -43,7 +43,7 @@ async function onSuccessHandler(response) {
                 confirmButtonText: 'OK'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    location = "/OnlineShoppingManagementSystem/invoice.jsp";
+                    location = "/OnlineShoppingManagementSystem/invoice.jsp?order_id="+r2.orderId;
                 }
             });
             //window.location.replace("/OnlineShoppingManagementSystem/invoice.jsp");

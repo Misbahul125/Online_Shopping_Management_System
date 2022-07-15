@@ -141,7 +141,7 @@ public class OrderOperationServlet extends HttpServlet {
                         if (s > 0) {
                             httpSession.removeAttribute("current-user");
                             httpSession.setAttribute("current-user", user);
-                            responseHelper.sendTrueResponse(response, "Order placed successfully. You can check its status in My Orders.");
+                            responseHelper.sendOrderPlacedResponse(response, orderId, "Order placed successfully. You can check its status in My Orders.");
                         } else {
                             responseHelper.sendFalseResponse(response, "Something went wrong. Unable to process your order.");
                         }
@@ -196,17 +196,17 @@ public class OrderOperationServlet extends HttpServlet {
                                 if (s3 > 0) {
                                     httpSession.removeAttribute("current-user");
                                     httpSession.setAttribute("current-user", user);
-                                    responseHelper.sendTrueResponse(response, "Order placed successfully. You can check its status in My Orders.");
+                                    responseHelper.sendOrderPlacedResponse(response, orderId, "Order placed successfully. You can check its status in My Orders.");
                                 } else {
                                     httpSession.removeAttribute("current-user");
                                     httpSession.setAttribute("current-user", user);
-                                    responseHelper.sendTrueResponse(response, "We are unable to update your cart quantity. But luckily your order have been placed successfully. You can check its status in My Orders.");
+                                    responseHelper.sendOrderPlacedResponse(response, orderId, "We are unable to update your cart quantity. But luckily your order have been placed successfully. You can check its status in My Orders.");
                                 }
 
                             } else {
                                 httpSession.removeAttribute("current-user");
                                 httpSession.setAttribute("current-user", user);
-                                responseHelper.sendTrueResponse(response, "We are unable to remove your cart item(s). But luckily your order have been placed successfully. You can check its status in My Orders.");
+                                responseHelper.sendOrderPlacedResponse(response, orderId, "We are unable to remove your cart item(s). But luckily your order have been placed successfully. You can check its status in My Orders.");
                             }
 
                         } else {

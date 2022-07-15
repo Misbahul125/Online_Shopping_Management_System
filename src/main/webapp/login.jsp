@@ -58,9 +58,9 @@
 
                             <div class="container mt-4">
 
-                                <h6 class="login-footer">Forgot your password?   <a href="reset_password.jsp" class="mb-2">Click here to reset</a></h6>
+                                <h6 class="login-footer">Forgot your password?   <a href="reset_password1.jsp" class="mb-2">Click here to reset</a></h6>
 
-                                <h6 class="login-footer">Don't have an account?   <a href="signup.jsp" class="mb-2">Click here to signup</a></h6>
+                                <h6 class="login-footer">Don't have an account?   <a href="signup1.jsp" class="mb-2">Click here to signup</a></h6>
 
                             </div>
 

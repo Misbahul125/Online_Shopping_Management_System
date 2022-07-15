@@ -4,6 +4,7 @@
     Author     : Misbahul Haque
 --%>
 
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.Constants"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -43,6 +44,8 @@
                                     <label style="font-weight: bold;" class="heading" for="exampleInputEmail1">Email address</label>
                                     <input name="user_email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
                                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                    
+                                    <input type="hidden" name="source" value="<%= Constants.SIGNUP.toString() %>">
 
                                 </div>
 

@@ -1,15 +1,16 @@
 <%-- 
-    Document   : forgot_password
-    Created on : 09-Jul-2022, 4:07:57 pm
+    Document   : reset1
+    Created on : 15-Jul-2022, 11:19:59 am
     Author     : Misbahul Haque
 --%>
 
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.Constants"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>OSMS - Reset Password</title>
+        <title>OSMS - Reset</title>
 
         <%@include file="components/common_css_js.jsp" %>
 
@@ -26,9 +27,9 @@
 
                     <div class="card mt-3">
 
-                        <div class="card-header custom-bg text-white">
+                        <div class="text-center card-header custom-bg text-white">
 
-                            <h3>Please enter your credentials</h3>
+                            <h3>Please enter your email</h3>
 
                         </div>
 
@@ -37,27 +38,20 @@
                             <%@include file="components/positiveMessage.jsp" %>
                             <%@include file="components/negativeMessage.jsp" %>
 
-                            <form onsubmit="return validatePassword()" action="ResetPasswordServlet" method="post">
+                            <form action="SendOTPServlet" method="post">
                                 <div class="form-group">
+
                                     <label style="font-weight: bold;" class="heading" for="exampleInputEmail1">Email address</label>
                                     <input name="user_email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
                                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                    
+                                    <input type="hidden" name="source" value="<%= Constants.RESET.toString() %>">
+
                                 </div>
 
-                                <div class="form-group">
-                                    <label style="font-weight: bold;" for="newPassword">New Password</label>
-                                    <input name="user_new_password" type="password" class="form-control" id="newPassword" placeholder="Password" required>
-                                    <span id="message1" style="color: red;">*Password should be of atleast 8 characters</span>
-                                </div>
-
-                                <div class="form-group">
-                                    <label style="font-weight: bold;" for="confirmPassword">Confirm New Password</label>
-                                    <input name="user_confirm_password" type="password" class="form-control" id="confirmPassword" placeholder="Password" required>
-                                    <span id="message2" style="color: red;">*This should be same as the new password</span>
-                                </div>
-                                
                                 <div class="container text-center">
-                                    <button type="submit" class="btn btn-danger border-0">Reset Password</button>
+                                    <button type="submit" class="btn custom-bg text-white border-0">Send OTP</button>
+                                    <button type="reset" class="btn btn-primary border-0">Reset</button>
                                 </div>
 
                             </form>

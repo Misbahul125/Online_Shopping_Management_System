@@ -6,6 +6,7 @@ package com.mycompany.onlineshoppingmanagementsystem.EmailVerification;
 
 import com.mycompany.onlineshoppingmanagementsystem.dao.UserDAO;
 import com.mycompany.onlineshoppingmanagementsystem.entities.User;
+import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
 import com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,10 +33,17 @@ public class SendOTPServlet extends HttpServlet {
      */
     HttpSession httpSession = null;
 
+    TemporaryUser tempUser = null;
+
+    //create instance object of the EmailHelper Class
+    EmailHelper emailHelper = null;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
+
+            String source = request.getParameter("source");
 
             String email = request.getParameter("user_email");
 
@@ -44,39 +52,74 @@ public class SendOTPServlet extends HttpServlet {
             UserDAO userDAO = new UserDAO(FactoryProvider.getFactory());
             User user = userDAO.getUserByEmail(email);
 
-            //check if user already exists or not with the same email
-            if (user != null) {
-                
-                httpSession.setAttribute("negativeMessage", "User already exists. Please try with other Email ID.");
-                response.sendRedirect("signup1.jsp");
-            
-            } else {
+            emailHelper = new EmailHelper(source);
 
-                //create instance object of the SendEmail Class
-                EmailHelper emailHelper = new EmailHelper();
+            //coming from reset password page
+            if (source.matches(Constants.RESET.toString())) {
 
-                //get the 6-digit code
-                String code = emailHelper.getRandom();
+                //check if user exists or not
+                if (user != null) {
 
-                //save details to user class
-                TemporaryUser tempUser = new TemporaryUser(email, code);
-                
-                //call the send email method
-                boolean isEmailSent = emailHelper.sendEmail(tempUser);
+                    boolean isEmailSent = sendEmail(email);
+                    //check if the email send successfully
+                    if (isEmailSent) {
+                        httpSession.setAttribute("temp-user", tempUser);
+                        httpSession.setAttribute("positiveMessage", "Reset OTP sent successfully! Please check your email.");
+                        response.sendRedirect("verifyOtp.jsp?source="+source);
+                    } else {
+                        httpSession.setAttribute("negativeMessage", "Something went wong! Unable to send reset OTP.");
+                        response.sendRedirect("reset_password1.jsp");
+                    }
 
-                //check if the email send successfully
-                if (isEmailSent) {
-                    httpSession.setAttribute("temp-user", tempUser);
-                    httpSession.setAttribute("positiveMessage", "OTP sent successfully! Please check your email.");
-                    response.sendRedirect("signup2.jsp");
-                } else {
-                    httpSession.setAttribute("negativeMessage", "Something went wong! Unable to send OTP.");
+                } //user doesn't exits
+                else {
+
+                    httpSession.setAttribute("negativeMessage", "User doesn't exists. Invalid Email ID.");
+                    response.sendRedirect("reset_password1.jsp");
+
+                }
+
+            } //coming from signup page
+            else {
+
+                //check if user exists or not
+                if (user != null) {
+
+                    httpSession.setAttribute("negativeMessage", "User already exists. Please try with other Email ID.");
                     response.sendRedirect("signup1.jsp");
+
+                } //user doesn't exits
+                else {
+                    boolean isEmailSent = sendEmail(email);
+                    //check if the email send successfully
+                    if (isEmailSent) {
+                        httpSession.setAttribute("temp-user", tempUser);
+                        httpSession.setAttribute("positiveMessage", "OTP sent successfully! Please check your email.");
+                        response.sendRedirect("verifyOtp.jsp?source="+source);
+                    } else {
+                        httpSession.setAttribute("negativeMessage", "Something went wong! Unable to send OTP.");
+                        response.sendRedirect("signup1.jsp");
+                    }
                 }
 
             }
 
         }
+
+    }
+
+    private boolean sendEmail(String email) {
+
+        //get the 6-digit code
+        String code = emailHelper.getRandom();
+
+        //save details to user class
+        tempUser = new TemporaryUser(email, code);
+
+        //call the send email method
+        boolean status = emailHelper.sendEmail(tempUser);
+
+        return status;
 
     }
 

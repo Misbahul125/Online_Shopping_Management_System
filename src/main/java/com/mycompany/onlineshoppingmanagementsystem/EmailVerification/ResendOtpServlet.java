@@ -4,6 +4,7 @@
  */
 package com.mycompany.onlineshoppingmanagementsystem.EmailVerification;
 
+import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -32,17 +33,19 @@ public class ResendOtpServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         httpSession = request.getSession();
-        
+
+        String source = request.getParameter("source");
+
         TemporaryUser oldTemporaryUser = (TemporaryUser) httpSession.getAttribute("temp-user");
-        
+
         //create instance object of the SendEmail Class
         EmailHelper emailHelper = new EmailHelper();
 
         //get the 6-digit code
         String code = emailHelper.getRandom();
-        
+
         TemporaryUser newTemporaryUser = new TemporaryUser(oldTemporaryUser.getEmail(), code);
 
         //call the send email method
@@ -53,10 +56,19 @@ public class ResendOtpServlet extends HttpServlet {
             httpSession.removeAttribute("temp-user");
             httpSession.setAttribute("temp-user", newTemporaryUser);
             httpSession.setAttribute("positiveMessage", "OTP sent again successfully! Please check your email.");
-            response.sendRedirect("signup2.jsp");
+            response.sendRedirect("verifyOtp.jsp?source=" + source);
         } else {
-            httpSession.setAttribute("negativeMessage", "Something went wong! Unable to resend OTP.");
-            response.sendRedirect("signup1.jsp");
+
+            if (source.matches(Constants.RESET.toString())) {
+                httpSession.setAttribute("negativeMessage", "Something went wong! Unable to resend OTP.");
+                response.sendRedirect("reset_password1.jsp");
+            } else {
+
+                httpSession.setAttribute("negativeMessage", "Something went wong! Unable to resend OTP.");
+                response.sendRedirect("signup1.jsp");
+
+            }
+
         }
 
     }

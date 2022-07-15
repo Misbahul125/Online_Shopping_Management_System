@@ -195,7 +195,7 @@
                             </button>
                         </a>
 
-                        <a href="signup.jsp">
+                        <a href="signup1.jsp">
                             <button type="button" class="btn btn-primary">
                                 Signup
                             </button>
@@ -227,7 +227,7 @@
                             </button>
                         </a>
 
-                        <a href="signup.jsp">
+                        <a href="signup1.jsp">
                             <button type="button" class="btn btn-primary">
                                 Signup
                             </button>

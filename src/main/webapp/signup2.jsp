@@ -1,30 +1,30 @@
 <%-- 
-    Document   : signup2
-    Created on : 14-Jul-2022, 9:26:57 pm
+    Document   : signup
+    Created on : 21-Jun-2022, 7:23:31 pm
     Author     : Misbahul Haque
 --%>
+
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.EmailVerification.TemporaryUser"%>
 <%
     TemporaryUser tempUser = (TemporaryUser) session.getAttribute("temp-user");
     if (tempUser == null) {
         session.setAttribute("negativeMessage", "You are not permitted to access this page.");
-        
+
         if (session.getAttribute("current-user") != null) {
             session.removeAttribute("current-user");
         }
-        
+
         response.sendRedirect("login.jsp");
         return;
     }
 %>
-
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>OSMS - Verification</title>
+        <title>OSMS - Sign Up</title>
 
         <%@include file="components/common_css_js.jsp" %>
 
@@ -33,17 +33,17 @@
 
         <%@include file="components/navbar.jsp" %>
 
-        <div class="container">
+        <div class="container-fluid">
 
-            <div class="row">
+            <div class="row mt-5">
 
-                <div class ="col-md-6 offset-md-3">
+                <div class="col-md-4 offset-md-4">
 
-                    <div class="card mt-3">
+                    <div class="card">
 
-                        <div class="text-center card-header custom-bg text-white">
+                        <div class="card-header custom-bg text-white">
 
-                            <h3>Please enter your OTP</h3>
+                            <h3>Please enter your details</h3>
 
                         </div>
 
@@ -52,30 +52,48 @@
                             <%@include file="components/positiveMessage.jsp" %>
                             <%@include file="components/negativeMessage.jsp" %>
 
-                            <form action="VerifyOTPServlet" method="post">
+                            <form onsubmit="return validateSignup()" action="SignUpServlet" method="post">
+
                                 <div class="form-group">
+                                    <label style="font-weight: bold;" for="email">User Email</label>
+                                    <input name="user_email" value="<%= tempUser.getEmail()%>" required type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" readonly>
+                                </div>
 
-                                    <label style="font-weight: bold;" class="heading" for="exampleInputEmail1">OTP (One Time Password)</label>
-                                    <input name="otp" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter OTP" required>
-                                    <small id="emailHelp" class="form-text text-muted">Don't share your OTP with anyone else.</small>
+                                <div class="form-group">
+                                    <label style="font-weight: bold;" for="name">User Name</label>
+                                    <input name="user_name" required type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter name">
+                                </div>
 
+                                <div class="form-group">
+                                    <label style="font-weight: bold;" for="password">User Password</label>
+                                    <input name="user_password" required type="password" class="form-control" id="password" aria-describedby="emailHelp" placeholder="Enter password">
+                                    <span id="message1" style="color: red;">*Password should be of atleast 8 characters</span>
+                                </div> 
+
+                                <div class="form-group">
+                                    <label style="font-weight: bold;" for="phone">User phone number</label>
+                                    <input name="user_phone" required type="number" class="form-control" id="phone" aria-describedby="emailHelp" placeholder="Enter phone number">
+                                </div>
+
+                                <div class="form-group">
+                                    <label style="font-weight: bold;" for="name">User Address</label>
+                                    <textarea name="user_address" required style="height: 80px;" class="form-control" id="address" aria-describedby="emailHelp" placeholder="Enter address"></textarea>
                                 </div>
 
                                 <div class="container text-center">
-                                    <button type="submit" class="btn custom-bg text-white border-0">Verify OTP</button>
-                                    <button type="reset" class="btn btn-primary border-0">Reset</button>
+                                    <button type="submit" class="btn custom-bg text-white">Sign Up</button>
+                                    <button type="reset" class="btn btn-outline-warning">Reset</button>
                                 </div>
 
                             </form>
 
                             <div class="container mt-4">
 
-                                <h6 class="login-footer">Didn't receive an OTP?   <a href="ResendOtpServlet" class="mb-2">Click here to resend</a></h6>
+                                <h6 class="login-footer">Already have an account?   <a href="login.jsp" class="mb-2">Click here to login</a></h6>
 
                             </div>
 
                         </div>
-
                     </div>
 
                 </div>

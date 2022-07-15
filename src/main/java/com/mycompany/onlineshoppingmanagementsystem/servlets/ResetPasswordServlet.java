@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -34,43 +35,34 @@ public class ResetPasswordServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            
+
             String userEmail = request.getParameter("user_email");
             String userNewPassword = request.getParameter("user_new_password");
             String userConfirmPassword = request.getParameter("user_confirm_password");
 
-            javax.servlet.http.HttpSession httpSession = request.getSession();
+            HttpSession httpSession = request.getSession();
+
+            String encryptedPassword = null;
+
+            try {
+                encryptedPassword = AESHelper.encrypt(userConfirmPassword);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
             UserDAO userDAO = new UserDAO(FactoryProvider.getFactory());
-            User user = userDAO.getUserByEmail(userEmail);
+            int status = userDAO.resetPasswordByEmail(userEmail, encryptedPassword);
 
-            if (user != null) {
+            if (status > 0) {
 
-                String encryptedPassword = null;
-
-                try {
-                    encryptedPassword = AESHelper.encrypt(userConfirmPassword);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                int status = userDAO.resetPasswordByEmail(userEmail, encryptedPassword);
-
-                if (status > 0) {
-
-                    httpSession.setAttribute("positiveMessage", "Password reset is successful.! Please login with your new password to continue.");
-                    response.sendRedirect("login.jsp");
-
-                } else {
-                    httpSession.setAttribute("negativeMessage", "Invalid email or password.");
-                    response.sendRedirect("login.jsp");
-                }
+                httpSession.setAttribute("positiveMessage", "Password reset is successful.! Please login with your new password to continue.");
+                response.sendRedirect("login.jsp");
 
             } else {
-                httpSession.setAttribute("negativeMessage", "Invalid email.");
+                httpSession.setAttribute("negativeMessage", "Something went wrong. Please try again later");
                 response.sendRedirect("login.jsp");
             }
-            
+
         }
     }
 

@@ -28,6 +28,18 @@ public class ResponseHelper {
 
     }
     
+    public void sendOrderPlacedResponse(HttpServletResponse response , String orderId , String message) throws IOException {
+
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("success", true);
+        jSONObject.put("orderId", orderId);
+        jSONObject.put("message", message);
+        response.setStatus(200);
+        response.getWriter().append(jSONObject.toString());
+        response.getWriter().close();
+
+    }
+    
     public void sendFalseResponse(HttpServletResponse response , String message) throws IOException {
 
         JSONObject jSONObject = new JSONObject();

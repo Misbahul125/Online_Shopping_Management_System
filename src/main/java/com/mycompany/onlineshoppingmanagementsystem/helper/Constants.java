@@ -21,4 +21,6 @@ public enum Constants {
     SHIPPED,
     DELIVERED,
     CANCELLED,
+    SIGNUP,
+    RESET,
 }

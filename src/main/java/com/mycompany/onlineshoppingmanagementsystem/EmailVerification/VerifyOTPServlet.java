@@ -4,6 +4,7 @@
  */
 package com.mycompany.onlineshoppingmanagementsystem.EmailVerification;
 
+import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -34,17 +35,26 @@ public class VerifyOTPServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
 
+            String source = request.getParameter("source");
+
             httpSession = request.getSession();
             TemporaryUser temporaryUser = (TemporaryUser) httpSession.getAttribute("temp-user");
 
             String code = request.getParameter("otp");
 
             if (code.matches(temporaryUser.getCode())) {
-                httpSession.setAttribute("positiveMessage", "Your email have been verified successfully.");
-                response.sendRedirect("signup3.jsp");
+
+                if (source.matches(Constants.RESET.toString())) {
+                    httpSession.setAttribute("positiveMessage", "Your email have been verified successfully.");
+                    response.sendRedirect("reset_password2.jsp");
+                } else {
+                    httpSession.setAttribute("positiveMessage", "Your email have been verified successfully.");
+                    response.sendRedirect("signup2.jsp");
+                }
+
             } else {
                 httpSession.setAttribute("negativeMessage", "Oops! Entered invalid OTP.");
-                response.sendRedirect("signup2.jsp");
+                response.sendRedirect("verifyOtp.jsp?source=" + source);
             }
 
         }

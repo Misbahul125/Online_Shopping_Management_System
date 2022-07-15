@@ -4,6 +4,7 @@
  */
 package com.mycompany.onlineshoppingmanagementsystem.EmailVerification;
 
+import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
 import java.util.Properties;
 import java.util.Random;
 import javax.mail.Authenticator;
@@ -25,6 +26,15 @@ import javax.mail.internet.MimeMessage;
  * @author Misbahul Haque
  */
 public class EmailHelper {
+
+    String type = "";
+
+    public EmailHelper() {
+    }
+
+    public EmailHelper(String type) {
+        this.type = type;
+    }
 
     //generate vrification code
     public String getRandom() {
@@ -61,20 +71,66 @@ public class EmailHelper {
             });
 
             //set email message details
-            Message mess = new MimeMessage(session);
+            Message message = new MimeMessage(session);
 
             //set from email address
-            mess.setFrom(new InternetAddress(fromEmail));
+            message.setFrom(new InternetAddress(fromEmail));
+
             //set to email address or destination email address
-            mess.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            
+            StringBuffer sb = new StringBuffer();
 
-            //set email subject
-            mess.setSubject("OSMS - User Verification");
+            if (type.matches(Constants.RESET.toString())) {
+                
+                sb.append("Your OTP (One Time Password) to reset password at OSMS is :-  <strong>").append(user.getCode()).append("</strong>.");
+                
+                sb.append("<br/>");
+                sb.append("It is a system generated email. Please do not reply.");
+                
+                sb.append("<br/>");
+                sb.append("<br/>");
+                sb.append("Thank you.");
+                
+                sb.append("<br/>");
+                sb.append("<br/>");
+                sb.append("Regards,");
+                sb.append("<br/>");
+                sb.append("Team OSMS");
+                
+                //set email subject
+                message.setSubject("OSMS - Reset Password");
 
-            //set message text
-            mess.setText("Your OTP (One Time Password) to register at OSMS is :-  " + user.getCode()+" \nIt is a system generated email. Please do not reply. \n \nThank you. \n \nRegards, \nTeam OSMS");
+                //set message text
+                message.setContent(sb.toString(), "text/html;charset=UTF-8");
+            
+            } else {
+                
+                sb.append("Your OTP (One Time Password) to register at OSMS is :-  <strong>").append(user.getCode()).append("</strong>.");
+                
+                sb.append("<br/>");
+                sb.append("It is a system generated email. Please do not reply.");
+                
+                sb.append("<br/>");
+                sb.append("<br/>");
+                sb.append("Thank you.");
+                
+                sb.append("<br/>");
+                sb.append("<br/>");
+                sb.append("Regards,");
+                sb.append("<br/>");
+                sb.append("Team OSMS");
+                
+                //set email subject
+                message.setSubject("OSMS - User Verification");
+
+                //set message text
+                message.setContent(sb.toString(), "text/html;charset=UTF-8");
+            
+            }
+
             //send the message
-            Transport.send(mess);
+            Transport.send(message);
 
             test = true;
 

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index
-    Created on : 20-Jun-2022, 10:58:34 pm
+    Document   : search
+    Created on : 15-Jul-2022, 9:36:27 pm
     Author     : Misbahul Haque
 --%>
 
@@ -24,6 +24,11 @@
             return;
         }
     }
+    
+    String searchKey = request.getParameter("search");
+    ProductDAO productDAO1 = new ProductDAO(FactoryProvider.getFactory());
+    List <Product> products = productDAO1.getProductsWithSearchKey(searchKey);
+    System.out.println(products);
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -31,7 +36,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>OSMS - Home</title>
+        <title>OSMS - Search</title>
 
         <link rel="stylesheet" href="css/style.css">
         <%@include file="components/common_css_js.jsp" %>
@@ -47,21 +52,7 @@
 
             <div class="row mt-4 mx-2">
 
-                <%  String categoryId = request.getParameter("categoryId");
-
-                    ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
-
-                    List<Product> products = null;
-
-                    if (categoryId == null || categoryId.trim().matches("all")) {
-                        System.out.println("c-all");
-                        products = productDAO.getAllProducts();
-                    } else {
-                        System.out.println(categoryId);
-                        int cid = Integer.parseInt(categoryId);
-                        products = productDAO.getAllProductsByCategoryId(cid);
-                    }
-
+                <%  
                     CategoryDAO categoryDAO = new CategoryDAO(FactoryProvider.getFactory());
                     List<Category> categories = categoryDAO.getCategories();
                 %>
@@ -71,27 +62,21 @@
 
                     <div class="list-group mt-4">
 
-                        <ul>
-                            <li><a href="index.jsp?categoryId=all" class="list-group-item list-group-item-action active">All Categories</a></li>
+                        <a href="index.jsp?categoryId=all" class="list-group-item list-group-item-action active">All Categories</a>
 
-                            <%
-                                for (Category c : categories) {
-                            %>
+                        <%
+                            for (Category c : categories) {
+                        %>
 
-                            <li><a href="index.jsp?categoryId=<%= c.getCategoryId()%>" class="list-group-item list-group-item-action"><%= c.getCategoryTitle()%></a></li>
+                        <a href="index.jsp?categoryId=<%= c.getCategoryId()%>" class="list-group-item list-group-item-action"><%= c.getCategoryTitle()%></a>
 
-                            <%
-                                }
-                            %>
-                        </ul>
-
-
+                        <%
+                            }
+                        %>
 
                     </div>
 
                 </div>
-
-
 
 
                 <!-- display products in this column -->
@@ -160,7 +145,7 @@
                                     }
 
                                     if (products.size() == 0) {
-                                        session.setAttribute("negativeMessage", "No product(s) found in this category");
+                                        session.setAttribute("negativeMessage", "No search item(s) found");
                                         response.sendRedirect("index.jsp");
                                     }
                                 %>

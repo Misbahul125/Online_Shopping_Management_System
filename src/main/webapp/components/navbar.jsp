@@ -42,15 +42,15 @@
                 <%
                     if (user1 != null) {
                 %>
-                
+
                 <li class="nav-item active">
-                    <a class="nav-link" href="#!"><%=user1.getUserName() %> </a>
+                    <a class="nav-link" href="#!"><%=user1.getUserName()%> </a>
                 </li>
-                 
+
                 <li class="nav-item active">
                     <a class="nav-link" href="cart.jsp"> 
                         <i class="fas fa-cart-plus"></i> 
-                        <span class="ml-0">My Cart ( <%= user1.getUserCartCount() %> )
+                        <span class="ml-0">My Cart ( <%= user1.getUserCartCount()%> )
                         </span> 
                     </a>
                 </li>
@@ -58,9 +58,9 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet">Log Out </a>
                 </li>
-                
+
                 <%
-                    } else {
+                } else {
 
                 %>
 
@@ -72,12 +72,16 @@
                     <a class="nav-link" href="signup1.jsp">Signup </a>
                 </li>
 
-                <%
-                    }
+                <%                    }
                 %>
 
 
             </ul>
+
+                <form class="form-inline my-2 my-lg-0" action="search.jsp" method="post">
+                <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search anything..." aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
 
         </div>
 

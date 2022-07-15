@@ -23,7 +23,6 @@ public class SentenceHelper {
 
             //if show less is toggled
             if (state == 0) {
-                System.out.println("0");
 
                 for (int i = 0; i < 10; i++) {
                     res = res + str[i] + " ";
@@ -32,7 +31,6 @@ public class SentenceHelper {
                 return res+" ";
             }
             else if(state == 1) {
-                System.out.println("1");
                 for (int i = 10; i < str.length; i++) {
                     res = res + str[i] + " ";
                 }

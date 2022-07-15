@@ -7,6 +7,7 @@ package com.mycompany.onlineshoppingmanagementsystem.dao;
 import com.mycompany.onlineshoppingmanagementsystem.entities.Cart;
 import com.mycompany.onlineshoppingmanagementsystem.entities.Category;
 import com.mycompany.onlineshoppingmanagementsystem.entities.Product;
+import java.util.Arrays;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -164,18 +165,17 @@ public class ProductDAO {
             session = this.sessionFactory.openSession();
 
             String query = "update Product set productQuantity =: q where productId =: p";
-            
+
             transaction = session.beginTransaction();
 
             Query q = session.createQuery(query);
             q.setParameter("q", newQuantity);
             q.setParameter("p", productId);
             status = q.executeUpdate();
-            
-            if(status > 0) {
+
+            if (status > 0) {
                 transaction.commit();
-            }
-            else {
+            } else {
                 transaction.rollback();
             }
 
@@ -199,29 +199,27 @@ public class ProductDAO {
         int status = 0;
 
         try {
-            
+
             session = this.sessionFactory.openSession();
 
-            if(carts != null && !carts.isEmpty()) {
-                
-                for(Cart c : carts) {
-                    
+            if (carts != null && !carts.isEmpty()) {
+
+                for (Cart c : carts) {
+
                     int newQuantity = (c.getProduct().getProductQuantity()) - (c.getQuantity());
                     int s = decreaseSingleProductQuantity(c.getProduct().getProductId(), newQuantity);
-                    
-                    if(s > 0) {
+
+                    if (s > 0) {
                         status = 1;
                         continue;
-                    }
-                    else {
+                    } else {
                         status = 0;
                         break;
                     }
-                    
+
                 }
-                
-            }
-            else {
+
+            } else {
                 status = 0;
             }
 
@@ -233,6 +231,32 @@ public class ProductDAO {
         } finally {
             session.close();
             return status;
+        }
+
+    }
+
+    //get products with search key
+    public List<Product> getProductsWithSearchKey(String searchKey) {
+
+        Session session = null;
+        List<Product> products = null;
+
+        try {
+
+            session = this.sessionFactory.openSession();
+            Query query = session.createQuery("from Product p where p.productName like :pname or p.category.categoryTitle like :cname");
+            query.setParameter("pname", "%"+searchKey+"%");
+            query.setParameter("cname", "%"+searchKey+"%");
+            products = query.list();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        } finally {
+
+            session.close();
+            return products;
         }
 
     }

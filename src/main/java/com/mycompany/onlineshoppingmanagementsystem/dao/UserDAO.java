@@ -27,48 +27,31 @@ public class UserDAO {
 
         Session session = null;
         Transaction transaction = null;
+        int status = 0;
 
         try {
 
-            //check user exists or not
-            User user = getUserByEmailAndPassword(userEmail, userPassword);
-            System.out.println(user);
+            User user = new User(userName, userEmail, userPassword, userPhone, userImage, userAddress, 0, userType);
 
-            if (user != null) {
-                // user already exits
-                return 0;
+            session = this.sessionFactory.openSession();
+            transaction = session.beginTransaction();
 
-            } else {
-                //new user
+            status = (int) session.save(user);
 
-                user = new User(userName, userEmail, userPassword, userPhone, userImage, userAddress, 0, userType);
-
-                session = this.sessionFactory.openSession();
-                transaction = session.beginTransaction();
-
-                int userId = (int) session.save(user);
-
+            if (status > 0) {
                 transaction.commit();
-
-                if (userId > 0) {
-                    session.close();
-                    return userId;
-                } else {
-                    transaction.rollback();
-                    session.close();
-                    return 001;
-                }
-
+            } else {
+                transaction.rollback();
             }
 
         } catch (Exception e) {
             transaction.rollback();
-            session.close();
-
             e.printStackTrace();
-            return 001;
+            status = 0;
         }
 
+        return status;
+        
     }
 
     public User getUserByEmailAndPassword(String email, String password) {
@@ -96,7 +79,7 @@ public class UserDAO {
         return user;
 
     }
-    
+
     public User getUserByEmail(String email) {
 
         User user = null;
@@ -135,7 +118,7 @@ public class UserDAO {
             tx = session.beginTransaction();
 
             String q = "update User set userCartCount =: n where userId =: u";
-            
+
             Query query = session.createQuery(q);
             query.setParameter("n", count);
             query.setParameter("u", user.getUserId());
@@ -143,13 +126,12 @@ public class UserDAO {
             //user.setUserCartCount(count);
             //session.saveOrUpdate(user);
 
-            if(status > 0) {
+            if (status > 0) {
                 tx.commit();
-            }
-            else {
+            } else {
                 tx.rollback();
             }
-            
+
         } catch (Exception e) {
             tx.rollback();
             e.printStackTrace();
@@ -175,15 +157,14 @@ public class UserDAO {
             tx = session.beginTransaction();
 
             String query = "update User set userPassword =: p where userEmail =: e";
-            
+
             Query q = session.createQuery(query);
             q.setParameter("p", userPassword);
             q.setParameter("e", userEmail);
             status = q.executeUpdate();
-            
+
 //            user.setUserCartCount(count);
 //            session.saveOrUpdate(user);
-
             tx.commit();
 
         } catch (Exception e) {

@@ -69,7 +69,7 @@
                 </li>
 
                 <li class="nav-item active">
-                    <a class="nav-link" href="signup.jsp">Signup </a>
+                    <a class="nav-link" href="signup1.jsp">Signup </a>
                 </li>
 
                 <%

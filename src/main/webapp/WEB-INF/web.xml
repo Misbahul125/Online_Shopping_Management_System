@@ -32,6 +32,18 @@
         <servlet-name>OrderOperationServlet</servlet-name>
         <servlet-class>com.mycompany.onlineshoppingmanagementsystem.servlets.OrderOperationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SendOTPServlet</servlet-name>
+        <servlet-class>com.mycompany.onlineshoppingmanagementsystem.EmailVerification.SendOTPServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerifyOTPServlet</servlet-name>
+        <servlet-class>com.mycompany.onlineshoppingmanagementsystem.EmailVerification.VerifyOTPServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResendOtpServlet</servlet-name>
+        <servlet-class>com.mycompany.onlineshoppingmanagementsystem.EmailVerification.ResendOtpServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/SignUpServlet</url-pattern>
@@ -63,6 +75,18 @@
     <servlet-mapping>
         <servlet-name>OrderOperationServlet</servlet-name>
         <url-pattern>/OrderOperationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendOTPServlet</servlet-name>
+        <url-pattern>/SendOTPServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyOTPServlet</servlet-name>
+        <url-pattern>/VerifyOTPServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResendOtpServlet</servlet-name>
+        <url-pattern>/ResendOtpServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

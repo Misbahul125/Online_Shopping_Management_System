@@ -7,15 +7,11 @@ import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
 import com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 /**
  *
@@ -32,7 +28,6 @@ public class SignUpServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -48,7 +43,7 @@ public class SignUpServlet extends HttpServlet {
             String userAddress = request.getParameter("user_address");
             String userType = null;
             String encryptedPassword = null;
-            
+
             try {
                 encryptedPassword = AESHelper.encrypt(userPassword);
             } catch (Exception ex) {
@@ -64,48 +59,42 @@ public class SignUpServlet extends HttpServlet {
             UserDAO userDAO = new UserDAO(FactoryProvider.getFactory());
             int status = userDAO.createUserWithEmailAndPassword(userName, userEmail, encryptedPassword, userPhone, userImage, userAddress, userType);
 
-            if (status == 0 || status == 001) {
-
-                if (status == 0) {
-
-                    //if user already exists
-                    httpSession.setAttribute("negativeMessage", "User already exists. Please try to login.");
-                    response.sendRedirect("login.jsp");
-
-                } else {
-
-                    //if something goes wrong
-                    httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-                    httpSession.removeAttribute("current-user");
-                    response.sendRedirect("signup.jsp");
-
-                }
-
-            } else {
+            if (status > 0) {
 
                 User user = userDAO.getUserByEmailAndPassword(userEmail, encryptedPassword);
 
                 if (user != null) {
-                    
-                    //if user signup is succssful, log in user
 
+                    //if user signup is succssful, log in user
                     httpSession.setAttribute("current-user", user);
 
                     if (userType.matches(Constants.ADMIN_USER.toString())) {
+                        httpSession.removeAttribute("temp-user");
                         response.sendRedirect("admin_home.jsp");
                         return;
                     } else if (userType.matches(Constants.NORMAL_USER.toString())) {
+                        httpSession.removeAttribute("temp-user");
                         response.sendRedirect("client_home.jsp");
                         return;
                     } else {
-                        out.println("Sorry you are not a verified user.");
-                        //httpSession.removeAttribute("current-user");
+                        httpSession.removeAttribute("temp-user");
+                        httpSession.setAttribute("negativeMessage", "You have been registered successfully. But something went wong! Please try to login.");
+                        response.sendRedirect("login.jsp");
                     }
 
                 } else {
-                    httpSession.setAttribute("negativeMessage", "Something went wong! Please try to login.");
+                    httpSession.removeAttribute("temp-user");
+                    httpSession.setAttribute("negativeMessage", "You have been registered successfully. But something went wong! Please try to login.");
                     response.sendRedirect("login.jsp");
                 }
+
+            } else {
+
+                //if something goes wrong
+                httpSession.removeAttribute("temp-user");
+                httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
+                response.sendRedirect("signup.jsp");
+
             }
 
         }

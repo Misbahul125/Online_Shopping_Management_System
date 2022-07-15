@@ -4,6 +4,21 @@
     Author     : Misbahul Haque
 --%>
 
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.EmailVerification.TemporaryUser"%>
+<%
+    TemporaryUser tempUser = (TemporaryUser) session.getAttribute("temp-user");
+    if (tempUser == null) {
+        session.setAttribute("negativeMessage", "You are not permitted to access this page.");
+
+        if (session.getAttribute("current-user") != null) {
+            session.removeAttribute("current-user");
+        }
+
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -26,23 +41,27 @@
 
                     <div class="card">
 
-                        <%@include file="components/positiveMessage.jsp" %>
-                        <%@include file="components/negativeMessage.jsp" %>
+                        <div class="card-header custom-bg text-white">
 
-                        <div class="card-body px-5">
+                            <h3>Please enter your details</h3>
 
-                            <h3 class="text-center my-3">Please Fill Your Details !!</h3>
+                        </div>
+
+                        <div class="card-body">
+
+                            <%@include file="components/positiveMessage.jsp" %>
+                            <%@include file="components/negativeMessage.jsp" %>
 
                             <form onsubmit="return validateSignup()" action="SignUpServlet" method="post">
 
                                 <div class="form-group">
-                                    <label style="font-weight: bold;" for="name">User Name</label>
-                                    <input name="user_name" required type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter name">
+                                    <label style="font-weight: bold;" for="email">User Email</label>
+                                    <input name="user_email" value="<%= tempUser.getEmail()%>" required type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" readonly>
                                 </div>
 
                                 <div class="form-group">
-                                    <label style="font-weight: bold;" for="email">User Email</label>
-                                    <input name="user_email" required type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                    <label style="font-weight: bold;" for="name">User Name</label>
+                                    <input name="user_name" required type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter name">
                                 </div>
 
                                 <div class="form-group">
@@ -69,7 +88,7 @@
                             </form>
 
                             <div class="container mt-4">
-                                
+
                                 <h6 class="login-footer">Already have an account?   <a href="login.jsp" class="mb-2">Click here to login</a></h6>
 
                             </div>

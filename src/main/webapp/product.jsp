@@ -43,7 +43,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>OSMS - Sign Up</title>
+        <title>OSMS - <%= action %> Product</title>
 
         <%@include file="components/common_css_js.jsp" %>
 
@@ -95,9 +95,7 @@
 
                                 <div class="form-group">
                                     <label for="productDescription">Description</label>
-                                    <textarea style="height: 150px" class="form-control" name="product_description" placeholder="Enter product description" required>
-                                        <%= product.getProductDescription()%>
-                                    </textarea>
+                                    <textarea style="height: 150px" class="form-control" name="product_description" placeholder="Enter product description" required><%= product.getProductDescription()%></textarea>
                                 </div>
 
                                 <div class="form-group">

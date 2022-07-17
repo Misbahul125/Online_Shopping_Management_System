@@ -283,6 +283,7 @@ public class ProductDAO {
 
                 session.saveOrUpdate(product);
                 transaction.commit();
+                status = 1;
 
             }
 

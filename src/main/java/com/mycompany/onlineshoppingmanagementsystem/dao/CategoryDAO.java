@@ -100,5 +100,41 @@ public class CategoryDAO {
         }
         
     }
+    
+    //update category
+    public int updateCategory(int categoryId, String categoryTitle, String categoryDescription) {
+
+        Session session = null;
+        Transaction transaction = null;
+        int status = 0;
+
+        try {
+            
+            Category category = new Category();
+            category.setCategoryId(categoryId);
+            category.setCategoryTitle(categoryTitle);
+            category.setCategoryDescription(categoryDescription);
+
+            session = this.sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            
+            session.saveOrUpdate(category);
+            transaction.commit();
+            
+            status = 1;
+            
+        } catch (Exception e) {
+            
+            transaction.rollback();
+            status = 0;
+            e.printStackTrace();
+            
+        } finally {
+            
+            session.close();
+            return status;
+        }
+
+    }
 
 }

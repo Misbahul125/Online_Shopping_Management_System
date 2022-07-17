@@ -15,6 +15,9 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -39,7 +42,9 @@ public class ProductOperationServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    HttpSession httpSession;
+    HttpSession httpSession = null;
+    Part part = null;
+    FileOutputStream fos = null;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -59,68 +64,78 @@ public class ProductOperationServlet extends HttpServlet {
             int productQuantity = Integer.parseInt(request.getParameter("product_quantity"));
             int productCategory = Integer.parseInt(request.getParameter("productCategories"));
 
-            Part part = request.getPart("product_image");
+            part = request.getPart("product_image");
             String productImage = part.getSubmittedFileName();
+            
+            int status = 0;
 
-            FileOutputStream fos = null;
+            //upload image
+            ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
 
-            //upload product image
-            try {
+            if (operationType.matches(Constants.EDIT.toString())) {
 
-                //upload image
-                String path = getServletContext().getRealPath("pictures") + File.separator + "products" + File.separator + productImage;
-                System.out.println(path);
+                int pid = Integer.parseInt(request.getParameter("productId"));
 
-                fos = new FileOutputStream(path);
-                InputStream is = part.getInputStream();
+                String pImage = productDAO.getProductById(pid).getProductPic();
 
-                byte data[] = new byte[is.available()];
-                is.read(data);
-                fos.write(data);
-                fos.close();
+                if (deleteImage(pImage)) {
 
-                ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
+                    if (addImage(productImage)) {
 
-                if (operationType.matches(Constants.EDIT.toString())) {
-                    
-                    int pid = Integer.parseInt(request.getParameter("productId"));
+                        //upload data
+                        status = productDAO.updateProduct(pid, productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, productCategory);
 
-                    //upload data
-                    int id = productDAO.updateProduct(pid, productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, productCategory);
+                        if (status != 0) {
+                            httpSession.setAttribute("positiveMessage", "Product is updated successfully.");
+                            response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
+                            return;
+                        } else {
+                            System.out.println("Unable to update product in database");
+                            httpSession.setAttribute("negativeMessage", "Unable to update product! Please try again later.");
+                            response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
+                            return;
+                        }
 
-                    if (id != 0) {
-                        httpSession.setAttribute("positiveMessage", "Product is added successfully with ID : " + id);
-                        response.sendRedirect("admin_home.jsp");
-                        return;
                     } else {
-                        httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-                        response.sendRedirect("admin_home.jsp");
+                        System.out.println("Unable to add image");
+                        httpSession.setAttribute("negativeMessage", "Unable to update product! Please try again later.");
+                        response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
                         return;
                     }
 
-                } else if (operationType.matches(Constants.ADD.toString())) {
+                } else {
+                    System.out.println("The product image is not deleted");
+                    httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
+                    response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
+                    return;
+                }
 
-                    int id = productDAO.createProduct(productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, productCategory);
+            } else if (operationType.matches(Constants.ADD.toString())) {
 
-                    if (id != 0) {
-                        httpSession.setAttribute("positiveMessage", "Product is added successfully with ID : " + id);
-                        response.sendRedirect("admin_home.jsp");
+                if (addImage(productImage)) {
+                    status = productDAO.createProduct(productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, productCategory);
+
+                    if (status != 0) {
+                        httpSession.setAttribute("positiveMessage", "Product is added successfully with ID : " + status);
+                        response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
                         return;
                     } else {
-                        httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-                        response.sendRedirect("admin_home.jsp");
+                        System.out.println("Unable to add product in database");
+                        httpSession.setAttribute("negativeMessage", "Unable to update product! Please try again later.");
+                        response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
                         return;
                     }
-                    
+                } else {
+
+                    System.out.println("The product image is not added");
+                    httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
+                    response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
+                    return;
+
                 }
-            } catch (Exception e) {
-                httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-                response.sendRedirect("admin_home.jsp");
-                if (fos != null) {
-                    fos.close();
-                }
-                e.printStackTrace();
+
             }
+        }
 
 //            if (operationType.trim().matches("add_category")) {
 //
@@ -129,10 +144,10 @@ public class ProductOperationServlet extends HttpServlet {
 //                String categoryDescription = request.getParameter("category_description");
 //
 //                CategoryDAO categoryDAO = new CategoryDAO(FactoryProvider.getFactory());
-//                int id = categoryDAO.createCategory(categoryTitle, categoryDescription);
+//                int status = categoryDAO.createCategory(categoryTitle, categoryDescription);
 //
-//                if (id != 0) {
-//                    httpSession.setAttribute("positiveMessage", "Category is added successfully with ID : " + id);
+//                if (status != 0) {
+//                    httpSession.setAttribute("positiveMessage", "Category is added successfully with ID : " + status);
 //                    response.sendRedirect("admin_home.jsp");
 //                    return;
 //                } else {
@@ -142,7 +157,47 @@ public class ProductOperationServlet extends HttpServlet {
 //                }
 //
 //            } 
+    }
+
+    private boolean deleteImage(String pImage) {
+
+        Path imgPath = Paths.get(getServletContext().getRealPath("pictures") + File.separator + "products" + File.separator + pImage);
+
+        try {
+            Files.delete(imgPath);
+            System.out.println("deleted");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
+
+    }
+
+    private boolean addImage(String pImage) throws IOException {
+
+        try {
+            String path = getServletContext().getRealPath("pictures") + File.separator + "products" + File.separator + pImage;
+            System.out.println(path);
+
+            fos = new FileOutputStream(path);
+            InputStream is = part.getInputStream();
+
+            byte data[] = new byte[is.available()];
+            is.read(data);
+            fos.write(data);
+            fos.close();
+
+            return true;
+        } catch (Exception e) {
+            if (fos != null) {
+                fos.close();
+            }
+            e.printStackTrace();
+
+            return false;
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

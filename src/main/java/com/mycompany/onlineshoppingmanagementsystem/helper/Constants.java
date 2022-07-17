@@ -25,4 +25,5 @@ public enum Constants {
     RESET,
     ADD,
     EDIT,
+    NONE,
 }

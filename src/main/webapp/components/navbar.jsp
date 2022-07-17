@@ -4,6 +4,7 @@
     Author     : Misbahul Haque
 --%>
 
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.Constants"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.User"%>
 <%
     User user1 = (User) session.getAttribute("current-user");
@@ -47,6 +48,10 @@
                     <a class="nav-link" href="#!"><%=user1.getUserName()%> </a>
                 </li>
 
+                <%
+                    if (user1.getUserType().matches(Constants.NORMAL_USER.toString())) {
+                %>
+
                 <li class="nav-item active">
                     <a class="nav-link" href="cart.jsp"> 
                         <i class="fas fa-cart-plus"></i> 
@@ -54,6 +59,10 @@
                         </span> 
                     </a>
                 </li>
+
+                <%
+                    }
+                %>
 
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet">Log Out </a>
@@ -78,7 +87,7 @@
 
             </ul>
 
-                <form class="form-inline my-2 my-lg-0" action="search.jsp" method="post">
+            <form class="form-inline my-2 my-lg-0" action="search.jsp" method="post">
                 <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search anything..." aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>

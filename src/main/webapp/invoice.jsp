@@ -105,10 +105,10 @@
                     <table class="table table-hover">
                         <thead>
                             <tr class="head-row">
-                                <th>Item Description</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <td>Item Description</td>
+                                <td>Price</td>
+                                <td>Quantity</td>
+                                <td>Total</td>
                             </tr>
                         </thead>
                         <tbody>

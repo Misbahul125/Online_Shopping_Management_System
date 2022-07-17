@@ -23,4 +23,6 @@ public enum Constants {
     CANCELLED,
     SIGNUP,
     RESET,
+    ADD,
+    EDIT,
 }

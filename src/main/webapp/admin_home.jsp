@@ -142,23 +142,26 @@
 
                 <div class="col-md-6">
 
-                    <div class="card" data-toggle="modal" data-target="#add-product-modal">
+                    <a href="admin_view_products.jsp">
 
-                        <div class="card-body text-center">
+                        <div class="card" >
 
-                            <div class="container">
+                            <div class="card-body text-center">
 
-                                <img style="max-width: 120px" class="img-fluid rounded-circle" src="pictures/new-product.png" alt="users_icon">
+                                <div class="container">
+
+                                    <img style="max-width: 120px" class="img-fluid rounded-circle" src="pictures/new-product.png" alt="users_icon">
+
+                                </div>
+
+                                <p class="mt-2">Click here to add new Product</p>
+
+                                <h1 class="text-uppercase text-muted">Add Product</h1>
 
                             </div>
 
-                            <p class="mt-2">Click here to add new Product</p>
-
-                            <h1 class="text-uppercase text-muted">Add Product</h1>
-
                         </div>
-
-                    </div>
+                    </a>
 
                 </div>
 
@@ -239,62 +242,61 @@
                                 <label for="productDescription">Description</label>
                                 <textarea style="height: 150px" class="form-control" name="product_description" placeholder="Enter product description" required></textarea>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="productMarkedPrice">Marked Price</label>
                                 <input type="number" id="mp" class="form-control" name="product_marked_price" placeholder="Enter product marked price" required/>
                                 <small id="emailHelp" class="form-text text-muted">*Please input Marked Price without decimal.</small>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="productDiscount">Discount</label>
                                 <input type="number" id="disc" class="form-control" name="product_discount" placeholder="Enter product discount" required/>
                                 <small id="emailHelp" class="form-text text-muted">*Please input Discount without decimal & % sign.</small>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="productSellingPrice">Selling Price</label>
                                 <input type="number" id="sp" class="form-control" name="product_selling_price" placeholder="Enter product selling price" readonly required/>
                             </div>
-                            
+
                             <script>
-                                $("#disc").keyup(function() { 
-                                   console.log("discount");
-                                   var m = Number($("#mp").val()) ;
-                                   var d = Number($(this).val());
-                                   var s = Math.trunc(((d/100.0)*m));
-                                   $("#sp").val(m-s);
+                                $("#disc").keyup(function () {
+                                    console.log("discount");
+                                    var m = Number($("#mp").val());
+                                    var d = Number($(this).val());
+                                    var s = Math.trunc(((d / 100.0) * m));
+                                    $("#sp").val(m - s);
                                 });
                             </script>
-                            
+
                             <div class="form-group">
                                 <label for="productQuantity">Quantity</label>
                                 <input type="number" class="form-control" name="product_quantity" placeholder="Enter product quantity" required/>
                             </div>
-                            
-                            <%
-                                CategoryDAO categoryDAO = new CategoryDAO(FactoryProvider.getFactory());
+
+                            <%                                CategoryDAO categoryDAO = new CategoryDAO(FactoryProvider.getFactory());
                                 List<Category> categories = categoryDAO.getCategories();
                             %>
-                            
+
                             <div class="form-group">
                                 <label for="product_category">Category</label>
                                 <select name="productCategories" class="form-control" id="product_category">
-                                    
+
                                     <%
-                                        for(Category category : categories) {
+                                        for (Category category : categories) {
                                     %>
-                                    
-                                    <option value="<%= category.getCategoryId() %>"><%= category.getCategoryTitle()%></option>
-                                    
+
+                                    <option value="<%= category.getCategoryId()%>"><%= category.getCategoryTitle()%></option>
+
                                     <%
                                         }
                                     %>
-                                    
+
                                 </select>
                             </div>
-                            
-                            
+
+
                             <div class="form-group">
                                 <label for="productImage">Image</label>
                                 <input type="file" class="form-control" name="product_image" required/>

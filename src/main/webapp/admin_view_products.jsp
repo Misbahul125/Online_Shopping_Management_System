@@ -1,24 +1,21 @@
 <%-- 
-    Document   : client_home
-    Created on : 23-Jun-2022, 6:10:32 pm
+    Document   : admin_view
+    Created on : 16-Jul-2022, 8:12:07 pm
     Author     : Misbahul Haque
 --%>
 
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Cart"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.CartDAO"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.SentenceHelper"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Category"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Product"%>
+<%@page import="java.util.List"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Category"%>
-<%@page import="java.util.List"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.Constants"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.User"%>
 <%
     User user = (User) session.getAttribute("current-user");
     if (user != null) {
-        if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
+        if (user.getUserType().matches(Constants.NORMAL_USER.toString())) {
             session.setAttribute("negativeMessage", "You are not a valid user to access this page.");
             response.sendRedirect("login.jsp");
             return;
@@ -35,9 +32,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>OSMS - Home</title>
+        <title>OSMS - Admin</title>
 
-        <%@include file="components/common_css_js.jsp" %>
+        <%@include file="components/admin_css_js.jsp" %>
     </head>
 
     <body>
@@ -64,7 +61,6 @@
                     CategoryDAO categoryDAO = new CategoryDAO(FactoryProvider.getFactory());
                     List<Category> categories = categoryDAO.getCategories();
 
-                    CartDAO cartDAO = new CartDAO(FactoryProvider.getFactory());
                 %>
 
                 <!-- display categories in this column -->
@@ -74,8 +70,7 @@
 
                         <a href="index.jsp?categoryId=all" class="list-group-item list-group-item-action active">All Categories</a>
 
-                        <%
-                            for (Category c : categories) {
+                        <%                            for (Category c : categories) {
                         %>
 
                         <a href="index.jsp?categoryId=<%= c.getCategoryId()%>" class="list-group-item list-group-item-action"><%= c.getCategoryTitle()%></a>
@@ -134,41 +129,25 @@
 
                                         </p>
 
+                                        <button id="amt" class="btn btn-price" value="<%= p.getProductSellingPrice()%>">
+                                            <span class="custom-btn">&#8377; <%= p.getProductSellingPrice()%></span>
+                                            /- <span class="marked-price">
+                                                &#8377; <%= p.getProductMarkedPrice()%>
+                                            </span>
+                                            <span class="discount">
+                                                <%= p.getProductDiscount()%>% off
+                                            </span>
+                                        </button>
+
                                     </div>
+
+
 
                                     <div class="card-footer text-center">
 
-                                        <%
-                                            List<Cart> carts = cartDAO.getCartItemWithProductAndUserId(p.getProductId(), user.getUserId());
-                                            if (carts != null && !carts.isEmpty()) {
-                                        %>
-
-
-                                        <a href="CartOperationServlet?productId=<%=p.getProductId()%>&action=none">
-                                            <button class="btn btn-go-to-cart custom-btn">Go to Cart</button>
-                                        </a>
-
-                                        <%
-                                        } else {
-                                        %> 
-
-                                        <a href="CartOperationServlet?productId=<%=p.getProductId()%>&action=<%= Constants.CART_INCREMENT.toString()%>">
-                                            <button class="btn custom-bg text-white custom-btn">Add to Cart</button>
-                                        </a>
-
-                                        <%
-                                            }
-                                        %>
-
-                                        <a href="checkout.jsp?productId=<%=p.getProductId()%>&source=client_home">
-                                            <button id="amt" class="btn btn-success" value="<%= p.getProductSellingPrice() %>">
-                                                <span class="custom-btn">&#8377; <%= p.getProductSellingPrice()%></span>
-                                                /- <span class="marked-price">
-                                                    &#8377; <%= p.getProductMarkedPrice()%>
-                                                </span>
-                                                <span class="discount">
-                                                    <%= p.getProductDiscount()%>% off
-                                                </span>
+                                        <a href="product.jsp?action=<%= Constants.EDIT.toString()%>&productId=<%= p.getProductId()%>">
+                                            <button style="width: 50%;" class="btn custom-bg text-white" value="<%= p.getProductId()%>">
+                                                EDIT PRODUCT
                                             </button>
                                         </a>
 
@@ -199,29 +178,29 @@
 
 
         <!-- Modal -->
-<!--        <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Buy</h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        <!--        <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel">Buy</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+        
+                            <div class="modal-body">
+                                <h5>Do you want to buy this product?</h5>
+                            </div>
+        
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        
+                                
+        
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="modal-body">
-                        <h5>Do you want to buy this product?</h5>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-
-                        
-
-                    </div>
-                </div>
-            </div>
-        </div>-->
+                </div>-->
 
     </body>
 </html>

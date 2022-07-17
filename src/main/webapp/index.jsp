@@ -119,7 +119,7 @@
                                 <div class="card product-card">
 
                                     <div class="container text-center">
-                                        <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 200px; max-width: 100%; width: auto" class="card-img-top" alt="">
+                                        <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 150px; max-width: 100%; width: auto" class="card-img-top" alt="">
                                     </div>
 
                                     <div class="card-body">

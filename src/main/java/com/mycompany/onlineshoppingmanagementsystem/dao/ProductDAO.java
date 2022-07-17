@@ -260,5 +260,44 @@ public class ProductDAO {
         }
 
     }
+    
+    //edit product
+    public int updateProduct(int productId, String productName, String productDescription,
+            int productMarkedPrice, int productDiscount, int productSellingPrice, int productQuantity,
+            String productImage, int categoryId) {
+
+        Session session = null;
+        Transaction transaction = null;
+        int status = 0;
+
+        try {
+            session = this.sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
+            CategoryDAO categoryDAO = new CategoryDAO(this.sessionFactory);
+            Category category = categoryDAO.getCategoryById(categoryId);
+
+            if (category != null) {
+
+                Product product = new Product(productId, productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, category, null, null);
+
+                session.saveOrUpdate(product);
+                transaction.commit();
+
+            }
+
+        } catch (Exception e) {
+
+            transaction.rollback();
+            status = 0;
+            e.printStackTrace();
+
+        } finally {
+
+            session.close();
+            return status;
+        }
+
+    }
 
 }

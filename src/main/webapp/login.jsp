@@ -4,6 +4,16 @@
     Author     : Misbahul Haque
 --%>
 
+<%
+    User user = (User) session.getAttribute("current-user");
+    if(user != null) {
+        session.removeAttribute("current-user");
+        session.setAttribute("negativeMessage", "Please login to continue !!");
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

@@ -12,6 +12,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -99,6 +100,29 @@ public class OrdersDAO {
         } finally {
             session.close();
             return status;
+        }
+
+    }
+    
+    //get orders by actual order id
+    public List<Orders> getSingleOrderByActualId(String orderId) {
+
+        Session session = null;
+        List<Orders> orders = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            Query query = session.createQuery("from Orders as o where o.actualOrderId =: oid");
+            query.setParameter("oid", orderId);
+            orders = query.list();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        } finally {
+            session.close();
+            return orders;
         }
 
     }

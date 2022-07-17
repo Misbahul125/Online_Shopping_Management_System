@@ -17,58 +17,66 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Orders {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(length = 10, name = "order_id")
     private int orderId;
-    
-    @Column(length = 20, name = "actual_order_id") 
+
+    @Column(length = 20, name = "actual_order_id")
     private String actualOrderId;
-    
+
+    @Column(name = "order_date")
+    private String orderDate;
+
     @Column(name = "quantity")
     private int quantity;
+
+    @Column(name = "product_price")
+    private int productPrice;
     
     @Column(length = 10, name = "total")
     private int total;
-    
+
     @Column(length = 10, name = "net_amount")
     private int netAmount;
-    
+
     @Column(length = 30, name = "payment_method")
     private String paymentMethod;
-    
+
     @Column(name = "razorpay_order_id")
     private String razorpayOrderId;
-    
+
     @Column(name = "razorpay_payment_id")
     private String razorpayPaymentId;
-    
+
     @Column(name = "razorpay_signature_id")
     private String razorpaySignatureId;
-    
+
     @Column(length = 30, name = "order_status")
     private String orderStatus;
-    
+
     @Column(name = "delivery_date")
     private String deliveryDate;
-    
+
     @Column(name = "user_address")
     private String userAddress;
-    
+
     @ManyToOne
     private Product product;
-    
+
     @ManyToOne
     private User user;
-    
+
     @ManyToOne
     private Address address;
 
-    public Orders(int orderId, String actualOrderId, int quantity, int total, int netAmount, String paymentMethod, String razorpayOrderId, String razorpayPaymentId, String razorpaySignatureId, String orderStatus, String deliveryDate, String userAddress, Product product, User user, Address address) {
+    public Orders(int orderId, String actualOrderId, String orderDate, int quantity, int productPrice, int total, int netAmount, String paymentMethod, String razorpayOrderId, String razorpayPaymentId, String razorpaySignatureId, String orderStatus, String deliveryDate, String userAddress, Product product, User user, Address address) {
         this.orderId = orderId;
         this.actualOrderId = actualOrderId;
+        this.orderDate = orderDate;
         this.quantity = quantity;
+        this.productPrice = productPrice;
         this.total = total;
         this.netAmount = netAmount;
         this.paymentMethod = paymentMethod;
@@ -83,9 +91,11 @@ public class Orders {
         this.address = address;
     }
 
-    public Orders(String actualOrderId, int quantity, int total, int netAmount, String paymentMethod, String razorpayOrderId, String razorpayPaymentId, String razorpaySignatureId, String orderStatus, String deliveryDate, String userAddress, Product product, User user, Address address) {
+    public Orders(String actualOrderId, String orderDate, int quantity, int productPrice, int total, int netAmount, String paymentMethod, String razorpayOrderId, String razorpayPaymentId, String razorpaySignatureId, String orderStatus, String deliveryDate, String userAddress, Product product, User user, Address address) {
         this.actualOrderId = actualOrderId;
+        this.orderDate = orderDate;
         this.quantity = quantity;
+        this.productPrice = productPrice;
         this.total = total;
         this.netAmount = netAmount;
         this.paymentMethod = paymentMethod;
@@ -115,6 +125,14 @@ public class Orders {
         return actualOrderId;
     }
 
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
     public void setActualOrderId(String actualOrderId) {
         this.actualOrderId = actualOrderId;
     }
@@ -125,6 +143,14 @@ public class Orders {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
     }
 
     public int getTotal() {
@@ -222,5 +248,5 @@ public class Orders {
     public void setAddress(Address address) {
         this.address = address;
     }
-    
+
 }

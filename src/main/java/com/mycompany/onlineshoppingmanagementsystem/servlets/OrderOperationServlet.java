@@ -13,6 +13,7 @@ import com.mycompany.onlineshoppingmanagementsystem.entities.Orders;
 import com.mycompany.onlineshoppingmanagementsystem.entities.Product;
 import com.mycompany.onlineshoppingmanagementsystem.entities.User;
 import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
+import com.mycompany.onlineshoppingmanagementsystem.helper.DateHelper;
 import com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider;
 import com.mycompany.onlineshoppingmanagementsystem.helper.RequestBodyHelper;
 import com.mycompany.onlineshoppingmanagementsystem.helper.ResponseHelper;
@@ -121,7 +122,9 @@ public class OrderOperationServlet extends HttpServlet {
                         //insert data into order table
                         Orders order = new Orders();
                         order.setActualOrderId(orderId);
+                        order.setOrderDate(new DateHelper().getOrderDate());
                         order.setQuantity(1);
+                        order.setProductPrice(product.getProductSellingPrice());
                         order.setTotal(product.getProductSellingPrice());
                         order.setNetAmount(netAmount);
 
@@ -165,7 +168,9 @@ public class OrderOperationServlet extends HttpServlet {
                         for (Cart c : carts) {
                             Orders order = new Orders();
                             order.setActualOrderId(orderId);
+                            order.setOrderDate(new DateHelper().getOrderDate());
                             order.setQuantity(c.getQuantity());
+                            order.setProductPrice(c.getProduct().getProductSellingPrice());
                             order.setTotal(c.getTotal());
                             order.setNetAmount(netAmount);
 

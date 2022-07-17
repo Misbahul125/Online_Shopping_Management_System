@@ -13,11 +13,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     --darkWhite: #ccc;
     --black: #000000;
     --dark: #615c60;
-    --themeColor: #22b8d1;
+    --themeColor: #E91E63;
     --pageShadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300&display=swap'); 
+/* Font Include */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600&display=swap');
 
 body {
     background-color: var(--body-bg);
@@ -118,9 +119,9 @@ body {
 }
 
 /* Product Section */
-thead {
-    color: var(--white);
-    background: var(--themeColor);
+thead{
+    color: var(--black);
+    background: var(--themeColor)!important;
 }
 
 .table td,
@@ -157,6 +158,10 @@ tr td:first-child {
 
 .balance-info tr td:first-child {
     font-weight: 600;
+}
+
+.space{
+    white-space: pre;
 }
 
 tfoot {
@@ -198,4 +203,10 @@ footer p {
     border: 3px solid var(--darkWhite);
     background-color: var(--white);
     display: inline-block;
+}
+
+@media print {
+    #printBtn {
+        display: none;
+    }
 }

@@ -7,6 +7,7 @@ package com.mycompany.onlineshoppingmanagementsystem.servlets;
 import com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO;
 import com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO;
 import com.mycompany.onlineshoppingmanagementsystem.helper.CalculateDiscount;
+import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
 import com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,59 +50,43 @@ public class ProductOperationServlet extends HttpServlet {
 
             String operationType = request.getParameter("productOperation");
 
-            if (operationType.trim().matches("add_category")) {
+            //fetching product data
+            String productName = request.getParameter("product_name");
+            String productDescription = request.getParameter("product_description");
+            int productMarkedPrice = Integer.parseInt(request.getParameter("product_marked_price"));
+            int productDiscount = Integer.parseInt(request.getParameter("product_discount"));
+            int productSellingPrice = Integer.parseInt(request.getParameter("product_selling_price"));
+            int productQuantity = Integer.parseInt(request.getParameter("product_quantity"));
+            int productCategory = Integer.parseInt(request.getParameter("productCategories"));
 
-                //fetching category data
-                String categoryTitle = request.getParameter("category_title");
-                String categoryDescription = request.getParameter("category_description");
+            Part part = request.getPart("product_image");
+            String productImage = part.getSubmittedFileName();
 
-                CategoryDAO categoryDAO = new CategoryDAO(FactoryProvider.getFactory());
-                int id = categoryDAO.createCategory(categoryTitle, categoryDescription);
+            FileOutputStream fos = null;
 
-                if (id != 0) {
-                    httpSession.setAttribute("positiveMessage", "Category is added successfully with ID : " + id);
-                    response.sendRedirect("admin_home.jsp");
-                    return;
-                } else {
-                    httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-                    response.sendRedirect("admin_home.jsp");
-                    return;
-                }
+            //upload product image
+            try {
 
-            } else if (operationType.trim().matches("add_product")) {
+                //upload image
+                String path = getServletContext().getRealPath("pictures") + File.separator + "products" + File.separator + productImage;
+                System.out.println(path);
 
-                //fetching product data
-                String productName = request.getParameter("product_name");
-                String productDescription = request.getParameter("product_description");
-                int productMarkedPrice = Integer.parseInt(request.getParameter("product_marked_price"));
-                int productDiscount = Integer.parseInt(request.getParameter("product_discount"));
-                int productSellingPrice = Integer.parseInt(request.getParameter("product_selling_price"));
-                int productQuantity = Integer.parseInt(request.getParameter("product_quantity"));
-                int productCategory = Integer.parseInt(request.getParameter("productCategories"));
+                fos = new FileOutputStream(path);
+                InputStream is = part.getInputStream();
 
-                Part part = request.getPart("product_image");
-                String productImage = part.getSubmittedFileName();
+                byte data[] = new byte[is.available()];
+                is.read(data);
+                fos.write(data);
+                fos.close();
 
-                FileOutputStream fos = null;
+                ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
 
-                //upload product image
-                try {
-
-                    //upload image
-                    String path = getServletContext().getRealPath("pictures") + File.separator + "products" + File.separator + productImage;
-                    System.out.println(path);
-
-                    fos = new FileOutputStream(path);
-                    InputStream is = part.getInputStream();
-
-                    byte data[] = new byte[is.available()];
-                    is.read(data);
-                    fos.write(data);
-                    fos.close();
+                if (operationType.matches(Constants.EDIT.toString())) {
+                    
+                    int pid = Integer.parseInt(request.getParameter("productId"));
 
                     //upload data
-                    ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
-                    int id = productDAO.createProduct(productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, productCategory);
+                    int id = productDAO.updateProduct(pid, productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, productCategory);
 
                     if (id != 0) {
                         httpSession.setAttribute("positiveMessage", "Product is added successfully with ID : " + id);
@@ -113,17 +98,50 @@ public class ProductOperationServlet extends HttpServlet {
                         return;
                     }
 
-                } catch (Exception e) {
-                    httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-                    response.sendRedirect("admin_home.jsp");
-                    if (fos != null) {
-                        fos.close();
-                    }
-                    e.printStackTrace();
-                }
+                } else if (operationType.matches(Constants.ADD.toString())) {
 
+                    int id = productDAO.createProduct(productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, productCategory);
+
+                    if (id != 0) {
+                        httpSession.setAttribute("positiveMessage", "Product is added successfully with ID : " + id);
+                        response.sendRedirect("admin_home.jsp");
+                        return;
+                    } else {
+                        httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
+                        response.sendRedirect("admin_home.jsp");
+                        return;
+                    }
+                    
+                }
+            } catch (Exception e) {
+                httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
+                response.sendRedirect("admin_home.jsp");
+                if (fos != null) {
+                    fos.close();
+                }
+                e.printStackTrace();
             }
 
+//            if (operationType.trim().matches("add_category")) {
+//
+//                //fetching category data
+//                String categoryTitle = request.getParameter("category_title");
+//                String categoryDescription = request.getParameter("category_description");
+//
+//                CategoryDAO categoryDAO = new CategoryDAO(FactoryProvider.getFactory());
+//                int id = categoryDAO.createCategory(categoryTitle, categoryDescription);
+//
+//                if (id != 0) {
+//                    httpSession.setAttribute("positiveMessage", "Category is added successfully with ID : " + id);
+//                    response.sendRedirect("admin_home.jsp");
+//                    return;
+//                } else {
+//                    httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
+//                    response.sendRedirect("admin_home.jsp");
+//                    return;
+//                }
+//
+//            } 
         }
     }
 

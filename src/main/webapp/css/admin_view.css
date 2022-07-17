@@ -1,0 +1,100 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 16-Jul-2022, 11:02:34 pm
+    Author     : Misbahul Haque
+*/
+.custom-bg{
+    background: #E91E63!important;
+}
+
+.admin .card{
+    border: 1px solid #E91E63;
+}
+
+.admin .card:hover{
+    background: #e2e2e2;
+    cursor: pointer;
+}
+
+.list-group-item.active{
+    background: #E91E63!important;
+    border-color: #E91E63!important;
+}
+
+
+.whole-text{
+}
+
+.more-text{
+    display: none;
+}
+
+.read-more{
+    font-size: 17px;
+    margin: 0px;
+    color: #E91E63!important;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.whole-text.show-more .more-text{
+    display: inline;
+}
+
+.whole-text.show-more .dots{
+    display: none;
+}
+
+button.custom-btn{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.btn-price{
+    color: black;
+}
+
+span.custom-btn{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+span.marked-price{
+    font-size: 15px;
+    font-style: italic!important;
+    text-decoration: line-through;
+}
+
+span.discount{
+    font-size: 15px;
+    font-style: italic!important;
+}
+
+.product-card:hover{
+    background: #e2e2e2;
+    cursor: pointer;
+}
+
+label.heading {
+    font-weight: bold;
+}
+
+.login-footer{
+    white-space: pre;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number]{
+    -moz-appearance: textfield;
+}
+

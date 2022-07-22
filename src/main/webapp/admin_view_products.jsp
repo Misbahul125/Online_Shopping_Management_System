@@ -34,6 +34,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>OSMS - Admin</title>
 
+        
         <%@include file="components/admin_css_js.jsp" %>
     </head>
 
@@ -68,12 +69,12 @@
 
                     <div class="list-group mt-4">
 
-                        <a href="index.jsp?categoryId=all" class="list-group-item list-group-item-action active">All Categories</a>
+                        <a href="admin_view_products.jsp?categoryId=all" class="list-group-item list-group-item-action active">All Categories</a>
 
                         <%                            for (Category c : categories) {
                         %>
 
-                        <a href="index.jsp?categoryId=<%= c.getCategoryId()%>" class="list-group-item list-group-item-action"><%= c.getCategoryTitle()%></a>
+                        <a href="admin_view_products.jsp?categoryId=<%= c.getCategoryId()%>" class="list-group-item list-group-item-action"><%= c.getCategoryTitle()%></a>
 
                         <%
                             }
@@ -180,7 +181,7 @@
 
                                     if (products.size() == 0) {
                                         session.setAttribute("negativeMessage", "No product(s) found in this category");
-                                        response.sendRedirect("client_home.jsp");
+                                        response.sendRedirect("admin_view_products.jsp");
                                     }
                                 %>
 
@@ -196,31 +197,6 @@
 
         </div>
 
-
-        <!-- Modal -->
-        <!--        <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">Buy</h3>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-        
-                            <div class="modal-body">
-                                <h5>Do you want to buy this product?</h5>
-                            </div>
-        
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        
-                                
-        
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
-
     </body>
+    
 </html>

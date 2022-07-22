@@ -17,7 +17,7 @@
             if (user1 != null) {
         %>
 
-        <a style="font-size: 30px;" class="navbar-brand" href="index.jsp">Online Shop</a>
+        <a style="font-size: 30px;" class="navbar-brand" href="index.jsp">OSMS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

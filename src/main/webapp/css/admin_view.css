@@ -24,6 +24,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     border-color: #E91E63!important;
 }
 
+.less-stock-alert{
+    height: 30px;
+    background: red;
+    color: white;
+    margin: 5px;
+    padding: 5px;
+    float: right;
+    text-align: center;
+}
 
 .whole-text{
 }

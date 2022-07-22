@@ -14,16 +14,7 @@
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider"%>
 
 <%
-    if (session.getAttribute("current-user") != null) {
-        User u = (User) session.getAttribute("current-user");
-        if (u.getUserType().matches(Constants.ADMIN_USER.toString())) {
-            response.sendRedirect("admin_home.jsp");
-            return;
-        } else {
-            response.sendRedirect("client_home.jsp");
-            return;
-        }
-    }
+    
     
     String searchKey = request.getParameter("search");
     ProductDAO productDAO1 = new ProductDAO(FactoryProvider.getFactory());

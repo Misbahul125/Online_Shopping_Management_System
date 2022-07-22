@@ -27,9 +27,7 @@ public class ProductDAO {
     }
 
     //add product
-    public int createProduct(String productName, String productDescription,
-            int productMarkedPrice, int productDiscount, int productSellingPrice, int productQuantity,
-            String productImage, int categoryId) {
+    public int createProduct(Product product, int categoryId) {
 
         Session session = null;
         Transaction transaction = null;
@@ -44,7 +42,7 @@ public class ProductDAO {
 
             if (category != null) {
 
-                Product product = new Product(productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, category, null, null);
+                product.setCategory(category);
 
                 productId = (int) session.save(product);
                 transaction.commit();
@@ -262,9 +260,7 @@ public class ProductDAO {
     }
     
     //edit product
-    public int updateProduct(int productId, String productName, String productDescription,
-            int productMarkedPrice, int productDiscount, int productSellingPrice, int productQuantity,
-            String productImage, int categoryId) {
+    public int updateProduct(Product product, int categoryId) {
 
         Session session = null;
         Transaction transaction = null;
@@ -279,7 +275,7 @@ public class ProductDAO {
 
             if (category != null) {
 
-                Product product = new Product(productId, productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, category, null, null);
+                product.setCategory(category);
 
                 session.saveOrUpdate(product);
                 transaction.commit();

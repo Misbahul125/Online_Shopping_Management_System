@@ -116,6 +116,26 @@
 
                                 <div class="card product-card">
 
+                                    <%
+                                        if (p.getProductQuantity() <= 10) {
+                                    %>
+
+                                    <div class="row">
+
+                                        <div class="less-stock-alert">
+
+                                            <h6>Hurry! Only few left</h6>
+
+                                        </div>
+                                    </div>
+
+                                    <%
+                                        }
+                                    %>
+
+
+                                    <br>
+
                                     <div class="container text-center">
                                         <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 150px; max-width: 100%; width: auto" class="card-img-top m-2" alt="">
                                     </div>
@@ -161,7 +181,7 @@
                                         %>
 
                                         <a href="checkout.jsp?productId=<%=p.getProductId()%>&source=client_home">
-                                            <button id="amt" class="btn btn-success" value="<%= p.getProductSellingPrice() %>">
+                                            <button id="amt" class="btn btn-success" value="<%= p.getProductSellingPrice()%>">
                                                 <span class="custom-btn">&#8377; <%= p.getProductSellingPrice()%></span>
                                                 /- <span class="marked-price">
                                                     &#8377; <%= p.getProductMarkedPrice()%>
@@ -199,29 +219,29 @@
 
 
         <!-- Modal -->
-<!--        <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Buy</h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        <!--        <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel">Buy</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+        
+                            <div class="modal-body">
+                                <h5>Do you want to buy this product?</h5>
+                            </div>
+        
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        
+                                
+        
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="modal-body">
-                        <h5>Do you want to buy this product?</h5>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-
-                        
-
-                    </div>
-                </div>
-            </div>
-        </div>-->
+                </div>-->
 
     </body>
 </html>

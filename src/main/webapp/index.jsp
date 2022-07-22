@@ -33,15 +33,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>OSMS - Home</title>
 
-        <link rel="stylesheet" href="css/style.css">
         <%@include file="components/common_css_js.jsp" %>
     </head>
 
     <body>
 
         <%@include file="components/navbar.jsp" %>
-
-
 
         <div class="container-fluid text-center">
 
@@ -117,6 +114,26 @@
                                 %>
 
                                 <div class="card product-card">
+                                    
+                                    <%
+                                        if(p.getProductQuantity() <= 10) {
+                                    %>
+
+                                    <div class="row">
+
+                                        <div class="less-stock-alert">
+
+                                            <h6>Hurry! Only few left</h6>
+
+                                        </div>
+                                    </div>
+                                    
+                                    <%
+                                        }
+                                    %>
+
+
+                                    <br>
 
                                     <div class="container text-center">
                                         <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 150px; max-width: 100%; width: auto" class="card-img-top" alt="">
@@ -135,6 +152,10 @@
                                             <button data-target-id="<%= p.getProductId()%>" onclick="changeText(event)" type="button" id="readMoreBtn" class="btn read-more">Read More</button>
 
                                         </p>
+
+
+
+
 
                                     </div>
 
@@ -198,13 +219,13 @@
                     <div class="modal-footer">
 
                         <a href="login.jsp">
-                            <button type="button" class="btn btn-secondary">
+                            <button type="button" class="btn btn-primary">
                                 Login
                             </button>
                         </a>
 
                         <a href="signup1.jsp">
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn custom-bg text-white">
                                 Signup
                             </button>
                         </a>
@@ -230,13 +251,13 @@
                     <div class="modal-footer">
 
                         <a href="login.jsp">
-                            <button type="button" class="btn btn-secondary">
+                            <button type="button" class="btn btn-primary">
                                 Login
                             </button>
                         </a>
 
                         <a href="signup1.jsp">
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn custom-bg text-white">
                                 Signup
                             </button>
                         </a>

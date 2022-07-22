@@ -37,6 +37,7 @@
         <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.Orders" />
         <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.Product" />
         <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.User" />
+        <mapping class="com.mycompany.onlineshoppingmanagementsystem.entities.UtilityCount" />
         
     </session-factory>
 </hibernate-configuration>

@@ -75,7 +75,7 @@
 
                             <form action="CategoryOperationServlet" method="post" enctype="multipart/form-data">
 
-                                <input type="hidden" name="categoryOperation" value="<%= Constants.EDIT.toString()%>" />
+                                <input type="hidden" name="categoryOperation" value="<%= action %>" />
                                 <input type="hidden" name="categoryId" value="<%= category.getCategoryId() %>" />
 
                                 <div class="form-group">
@@ -108,7 +108,7 @@
 
                             <form action="CategoryOperationServlet" method="post" enctype="multipart/form-data">
 
-                                <input type="hidden" name="categoryOperation" value="<%= Constants.ADD.toString()%>" />
+                                <input type="hidden" name="categoryOperation" value="<%= action %>" />
 
                                 <div class="form-group">
                                     <label for="categoryTitle">Title</label>

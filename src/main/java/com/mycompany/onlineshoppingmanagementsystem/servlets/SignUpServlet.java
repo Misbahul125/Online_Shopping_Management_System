@@ -1,6 +1,7 @@
 package com.mycompany.onlineshoppingmanagementsystem.servlets;
 
 import com.mycompany.onlineshoppingmanagementsystem.dao.UserDAO;
+import com.mycompany.onlineshoppingmanagementsystem.dao.UtilityCountDAO;
 import com.mycompany.onlineshoppingmanagementsystem.entities.User;
 import com.mycompany.onlineshoppingmanagementsystem.helper.PasswordHelper.AESHelper;
 import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
@@ -35,12 +36,12 @@ public class SignUpServlet extends HttpServlet {
 
             HttpSession httpSession = request.getSession();
 
-            String userName = request.getParameter("user_name");
-            String userEmail = request.getParameter("user_email");
-            String userPassword = request.getParameter("user_password");
-            String userPhone = request.getParameter("user_phone");
+            String userName = request.getParameter("user_name").trim();
+            String userEmail = request.getParameter("user_email").trim();
+            String userPassword = request.getParameter("user_password").trim();
+            String userPhone = request.getParameter("user_phone").trim();
             String userImage = "default.png";
-            String userAddress = request.getParameter("user_address");
+            String userAddress = request.getParameter("user_address").trim();
             String userType = null;
             String encryptedPassword = null;
 
@@ -57,25 +58,35 @@ public class SignUpServlet extends HttpServlet {
             }
 
             UserDAO userDAO = new UserDAO(FactoryProvider.getFactory());
-            int status = userDAO.createUserWithEmailAndPassword(userName, userEmail, encryptedPassword, userPhone, userImage, userAddress, userType);
+            int s1 = userDAO.createUserWithEmailAndPassword(userName, userEmail, encryptedPassword, userPhone, userImage, userAddress, userType);
 
-            if (status > 0) {
+            if (s1 > 0) {
 
-                User user = userDAO.getUserByEmailAndPassword(userEmail, encryptedPassword);
+                int s2 = new UtilityCountDAO(FactoryProvider.getFactory()).updateUserCount();
 
-                if (user != null) {
+                if (s2 > 0) {
 
-                    //if user signup is succssful, log in user
-                    httpSession.setAttribute("current-user", user);
+                    User user = userDAO.getUserByEmailAndPassword(userEmail, encryptedPassword);
 
-                    if (userType.matches(Constants.ADMIN_USER.toString())) {
-                        httpSession.removeAttribute("temp-user");
-                        response.sendRedirect("admin_home.jsp");
-                        return;
-                    } else if (userType.matches(Constants.NORMAL_USER.toString())) {
-                        httpSession.removeAttribute("temp-user");
-                        response.sendRedirect("client_home.jsp");
-                        return;
+                    if (user != null) {
+
+                        //if user signup is succssful, log in user
+                        httpSession.setAttribute("current-user", user);
+
+                        if (userType.matches(Constants.ADMIN_USER.toString())) {
+                            httpSession.removeAttribute("temp-user");
+                            response.sendRedirect("admin_home.jsp");
+                            return;
+                        } else if (userType.matches(Constants.NORMAL_USER.toString())) {
+                            httpSession.removeAttribute("temp-user");
+                            response.sendRedirect("client_home.jsp");
+                            return;
+                        } else {
+                            httpSession.removeAttribute("temp-user");
+                            httpSession.setAttribute("negativeMessage", "You have been registered successfully. But something went wong! Please try to login.");
+                            response.sendRedirect("login.jsp");
+                        }
+
                     } else {
                         httpSession.removeAttribute("temp-user");
                         httpSession.setAttribute("negativeMessage", "You have been registered successfully. But something went wong! Please try to login.");
@@ -83,9 +94,11 @@ public class SignUpServlet extends HttpServlet {
                     }
 
                 } else {
+
                     httpSession.removeAttribute("temp-user");
                     httpSession.setAttribute("negativeMessage", "You have been registered successfully. But something went wong! Please try to login.");
                     response.sendRedirect("login.jsp");
+
                 }
 
             } else {

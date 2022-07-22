@@ -8,6 +8,7 @@ import com.mycompany.onlineshoppingmanagementsystem.dao.CartDAO;
 import com.mycompany.onlineshoppingmanagementsystem.dao.OrdersDAO;
 import com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO;
 import com.mycompany.onlineshoppingmanagementsystem.dao.UserDAO;
+import com.mycompany.onlineshoppingmanagementsystem.dao.UtilityCountDAO;
 import com.mycompany.onlineshoppingmanagementsystem.entities.Cart;
 import com.mycompany.onlineshoppingmanagementsystem.entities.Orders;
 import com.mycompany.onlineshoppingmanagementsystem.entities.Product;
@@ -103,6 +104,8 @@ public class OrderOperationServlet extends HttpServlet {
                     user = (User) httpSession.getAttribute("current-user");
                 }
 
+                int s1 = 0, s2 = 0, s3 = 0;
+
                 String orderId = "OID" + (System.currentTimeMillis());
 
                 OrdersDAO ordersDAO = new OrdersDAO(FactoryProvider.getFactory());
@@ -115,9 +118,9 @@ public class OrderOperationServlet extends HttpServlet {
                     }
 
                     int newQuantity = product.getProductQuantity() - 1;
-                    int status = productDAO.decreaseSingleProductQuantity(pid, newQuantity);
+                    s1 = productDAO.decreaseSingleProductQuantity(pid, newQuantity);
 
-                    if (status > 0) {
+                    if (s1 > 0) {
 
                         //insert data into order table
                         Orders order = new Orders();
@@ -140,11 +143,25 @@ public class OrderOperationServlet extends HttpServlet {
                         order.setUser(user);
                         order.setAddress(null);
 
-                        int s = ordersDAO.addSingleOrder(order);
-                        if (s > 0) {
-                            httpSession.removeAttribute("current-user");
-                            httpSession.setAttribute("current-user", user);
-                            responseHelper.sendOrderPlacedResponse(response, orderId, "Order placed successfully. You can check its status in My Orders.");
+                        s2 = ordersDAO.addSingleOrder(order);
+                        if (s2 > 0) {
+
+                            s3 = new UtilityCountDAO(FactoryProvider.getFactory()).updateOrderCount();
+
+                            if (s3 > 0) {
+
+                                httpSession.removeAttribute("current-user");
+                                httpSession.setAttribute("current-user", user);
+                                responseHelper.sendOrderPlacedResponse(response, orderId, "Order placed successfully. You can check its status in My Orders.");
+
+                            } else {
+                                
+                                httpSession.removeAttribute("current-user");
+                                httpSession.setAttribute("current-user", user);
+                                responseHelper.sendOrderPlacedResponse(response, orderId, "We are unable to update total orders. But luckily your order have been placed successfully. You can check its status in My Orders.");
+                            
+                            }
+
                         } else {
                             responseHelper.sendFalseResponse(response, "Something went wrong. Unable to process your order.");
                         }
@@ -159,9 +176,9 @@ public class OrderOperationServlet extends HttpServlet {
                         carts = cartDAO.getCartItemsForUser(user.getUserId());
                     }
 
-                    int status = productDAO.decreaseMultipleProductsQuantity(carts);
+                    s1 = productDAO.decreaseMultipleProductsQuantity(carts);
 
-                    if (status > 0) {
+                    if (s1 > 0) {
 
                         //insert data into order table
                         List<Orders> orders = new ArrayList<>();
@@ -189,29 +206,46 @@ public class OrderOperationServlet extends HttpServlet {
                             orders.add(order);
                         }
 
-                        int s1 = ordersDAO.addMultipleOrders(orders);
+                        s2 = ordersDAO.addMultipleOrders(orders);
 
-                        if (s1 > 0) {
-                            //finally delete from cart
-                            int s2 = cartDAO.deleteCartItemsAfterOrder(user.getUserId());
-                            if (s2 > 0) {
+                        if (s2 > 0) {
 
-                                //lastly update user cart count to 0
-                                int s3 = new UserDAO(FactoryProvider.getFactory()).updateCartCountByUserId(user, 0);
-                                if (s3 > 0) {
+                            //delete from cart
+                            s3 = cartDAO.deleteCartItemsAfterOrder(user.getUserId());
+                            if (s3 > 0) {
+
+                                //update user cart count to 0
+                                int s4 = new UserDAO(FactoryProvider.getFactory()).updateCartCountByUserId(user, 0);
+
+                                if (s4 > 0) {
+
                                     httpSession.removeAttribute("current-user");
+                                    user.setUserCartCount(0);
                                     httpSession.setAttribute("current-user", user);
-                                    responseHelper.sendOrderPlacedResponse(response, orderId, "Order placed successfully. You can check its status in My Orders.");
+
+                                    int s5 = new UtilityCountDAO(FactoryProvider.getFactory()).updateOrderCount();
+
+                                    if (s5 > 0) {
+                                        responseHelper.sendOrderPlacedResponse(response, orderId, "Order placed successfully. You can check its status in My Orders.");
+                                    } else {
+                                        responseHelper.sendOrderPlacedResponse(response, orderId, "We are unable to update total orders. But luckily your order have been placed successfully. You can check its status in My Orders.");
+                                    }
+
                                 } else {
+
                                     httpSession.removeAttribute("current-user");
+                                    user.setUserCartCount(0);
                                     httpSession.setAttribute("current-user", user);
                                     responseHelper.sendOrderPlacedResponse(response, orderId, "We are unable to update your cart quantity. But luckily your order have been placed successfully. You can check its status in My Orders.");
+
                                 }
 
                             } else {
+
                                 httpSession.removeAttribute("current-user");
                                 httpSession.setAttribute("current-user", user);
                                 responseHelper.sendOrderPlacedResponse(response, orderId, "We are unable to remove your cart item(s). But luckily your order have been placed successfully. You can check its status in My Orders.");
+
                             }
 
                         } else {

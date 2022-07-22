@@ -92,6 +92,7 @@
                             </div>
 
                             <div class="col-5">
+                                <p>Order Status : <span><%= orders.get(0).getOrderStatus() %></span></p>
                                 <p>Delivery Between : <span><%= orders.get(0).getDeliveryDate()%></span></p>
                             </div>
 
@@ -266,7 +267,7 @@
         </div>
 
         <div class="container text-center mb-5">
-            <button id="printBtn" onclick="window.print();" class="btn custom-bg" type="button">Print Invoice</button>
+            <button id="printBtn" onclick="window.print();" class="btn custom-bg text-white" type="button">Print Invoice</button>
         </div>
 
     </body>

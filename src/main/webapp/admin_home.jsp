@@ -4,6 +4,8 @@
     Author     : Misbahul Haque
 --%>
 
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.UtilityCountDAO"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.UtilityCount"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Category"%>
 <%@page import="java.util.List"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider"%>
@@ -24,6 +26,9 @@
         response.sendRedirect("login.jsp");
         return;
     }
+    
+    UtilityCountDAO ucDAO = new UtilityCountDAO(FactoryProvider.getFactory());
+    UtilityCount uc = ucDAO.getAllUtilityCounts();
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -62,7 +67,7 @@
 
                             </div>
 
-                            <h1>2.4k+</h1>
+                            <h1><%= uc.getUserCount() %>k+</h1>
                             <h1 class="text-uppercase text-muted">Users</h1>
 
                         </div>
@@ -84,7 +89,7 @@
 
                             </div>
 
-                            <h1>100+</h1>
+                            <h1><%= uc.getCategoryCount() %>k+</h1>
                             <h1 class="text-uppercase text-muted">Categories</h1>
 
                         </div>
@@ -106,7 +111,7 @@
 
                             </div>
 
-                            <h1>20k+</h1>
+                            <h1><%= uc.getProductCount() %>k+</h1>
                             <h1 class="text-uppercase text-muted">Products</h1>
 
                         </div>
@@ -121,18 +126,17 @@
 
                 <div class="col-md-6">
 
-                    <div class="card" data-toggle="modal" data-target="#add-category-modal">
+                    <div class="card">
 
                         <div class="card-body text-center">
 
                             <div class="container">
 
-                                <img style="max-width: 120px" class="img-fluid rounded-circle" src="pictures/add.png" alt="users_icon">
+                                <img style="max-width: 120px" class="img-fluid rounded-circle" src="pictures/options.png" alt="users_icon">
 
                             </div>
-
-                            <p class="mt-2">Click here to add new category</p>
-                            <h1 class="text-uppercase text-muted">Add Category</h1>
+                            
+                            <a style="text-decoration: none;" href="admin_view_category.jsp"><h1 class="text-uppercase text-muted">View Categories</h1></a>
 
                         </div>
 
@@ -142,26 +146,21 @@
 
                 <div class="col-md-6">
 
-                    <a href="admin_view_products.jsp">
+                    <div class="card" >
 
-                        <div class="card" >
+                        <div class="card-body text-center">
 
-                            <div class="card-body text-center">
+                            <div class="container">
 
-                                <div class="container">
-
-                                    <img style="max-width: 120px" class="img-fluid rounded-circle" src="pictures/new-product.png" alt="users_icon">
-
-                                </div>
-
-                                <p class="mt-2">Click here to add new Product</p>
-
-                                <h1 class="text-uppercase text-muted">Add Product</h1>
+                                <img style="max-width: 120px" class="img-fluid rounded-circle" src="pictures/new-product.png" alt="users_icon">
 
                             </div>
 
+                            <a style="text-decoration: none;" href="admin_view_products.jsp"><h1 class="text-uppercase text-muted">View Products</h1></a>
+
                         </div>
-                    </a>
+
+                    </div>
 
                 </div>
 

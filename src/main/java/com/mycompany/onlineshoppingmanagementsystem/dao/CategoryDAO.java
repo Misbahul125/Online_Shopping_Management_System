@@ -24,17 +24,13 @@ public class CategoryDAO {
     }
 
     //add category
-    public int createCategory(String categoryTitle, String categoryDescription) {
+    public int createCategory(Category category) {
 
         Session session = null;
         Transaction transaction = null;
         int categoryId = 0;
 
         try {
-            
-            Category category = new Category();
-            category.setCategoryTitle(categoryTitle);
-            category.setCategoryDescription(categoryDescription);
 
             session = this.sessionFactory.openSession();
             transaction = session.beginTransaction();
@@ -102,7 +98,7 @@ public class CategoryDAO {
     }
     
     //update category
-    public int updateCategory(int categoryId, String categoryTitle, String categoryDescription) {
+    public int updateCategory(Category category) {
 
         Session session = null;
         Transaction transaction = null;
@@ -110,11 +106,6 @@ public class CategoryDAO {
 
         try {
             
-            Category category = new Category();
-            category.setCategoryId(categoryId);
-            category.setCategoryTitle(categoryTitle);
-            category.setCategoryDescription(categoryDescription);
-
             session = this.sessionFactory.openSession();
             transaction = session.beginTransaction();
             

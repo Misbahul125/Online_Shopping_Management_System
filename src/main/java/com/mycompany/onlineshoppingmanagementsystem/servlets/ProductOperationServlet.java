@@ -4,18 +4,16 @@
  */
 package com.mycompany.onlineshoppingmanagementsystem.servlets;
 
-import com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO;
 import com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO;
-import com.mycompany.onlineshoppingmanagementsystem.helper.CalculateDiscount;
+import com.mycompany.onlineshoppingmanagementsystem.dao.UtilityCountDAO;
+import com.mycompany.onlineshoppingmanagementsystem.entities.Product;
 import com.mycompany.onlineshoppingmanagementsystem.helper.Constants;
 import com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider;
+import com.mycompany.onlineshoppingmanagementsystem.helper.ImageHelper;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FilterOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.servlet.ServletException;
@@ -56,18 +54,24 @@ public class ProductOperationServlet extends HttpServlet {
             String operationType = request.getParameter("productOperation");
 
             //fetching product data
-            String productName = request.getParameter("product_name");
-            String productDescription = request.getParameter("product_description");
-            int productMarkedPrice = Integer.parseInt(request.getParameter("product_marked_price"));
-            int productDiscount = Integer.parseInt(request.getParameter("product_discount"));
-            int productSellingPrice = Integer.parseInt(request.getParameter("product_selling_price"));
-            int productQuantity = Integer.parseInt(request.getParameter("product_quantity"));
-            int productCategory = Integer.parseInt(request.getParameter("productCategories"));
+            String productName = request.getParameter("product_name").trim();
+            String productDescription = request.getParameter("product_description").trim();
+            int productMarkedPrice = Integer.parseInt(request.getParameter("product_marked_price").trim());
+            int productDiscount = Integer.parseInt(request.getParameter("product_discount").trim());
+            int productSellingPrice = Integer.parseInt(request.getParameter("product_selling_price").trim());
+            int productQuantity = Integer.parseInt(request.getParameter("product_quantity").trim());
+            int productCategory = Integer.parseInt(request.getParameter("productCategories").trim());
 
             part = request.getPart("product_image");
-            String productImage = part.getSubmittedFileName();
-            
-            int status = 0;
+            String productImageName = part.getSubmittedFileName();
+
+            String addImagePath = getServletContext().getRealPath("pictures") + File.separator + "products" + File.separator + productImageName;
+
+            Product product = null;
+
+            ImageHelper imageHelper = new ImageHelper();
+
+            int s1 = 0;
 
             //upload image
             ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
@@ -78,124 +82,83 @@ public class ProductOperationServlet extends HttpServlet {
 
                 String pImage = productDAO.getProductById(pid).getProductPic();
 
-                if (deleteImage(pImage)) {
+                Path deleteImagePath = Paths.get(getServletContext().getRealPath("pictures") + File.separator + "products" + File.separator + pImage);
 
-                    if (addImage(productImage)) {
+                if (imageHelper.deleteImage(deleteImagePath)) {
+
+                    if (imageHelper.addImage(part, addImagePath)) {
+
+                        product = new Product(pid, productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImageName, null, null, null);
 
                         //upload data
-                        status = productDAO.updateProduct(pid, productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, productCategory);
+                        s1 = productDAO.updateProduct(product, productCategory);
 
-                        if (status != 0) {
+                        if (s1 != 0) {
                             httpSession.setAttribute("positiveMessage", "Product is updated successfully.");
-                            response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
+                            response.sendRedirect("product.jsp?action=" + Constants.NONE.toString());
                             return;
                         } else {
                             System.out.println("Unable to update product in database");
                             httpSession.setAttribute("negativeMessage", "Unable to update product! Please try again later.");
-                            response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
+                            response.sendRedirect("product.jsp?action=" + Constants.NONE.toString());
                             return;
                         }
 
                     } else {
                         System.out.println("Unable to add image");
                         httpSession.setAttribute("negativeMessage", "Unable to update product! Please try again later.");
-                        response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
+                        response.sendRedirect("product.jsp?action=" + Constants.NONE.toString());
                         return;
                     }
 
                 } else {
                     System.out.println("The product image is not deleted");
                     httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-                    response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
+                    response.sendRedirect("product.jsp?action=" + Constants.NONE.toString());
                     return;
                 }
 
             } else if (operationType.matches(Constants.ADD.toString())) {
 
-                if (addImage(productImage)) {
-                    status = productDAO.createProduct(productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImage, productCategory);
+                if (imageHelper.addImage(part, addImagePath)) {
 
-                    if (status != 0) {
-                        httpSession.setAttribute("positiveMessage", "Product is added successfully with ID : " + status);
-                        response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
-                        return;
+                    product = new Product(productName, productDescription, productMarkedPrice, productDiscount, productSellingPrice, productQuantity, productImageName, null, null, null);
+
+                    s1 = productDAO.createProduct(product, productCategory);
+
+                    if (s1 > 0) {
+
+                        int s2 = new UtilityCountDAO(FactoryProvider.getFactory()).updateProductCount();
+
+                        if (s2 > 0) {
+                            httpSession.setAttribute("positiveMessage", "Product is added successfully.");
+                            response.sendRedirect("product.jsp?action=" + Constants.NONE.toString());
+                            return;
+                        } else {
+                            System.out.println("Unable to update product count in database");
+                            httpSession.setAttribute("negativeMessage", "Product added successfully! Something went wrong. Unable to update category count");
+                            response.sendRedirect("product.jsp?action=" + Constants.NONE.toString());
+                            return;
+                        }
+
                     } else {
+
                         System.out.println("Unable to add product in database");
-                        httpSession.setAttribute("negativeMessage", "Unable to update product! Please try again later.");
-                        response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
+                        httpSession.setAttribute("negativeMessage", "Unable to add product! Please try again later.");
+                        response.sendRedirect("product.jsp?action=" + Constants.NONE.toString());
                         return;
+
                     }
                 } else {
 
                     System.out.println("The product image is not added");
                     httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-                    response.sendRedirect("product.jsp?action="+Constants.NONE.toString());
+                    response.sendRedirect("product.jsp?action=" + Constants.NONE.toString());
                     return;
 
                 }
 
             }
-        }
-
-//            if (operationType.trim().matches("add_category")) {
-//
-//                //fetching category data
-//                String categoryTitle = request.getParameter("category_title");
-//                String categoryDescription = request.getParameter("category_description");
-//
-//                CategoryDAO categoryDAO = new CategoryDAO(FactoryProvider.getFactory());
-//                int status = categoryDAO.createCategory(categoryTitle, categoryDescription);
-//
-//                if (status != 0) {
-//                    httpSession.setAttribute("positiveMessage", "Category is added successfully with ID : " + status);
-//                    response.sendRedirect("admin_home.jsp");
-//                    return;
-//                } else {
-//                    httpSession.setAttribute("negativeMessage", "Something went wong! Please try again later.");
-//                    response.sendRedirect("admin_home.jsp");
-//                    return;
-//                }
-//
-//            } 
-    }
-
-    private boolean deleteImage(String pImage) {
-
-        Path imgPath = Paths.get(getServletContext().getRealPath("pictures") + File.separator + "products" + File.separator + pImage);
-
-        try {
-            Files.delete(imgPath);
-            System.out.println("deleted");
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }
-
-    private boolean addImage(String pImage) throws IOException {
-
-        try {
-            String path = getServletContext().getRealPath("pictures") + File.separator + "products" + File.separator + pImage;
-            System.out.println(path);
-
-            fos = new FileOutputStream(path);
-            InputStream is = part.getInputStream();
-
-            byte data[] = new byte[is.available()];
-            is.read(data);
-            fos.write(data);
-            fos.close();
-
-            return true;
-        } catch (Exception e) {
-            if (fos != null) {
-                fos.close();
-            }
-            e.printStackTrace();
-
-            return false;
         }
 
     }

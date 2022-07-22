@@ -60,7 +60,7 @@ public class UtilityCountDAO {
             transaction = session.beginTransaction();
 
             Query q = session.createQuery(query);
-            q.setParameter("c", uCount);
+            q.setParameter("c", uCount+1);
             q.setParameter("i", 1);
             status = q.executeUpdate();
 
@@ -100,7 +100,7 @@ public class UtilityCountDAO {
             transaction = session.beginTransaction();
 
             Query q = session.createQuery(query);
-            q.setParameter("c", cCount);
+            q.setParameter("c", cCount+1);
             q.setParameter("i", 1);
             status = q.executeUpdate();
 
@@ -140,7 +140,7 @@ public class UtilityCountDAO {
             transaction = session.beginTransaction();
 
             Query q = session.createQuery(query);
-            q.setParameter("c", pCount);
+            q.setParameter("c", pCount+1);
             q.setParameter("i", 1);
             status = q.executeUpdate();
 
@@ -180,7 +180,7 @@ public class UtilityCountDAO {
             transaction = session.beginTransaction();
 
             Query q = session.createQuery(query);
-            q.setParameter("c", oCount);
+            q.setParameter("c", oCount+1);
             q.setParameter("i", 1);
             status = q.executeUpdate();
 

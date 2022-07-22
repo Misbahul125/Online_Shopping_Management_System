@@ -75,15 +75,15 @@
 
                             <form action="CategoryOperationServlet" method="post" enctype="multipart/form-data">
 
-                                <input type="hidden" name="categoryOperation" value="<%= action %>" />
-                                <input type="hidden" name="categoryId" value="<%= category.getCategoryId() %>" />
+                                <input type="hidden" name="categoryOperation" value="<%= action%>" />
+                                <input type="hidden" name="categoryId" value="<%= category.getCategoryId()%>" />
 
                                 <div class="form-group">
                                     <label for="categoryImage">Image</label>
                                     <div class="container text-center">
-                                        <img id="imgFile " style="max-height: 250px; max-width: 100%;" src="pictures/categories/<%= category.getCategoryPic()%>"/>
+                                        <img id="imgFile" style="max-height: 250px; max-width: 100%;" src="pictures/categories/<%= category.getCategoryPic()%>"/>
                                     </div>
-                                    <input value="<%= category.getCategoryPic()%>" type="file" onchange="readURL(this)" class="form-control mt-1" name="category_image" required/>
+                                    <input type="file" onchange="readURL(this)" class="form-control mt-1" name="category_image" required/>
                                 </div>
 
                                 <div class="form-group">
@@ -108,7 +108,7 @@
 
                             <form action="CategoryOperationServlet" method="post" enctype="multipart/form-data">
 
-                                <input type="hidden" name="categoryOperation" value="<%= action %>" />
+                                <input type="hidden" name="categoryOperation" value="<%= action%>" />
 
                                 <div class="form-group">
                                     <label for="categoryTitle">Title</label>
@@ -120,18 +120,18 @@
                                     <textarea style="height: 150px" class="form-control" name="category_description" placeholder="Enter category description" required></textarea>
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="categoryImage">Image</label>
+                                    <input type="file" onchange="readURL(this)" class="form-control mt-1" name="category_image" required/>
+                                    <div class="container text-center">
+                                        <img id="imgFile" style="max-height: 250px; max-width: 100%;"/>
+                                    </div>
+
+                                </div>
+
                                 <div class="container text-center">
                                     <button class="btn btn-outline-success">Add Category</button>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="categoryImage">Image</label>
-                                    <input value="<%= category.getCategoryPic()%>" type="file" onchange="readURL(this)" class="form-control mt-1" name="category_image" required/>
-                                    <div class="container text-center">
-                                        <img id="imgFile " style="max-height: 250px; max-width: 100%;" src="pictures/categories/<%= category.getCategoryPic()%>"/>
-                                    </div>
-                                    
                                 </div>
 
                             </form>

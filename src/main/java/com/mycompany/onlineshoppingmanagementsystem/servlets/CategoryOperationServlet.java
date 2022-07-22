@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +28,8 @@ import javax.servlet.http.Part;
  *
  * @author Misbahul Haque
  */
-@WebServlet(name = "CategoryOperationServlet", urlPatterns = {"/CategoryOperationServlet"})
+
+@MultipartConfig
 public class CategoryOperationServlet extends HttpServlet {
 
     /**
@@ -54,8 +55,8 @@ public class CategoryOperationServlet extends HttpServlet {
             String operationType = request.getParameter("categoryOperation");
 
             //fetching category data
-            String categoryTitle = request.getParameter("category_title").trim();
-            String categoryDescription = request.getParameter("category_description").trim();
+            String categoryTitle = request.getParameter("category_title");
+            String categoryDescription = request.getParameter("category_description");
 
             part = request.getPart("category_image");
             String categoryImageName = part.getSubmittedFileName();

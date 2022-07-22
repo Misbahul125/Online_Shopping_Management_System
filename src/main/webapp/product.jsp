@@ -83,9 +83,9 @@
                                 <div class="form-group">
                                     <label for="productImage">Image</label>
                                     <div class="container text-center">
-                                        <img id="imgFile " style="max-height: 250px; max-width: 100%;" src="pictures/products/<%= product.getProductPic()%>"/>
+                                        <img id="imgFile" style="max-height: 250px; max-width: 100%;" src="pictures/products/<%= product.getProductPic()%>"/>
                                     </div>
-                                    <input value="<%= product.getProductPic()%>" type="file" onchange="readURL(this)" class="form-control mt-1" name="product_image" required/>
+                                    <input type="file" onchange="readURL(this)" class="form-control mt-1" name="product_image" required/>
                                 </div>
 
                                 <div class="form-group">
@@ -100,7 +100,7 @@
 
                                 <div class="form-group">
                                     <label for="productMarkedPrice">Marked Price</label>
-                                    <input type="number" value="<%= product.getProductMarkedPrice()%>" id="mp" class="form-control" name="product_marked_price" placeholder="Enter product marked price" required/>
+                                    <input type="number" value="<%= product.getProductMarkedPrice() %>" id="mp" class="form-control" name="product_marked_price" placeholder="Enter product marked price" required/>
                                     <small id="emailHelp" class="form-text text-muted">*Please input Marked Price without decimal.</small>
                                 </div>
 

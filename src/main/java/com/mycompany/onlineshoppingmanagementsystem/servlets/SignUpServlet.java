@@ -36,12 +36,12 @@ public class SignUpServlet extends HttpServlet {
 
             HttpSession httpSession = request.getSession();
 
-            String userName = request.getParameter("user_name").trim();
-            String userEmail = request.getParameter("user_email").trim();
-            String userPassword = request.getParameter("user_password").trim();
-            String userPhone = request.getParameter("user_phone").trim();
+            String userName = request.getParameter("user_name");
+            String userEmail = request.getParameter("user_email");
+            String userPassword = request.getParameter("user_password");
+            String userPhone = request.getParameter("user_phone");
             String userImage = "default.png";
-            String userAddress = request.getParameter("user_address").trim();
+            String userAddress = request.getParameter("user_address");
             String userType = null;
             String encryptedPassword = null;
 

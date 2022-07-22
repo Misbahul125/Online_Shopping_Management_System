@@ -54,13 +54,13 @@ public class ProductOperationServlet extends HttpServlet {
             String operationType = request.getParameter("productOperation");
 
             //fetching product data
-            String productName = request.getParameter("product_name").trim();
-            String productDescription = request.getParameter("product_description").trim();
-            int productMarkedPrice = Integer.parseInt(request.getParameter("product_marked_price").trim());
-            int productDiscount = Integer.parseInt(request.getParameter("product_discount").trim());
-            int productSellingPrice = Integer.parseInt(request.getParameter("product_selling_price").trim());
-            int productQuantity = Integer.parseInt(request.getParameter("product_quantity").trim());
-            int productCategory = Integer.parseInt(request.getParameter("productCategories").trim());
+            String productName = request.getParameter("product_name");
+            String productDescription = request.getParameter("product_description");
+            int productMarkedPrice = Integer.parseInt(request.getParameter("product_marked_price"));
+            int productDiscount = Integer.parseInt(request.getParameter("product_discount"));
+            int productSellingPrice = Integer.parseInt(request.getParameter("product_selling_price"));
+            int productQuantity = Integer.parseInt(request.getParameter("product_quantity"));
+            int productCategory = Integer.parseInt(request.getParameter("productCategories"));
 
             part = request.getPart("product_image");
             String productImageName = part.getSubmittedFileName();

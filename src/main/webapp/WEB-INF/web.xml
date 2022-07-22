@@ -17,6 +17,10 @@
         <servlet-class>com.mycompany.onlineshoppingmanagementsystem.servlets.ProductOperationServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CategoryOperationServlet</servlet-name>
+        <servlet-class>com.mycompany.onlineshoppingmanagementsystem.servlets.CategoryOperationServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>CartOperationServlet</servlet-name>
         <servlet-class>com.mycompany.onlineshoppingmanagementsystem.servlets.CartOperationServlet</servlet-class>
     </servlet>
@@ -59,6 +63,10 @@
     <servlet-mapping>
         <servlet-name>ProductOperationServlet</servlet-name>
         <url-pattern>/ProductOperationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryOperationServlet</servlet-name>
+        <url-pattern>/CategoryOperationServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CartOperationServlet</servlet-name>

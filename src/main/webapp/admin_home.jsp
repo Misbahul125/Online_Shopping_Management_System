@@ -26,7 +26,7 @@
         response.sendRedirect("login.jsp");
         return;
     }
-    
+
     UtilityCountDAO ucDAO = new UtilityCountDAO(FactoryProvider.getFactory());
     UtilityCount uc = ucDAO.getAllUtilityCounts();
 %>
@@ -45,7 +45,7 @@
 
         <%@include file="components/navbar.jsp" %>
 
-        <div class="container admin">
+        <div class="container admin mb-5">
 
             <!-- show message for adding category -->
             <div class="container-fluid mt-3">
@@ -67,7 +67,7 @@
 
                             </div>
 
-                            <h1><%= uc.getUserCount() %>k+</h1>
+                            <h1><%= uc.getUserCount()%>k+</h1>
                             <h1 class="text-uppercase text-muted">Users</h1>
 
                         </div>
@@ -89,7 +89,7 @@
 
                             </div>
 
-                            <h1><%= uc.getCategoryCount() %>k+</h1>
+                            <h1><%= uc.getCategoryCount()%>k+</h1>
                             <h1 class="text-uppercase text-muted">Categories</h1>
 
                         </div>
@@ -111,7 +111,7 @@
 
                             </div>
 
-                            <h1><%= uc.getProductCount() %>k+</h1>
+                            <h1><%= uc.getProductCount()%>k+</h1>
                             <h1 class="text-uppercase text-muted">Products</h1>
 
                         </div>
@@ -124,41 +124,74 @@
 
             <div class="row mt-4">
 
-                <div class="col-md-6">
+                <div class="col-md-4">
 
                     <div class="card">
 
-                        <div class="card-body text-center">
+                        <a style="text-decoration: none;" href="admin_view_category.jsp">
 
-                            <div class="container">
+                            <div class="card-body text-center">
 
-                                <img style="max-width: 120px" class="img-fluid rounded-circle" src="pictures/options.png" alt="users_icon">
+                                <div class="container">
+
+                                    <img style="max-width: 120px" class="img-fluid rounded-circle" src="pictures/options.png" alt="users_icon">
+
+                                </div>
+
+                                <h1 class="text-uppercase text-muted">View Categories</h1>
 
                             </div>
-                            
-                            <a style="text-decoration: none;" href="admin_view_category.jsp"><h1 class="text-uppercase text-muted">View Categories</h1></a>
 
-                        </div>
+                        </a>
 
                     </div>
 
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
+
+                    <div class="card">
+
+                        <a style="text-decoration: none;" href="#">
+
+                            <div class="card-body text-center">
+
+                                <div class="container">
+
+                                    <img style="max-width: 120px;" class="img-fluid rounded-circle" src="pictures/order.png" alt="users_icon">
+
+                                </div>
+
+                                <h1 style="color: black"><%= uc.getOrderCount()%>k+</h1>
+                                <h1 class="text-uppercase text-muted">View Orders</h1>
+
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
 
                     <div class="card" >
 
-                        <div class="card-body text-center">
+                        <a style="text-decoration: none;" href="admin_view_products.jsp">
 
-                            <div class="container">
+                            <div class="card-body text-center">
 
-                                <img style="max-width: 120px" class="img-fluid rounded-circle" src="pictures/new-product.png" alt="users_icon">
+                                <div class="container">
+
+                                    <img style="max-width: 120px" class="img-fluid rounded-circle" src="pictures/new-product.png" alt="users_icon">
+
+                                </div>
+
+                                <h1 class="text-uppercase text-muted">View Products</h1>
 
                             </div>
 
-                            <a style="text-decoration: none;" href="admin_view_products.jsp"><h1 class="text-uppercase text-muted">View Products</h1></a>
-
-                        </div>
+                        </a>
 
                     </div>
 
@@ -167,154 +200,7 @@
             </div>
 
         </div>
-
-
-        <!--add category modal-->
-
-        <!-- Modal -->
-        <div class="modal fade" id="add-category-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header custom-bg text-white">
-                        <h5 class="modal-title" id="exampleModalLabel">Category Details</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <form action="ProductOperationServlet" method="post">
-
-                            <input type="hidden" name="productOperation" value="add_category" />
-
-                            <div class="form-group">
-                                <label for="categoryTitle">Title</label>
-                                <input type="text" class="form-control" name="category_title" placeholder="Enter category title" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="categoryDescription">Description</label>
-                                <textarea style="height: 150px" class="form-control" name="category_description" placeholder="Enter category description" required></textarea>
-                            </div>
-
-                            <div class="container text-center">
-                                <button class="btn btn-outline-success">Add Category</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-
-                        </form>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!--end of add category modal-->
-
-
-
-        <!--add product modal-->
-
-        <!-- Modal -->
-        <div class="modal fade" id="add-product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header custom-bg text-white">
-                        <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <form action="ProductOperationServlet" method="post" enctype="multipart/form-data">
-
-                            <input type="hidden" name="productOperation" value="add_product" />
-
-                            <div class="form-group">
-                                <label for="productName">Name</label>
-                                <input type="text" class="form-control" name="product_name" placeholder="Enter product name" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="productDescription">Description</label>
-                                <textarea style="height: 150px" class="form-control" name="product_description" placeholder="Enter product description" required></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="productMarkedPrice">Marked Price</label>
-                                <input type="number" id="mp" class="form-control" name="product_marked_price" placeholder="Enter product marked price" required/>
-                                <small id="emailHelp" class="form-text text-muted">*Please input Marked Price without decimal.</small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="productDiscount">Discount</label>
-                                <input type="number" id="disc" class="form-control" name="product_discount" placeholder="Enter product discount" required/>
-                                <small id="emailHelp" class="form-text text-muted">*Please input Discount without decimal & % sign.</small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="productSellingPrice">Selling Price</label>
-                                <input type="number" id="sp" class="form-control" name="product_selling_price" placeholder="Enter product selling price" readonly required/>
-                            </div>
-
-                            <script>
-                                $("#disc").keyup(function () {
-                                    console.log("discount");
-                                    var m = Number($("#mp").val());
-                                    var d = Number($(this).val());
-                                    var s = Math.trunc(((d / 100.0) * m));
-                                    $("#sp").val(m - s);
-                                });
-                            </script>
-
-                            <div class="form-group">
-                                <label for="productQuantity">Quantity</label>
-                                <input type="number" class="form-control" name="product_quantity" placeholder="Enter product quantity" required/>
-                            </div>
-
-                            <%                                CategoryDAO categoryDAO = new CategoryDAO(FactoryProvider.getFactory());
-                                List<Category> categories = categoryDAO.getCategories();
-                            %>
-
-                            <div class="form-group">
-                                <label for="product_category">Category</label>
-                                <select name="productCategories" class="form-control" id="product_category">
-
-                                    <%
-                                        for (Category category : categories) {
-                                    %>
-
-                                    <option value="<%= category.getCategoryId()%>"><%= category.getCategoryTitle()%></option>
-
-                                    <%
-                                        }
-                                    %>
-
-                                </select>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="productImage">Image</label>
-                                <input type="file" class="form-control" name="product_image" required/>
-                            </div>
-
-                            <div class="container text-center">
-                                <button class="btn btn-outline-success">Add Product</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-
-                        </form>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!--end of add product modal-->
 
     </body>
+
 </html>

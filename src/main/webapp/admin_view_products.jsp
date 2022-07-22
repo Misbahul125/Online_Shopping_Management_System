@@ -111,13 +111,33 @@
 
                                 <div class="card product-card">
 
+                                    <%
+                                        if (p.getProductQuantity() <= 10) {
+                                    %>
+
+                                    <div class="row">
+
+                                        <div class="less-stock-alert">
+
+                                            <h6>Increase stock now! Only few left</h6>
+
+                                        </div>
+                                    </div>
+
+                                    <%
+                                        }
+                                    %>
+
+
+                                    <br>
+
                                     <div class="container text-center">
                                         <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 150px; max-width: 100%; width: auto" class="card-img-top m-2" alt="">
                                     </div>
 
                                     <div class="card-body">
 
-                                        <<h5 class="card-title"><%= p.getProductName()%></h5>
+                                        <h5 class="card-title"><%= p.getProductName()%></h5>
 
                                         <p id="wholeText" data-id="<%= p.getProductId()%>" class="card-text whole-text">
                                             <%= sh.getWords(p.getProductDescription(), 0)%>

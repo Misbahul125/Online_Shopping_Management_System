@@ -54,6 +54,8 @@ public class CartOperationServlet extends HttpServlet {
 
                 HttpSession httpSession = request.getSession();
 
+                int cCount = 0;
+
                 if (user != null && product != null) {
 
                     CartDAO cartDAO = new CartDAO(FactoryProvider.getFactory());
@@ -108,22 +110,14 @@ public class CartOperationServlet extends HttpServlet {
                     } //no item with particular user id exists in cart, add new row(with user id and product id in cart table)
                     else {
 
-                        System.out.println("Add1");
-
                         int cartId = cartDAO.addNewItemToCart(user, product);
-                        //System.out.println("Cart id is : " + cartId);
-                        System.out.println("Add15");
 
-                        if (cartId > 0) {
-
-                            System.out.println("Add16");
+                        if (cartId > 0) {                            
 
                             httpSession.setAttribute("positiveMessage", "Item added to cart. ");
                             response.sendRedirect("cart.jsp");
 
                         } else {
-
-                            System.out.println("Add17");
 
                             httpSession.setAttribute("negativeMessage", "Something went wrong! Please try again later.");
                             response.sendRedirect("cart.jsp");

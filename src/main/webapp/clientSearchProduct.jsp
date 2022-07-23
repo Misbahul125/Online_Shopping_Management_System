@@ -1,20 +1,20 @@
 <%-- 
-    Document   : client_home
-    Created on : 23-Jun-2022, 6:10:32 pm
+    Document   : search
+    Created on : 15-Jul-2022, 9:36:27 pm
     Author     : Misbahul Haque
 --%>
 
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Cart"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.CartDAO"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Cart"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.Constants"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.SentenceHelper"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Product"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Category"%>
 <%@page import="java.util.List"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.Constants"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.User"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider"%>
+
 <%
     User user = (User) session.getAttribute("current-user");
     if (user != null) {
@@ -28,6 +28,11 @@
         response.sendRedirect("login.jsp");
         return;
     }
+    
+    String searchKey = request.getParameter("search");
+    ProductDAO productDAO1 = new ProductDAO(FactoryProvider.getFactory());
+    List <Product> products = productDAO1.getProductsWithSearchKey(searchKey);
+    System.out.println(products);
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -35,7 +40,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>OSMS - Home</title>
+        <title>OSMS - Search</title>
 
         <%@include file="components/common_css_js.jsp" %>
     </head>
@@ -48,51 +53,8 @@
 
             <div class="row mt-4 mx-2">
 
-                <%  String categoryId = request.getParameter("categoryId");
-
-                    ProductDAO productDAO = new ProductDAO(FactoryProvider.getFactory());
-
-                    List<Product> products = null;
-
-                    if (categoryId == null || categoryId.trim().matches("all")) {
-                        products = productDAO.getAllProducts();
-                    } else {
-                        int cid = Integer.parseInt(categoryId);
-                        products = productDAO.getAllProductsByCategoryId(cid);
-                    }
-
-                    CategoryDAO categoryDAO = new CategoryDAO(FactoryProvider.getFactory());
-                    List<Category> categories = categoryDAO.getCategories();
-
-                    CartDAO cartDAO = new CartDAO(FactoryProvider.getFactory());
-                %>
-
-                <!-- display categories in this column -->
-                <div class="col-md-2">
-
-                    <div class="list-group mt-4">
-
-                        <a href="client_home.jsp?categoryId=all" class="list-group-item list-group-item-action active">All Categories</a>
-
-                        <%
-                            for (Category c : categories) {
-                        %>
-
-                        <a href="client_home.jsp?categoryId=<%= c.getCategoryId()%>" class="list-group-item list-group-item-action"><%= c.getCategoryTitle()%></a>
-
-                        <%
-                            }
-                        %>
-
-                    </div>
-
-                </div>
-
-
-
-
                 <!-- display products in this column -->
-                <div class="col-md-10">
+                <div class="col-md-10 offset-md-2">
 
                     <div class="row mt-4">
 
@@ -109,35 +71,14 @@
 
                             <div class="card-columns">
 
-                                <%
-                                    SentenceHelper sh = new SentenceHelper();
+                                <%  SentenceHelper sh = new SentenceHelper();
                                     for (Product p : products) {
                                 %>
 
                                 <div class="card product-card">
 
-                                    <%
-                                        if (p.getProductQuantity() <= 10) {
-                                    %>
-
-                                    <div class="row">
-
-                                        <div class="less-stock-alert">
-
-                                            <h6>Hurry! Only few left</h6>
-
-                                        </div>
-                                    </div>
-
-                                    <%
-                                        }
-                                    %>
-
-
-                                    <br>
-
                                     <div class="container text-center">
-                                        <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 150px; max-width: 100%; width: auto" class="card-img-top m-2" alt="">
+                                        <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 200px; max-width: 100%; width: auto" class="card-img-top" alt="">
                                     </div>
 
                                     <div class="card-body">
@@ -159,7 +100,7 @@
                                     <div class="card-footer text-center">
 
                                         <%
-                                            List<Cart> carts = cartDAO.getCartItemWithProductAndUserId(p.getProductId(), user.getUserId());
+                                            List<Cart> carts = new CartDAO(FactoryProvider.getFactory()).getCartItemWithProductAndUserId(p.getProductId(), user.getUserId());
                                             if (carts != null && !carts.isEmpty()) {
                                         %>
 
@@ -200,8 +141,8 @@
                                     }
 
                                     if (products.size() == 0) {
-                                        session.setAttribute("negativeMessage", "No product(s) found in this category");
-                                        response.sendRedirect("client_home.jsp");
+                                        session.setAttribute("negativeMessage", "No search item(s) found");
+                                        response.sendRedirect("clientSearchProduct.jsp");
                                     }
                                 %>
 
@@ -217,31 +158,6 @@
 
         </div>
 
-
-        <!-- Modal -->
-        <!--        <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">Buy</h3>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-        
-                            <div class="modal-body">
-                                <h5>Do you want to buy this product?</h5>
-                            </div>
-        
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        
-                                
-        
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
-
     </body>
+    
 </html>

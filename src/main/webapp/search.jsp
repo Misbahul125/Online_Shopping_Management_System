@@ -1,24 +1,20 @@
 <%-- 
     Document   : search
-    Created on : 15-Jul-2022, 9:36:27 pm
+    Created on : 23-Jul-2022, 6:12:18 am
     Author     : Misbahul Haque
 --%>
 
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.Constants"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.SentenceHelper"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO"%>
-<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Product"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Category"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.CategoryDAO"%>
 <%@page import="java.util.List"%>
+<%@page import="com.mycompany.onlineshoppingmanagementsystem.entities.Product"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.dao.ProductDAO"%>
 <%@page import="com.mycompany.onlineshoppingmanagementsystem.helper.FactoryProvider"%>
-
 <%
-    
-    
     String searchKey = request.getParameter("search");
     ProductDAO productDAO1 = new ProductDAO(FactoryProvider.getFactory());
-    List <Product> products = productDAO1.getProductsWithSearchKey(searchKey);
+    List<Product> products = productDAO1.getProductsWithSearchKey(searchKey);
     System.out.println(products);
 %>
 
@@ -29,16 +25,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>OSMS - Search</title>
 
-        <link rel="stylesheet" href="css/style.css">
         <%@include file="components/common_css_js.jsp" %>
     </head>
 
     <body>
 
         <%@include file="components/navbar.jsp" %>
-
-
-
+        
         <div class="container-fluid text-center">
 
             <div class="row mt-4 mx-2">
@@ -53,21 +46,27 @@
 
                     <div class="list-group mt-4">
 
-                        <a href="index.jsp?categoryId=all" class="list-group-item list-group-item-action active">All Categories</a>
+                        <ul>
+                            <li><a href="search.jsp?categoryId=all" class="list-group-item list-group-item-action active">All Categories</a></li>
 
-                        <%
-                            for (Category c : categories) {
-                        %>
+                            <%
+                                for (Category c : categories) {
+                            %>
 
-                        <a href="index.jsp?categoryId=<%= c.getCategoryId()%>" class="list-group-item list-group-item-action"><%= c.getCategoryTitle()%></a>
+                            <li><a href="search.jsp?categoryId=<%= c.getCategoryId()%>" class="list-group-item list-group-item-action"><%= c.getCategoryTitle()%></a></li>
 
-                        <%
-                            }
-                        %>
+                            <%
+                                }
+                            %>
+                        </ul>
+
+
 
                     </div>
 
                 </div>
+
+
 
 
                 <!-- display products in this column -->
@@ -93,9 +92,29 @@
                                 %>
 
                                 <div class="card product-card">
+                                    
+                                    <%
+                                        if(p.getProductQuantity() <= 10) {
+                                    %>
+
+                                    <div class="row">
+
+                                        <div class="less-stock-alert">
+
+                                            <h6>Hurry! Only few left</h6>
+
+                                        </div>
+                                    </div>
+                                    
+                                    <%
+                                        }
+                                    %>
+
+
+                                    <br>
 
                                     <div class="container text-center">
-                                        <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 200px; max-width: 100%; width: auto" class="card-img-top" alt="">
+                                        <img src="pictures/products/<%= p.getProductPic()%>" style="max-height: 150px; max-width: 100%; width: auto" class="card-img-top" alt="">
                                     </div>
 
                                     <div class="card-body">
@@ -111,6 +130,10 @@
                                             <button data-target-id="<%= p.getProductId()%>" onclick="changeText(event)" type="button" id="readMoreBtn" class="btn read-more">Read More</button>
 
                                         </p>
+
+
+
+
 
                                     </div>
 
@@ -136,8 +159,8 @@
                                     }
 
                                     if (products.size() == 0) {
-                                        session.setAttribute("negativeMessage", "No search item(s) found");
-                                        response.sendRedirect("index.jsp");
+                                        session.setAttribute("negativeMessage", "No product(s) found in this category");
+                                        response.sendRedirect("search.jsp");
                                     }
                                 %>
 
@@ -174,13 +197,13 @@
                     <div class="modal-footer">
 
                         <a href="login.jsp">
-                            <button type="button" class="btn btn-secondary">
+                            <button type="button" class="btn btn-primary">
                                 Login
                             </button>
                         </a>
 
                         <a href="signup1.jsp">
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn custom-bg text-white">
                                 Signup
                             </button>
                         </a>
@@ -206,13 +229,13 @@
                     <div class="modal-footer">
 
                         <a href="login.jsp">
-                            <button type="button" class="btn btn-secondary">
+                            <button type="button" class="btn btn-primary">
                                 Login
                             </button>
                         </a>
 
                         <a href="signup1.jsp">
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn custom-bg text-white">
                                 Signup
                             </button>
                         </a>

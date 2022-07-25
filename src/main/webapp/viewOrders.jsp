@@ -11,20 +11,23 @@
 <%
     User user = (User) session.getAttribute("current-user");
 
-    if (user != null) {
-        if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
-            session.setAttribute("negativeMessage", "You are not a valid user to access this page.");
-            response.sendRedirect("login.jsp");
-            return;
-        }
-    } else {
+    if (user == null) {
         session.setAttribute("negativeMessage", "Please login to continue !!");
         response.sendRedirect("login.jsp");
         return;
     }
 
+    boolean isAdmin = false;
+
     OrdersDAO ordersDAO = new OrdersDAO(FactoryProvider.getFactory());
-    List<Orders> orders = ordersDAO.getOrdersOfAnUser(user.getUserId());
+    List<Orders> orders = null;
+
+    if (user.getUserType().matches(Constants.ADMIN_USER.toString())) {
+        orders = ordersDAO.getAllOrders();
+        isAdmin = true;
+    } else {
+        orders = ordersDAO.getOrdersOfAnUser(user.getUserId());
+    }
 
     int ordersListSize = orders.size();
 
@@ -47,6 +50,11 @@
 
         <div class="container">
 
+            <div class="container-fluid mt-3">
+                <%@include file="components/positiveMessage.jsp" %>
+                <%@include file="components/negativeMessage.jsp" %>
+            </div>
+
             <div class="row mt-5">
 
                 <%                    Orders o1 = null;
@@ -61,13 +69,77 @@
 
                 %>
 
-                <div class="card">
+                <div class="card mt-4">
                     <div class="container cards-heading">
-                        <h4>ORDER ID :- <%= o1.getActualOrderId()%></h4>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <h4>ORDER ID :- <%= o1.getActualOrderId()%></h4>
+
+                            </div>
+
+                            <%
+                                if (isAdmin) {
+                            %>
+
+
+                            <div class="col-md-6 text-right">
+
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Update Status
+                                    </button>
+                                    <div class="dropdown-menu">
+
+                                        <a class="dropdown-item" href="OrderUpdateServlet?orderId=<%= o1.getActualOrderId()%>&value=1">In - progress</a>
+                                        <a class="dropdown-item" href="OrderUpdateServlet?orderId=<%= o1.getActualOrderId()%>&value=2">Delivered</a>
+                                        <a class="dropdown-item" href="OrderUpdateServlet?orderId=<%= o1.getActualOrderId()%>&value=3">Cancelled</a>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <%
+                                }
+                            %>
+
+                        </div>
+
                     </div>
 
                     <!-- row for table -->
                     <div class="container mt-2">
+
+                        <%
+                            if (isAdmin) {
+                        %>
+
+                        <div class="row mt-2 m-1">
+
+                            <div class="col-md-4">
+
+                                <h6 class="order-user-details">Name : <%= o1.getUser().getUserName()%></h6>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <h6 class="order-user-details">Email : <%= o1.getUser().getUserEmail()%></h6>
+
+                            </div><!-- comment --><div class="col-md-4">
+
+                                <h6 class="order-user-details">Phone : +91 <%= o1.getUser().getUserPhone()%></h6>
+
+                            </div>
+
+                        </div>
+
+                        <%
+                            }
+                        %>
 
                         <div class="row">
 
@@ -174,7 +246,7 @@
                                                     <h5 class="order-footer">               Payment Method   :   <%= o2.getPaymentMethod()%></h5>
 
                                                     <%
-                                                        if (o2.getPaymentMethod().matches(Constants.OP.toString())) {
+                                                        if (o2.getRazorpayOrderId() != null && o2.getRazorpayPaymentId() != null) {
                                                     %>
 
                                                     <h5 class="order-footer">               Payment ID             :   <%= o2.getRazorpayOrderId()%></h5>
@@ -185,7 +257,7 @@
                                                     } else {
                                                     %>
 
-                                                    <h5 class="order-footer">               Order Status           :   <%= o2.getOrderStatus()%></h5>
+                                                    <h5 class="order-footer">               Current Status        :   <%= o2.getOrderStatus()%></h5>
 
                                                     <h5 class="order-footer">               Delivery Between   :   <%= o2.getDeliveryDate()%></h5>
 
@@ -200,7 +272,7 @@
                                         </div>
 
                                         <%
-                                            if (o2.getPaymentMethod().matches(Constants.OP.toString())) {
+                                            if (o2.getRazorpayOrderId() != null && o2.getRazorpayPaymentId() != null) {
                                         %>
 
                                         <div class="row mt-2">
@@ -209,7 +281,7 @@
 
                                                 <div class="text-left">
 
-                                                    <h5 class="order-footer">Order Status           :   <%= o2.getOrderStatus()%></h5>
+                                                    <h5 class="order-footer">Current Status   :   <%= o2.getOrderStatus()%></h5>
 
                                                 </div>
 
@@ -241,7 +313,7 @@
 
                     </div>
 
-                    <div class="container m-2">
+                    <div class="container my-2">
                         <a href="invoice.jsp?order_id=<%= o1.getActualOrderId()%>">
                             <button style="width: 100%;" class="btn custom-btn">View Invoice</button>
                         </a>

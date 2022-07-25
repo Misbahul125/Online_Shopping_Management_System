@@ -163,9 +163,12 @@ public class UserDAO {
             q.setParameter("e", userEmail);
             status = q.executeUpdate();
 
-//            user.setUserCartCount(count);
-//            session.saveOrUpdate(user);
-            tx.commit();
+            if(status > 0) {
+                tx.commit();
+            }
+            else {
+                tx.rollback();
+            }
 
         } catch (Exception e) {
             tx.rollback();

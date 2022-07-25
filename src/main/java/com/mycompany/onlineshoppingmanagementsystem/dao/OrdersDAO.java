@@ -4,10 +4,7 @@
  */
 package com.mycompany.onlineshoppingmanagementsystem.dao;
 
-import com.mycompany.onlineshoppingmanagementsystem.entities.Cart;
 import com.mycompany.onlineshoppingmanagementsystem.entities.Orders;
-import com.mycompany.onlineshoppingmanagementsystem.entities.Product;
-import com.mycompany.onlineshoppingmanagementsystem.entities.User;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -147,6 +144,66 @@ public class OrdersDAO {
             session.close();
             return orders;
         }
+
+    }
+    
+    //get all orders for admin
+    public List<Orders> getAllOrders() {
+
+        Session session = null;
+        List<Orders> orders = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            Query query = session.createQuery("from Orders order by orderId desc");
+            orders = query.list();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        } finally {
+            session.close();
+            return orders;
+        }
+
+    }
+    
+    public int updateOrderStatus(String orderId , String orderStatus) {
+
+        int status = 0;
+
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            
+            session = this.sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            String query = "update Orders set orderStatus =: o where actualOrderId =: oid";
+
+            Query q = session.createQuery(query);
+            q.setParameter("o", orderStatus);
+            q.setParameter("oid", orderId);
+            status = q.executeUpdate();
+            
+            if(status > 0) {
+                tx.commit();
+            }
+            else {
+                tx.rollback();
+            }
+
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+            status = 0;
+        } finally {
+            session.close();
+        }
+
+        return status;
 
     }
 }

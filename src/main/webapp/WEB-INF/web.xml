@@ -48,6 +48,10 @@
         <servlet-name>ResendOtpServlet</servlet-name>
         <servlet-class>com.mycompany.onlineshoppingmanagementsystem.EmailVerification.ResendOtpServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrderUpdateServlet</servlet-name>
+        <servlet-class>com.mycompany.onlineshoppingmanagementsystem.servlets.OrderUpdateServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/SignUpServlet</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>ResendOtpServlet</servlet-name>
         <url-pattern>/ResendOtpServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderUpdateServlet</servlet-name>
+        <url-pattern>/OrderUpdateServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

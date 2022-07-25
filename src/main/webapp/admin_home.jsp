@@ -152,7 +152,7 @@
 
                     <div class="card">
 
-                        <a style="text-decoration: none;" href="#">
+                        <a style="text-decoration: none;" href="viewOrders.jsp">
 
                             <div class="card-body text-center">
 

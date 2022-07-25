@@ -100,7 +100,7 @@
 
                             <div class="card-body text-center">
 
-                                <img src="pictures/profile.png" alt="avatar"
+                                <img src="pictures/user.png" alt="avatar"
                                      class="rounded-circle img-fluid" style="width: 150px;">
                                 <h5 class="my-3"><span>Name : </span><%= user.getUserName()%></h5>
 
@@ -123,7 +123,7 @@
                                     <h5 class="container">Manage Category</h5>
                                 </div>
 
-                                <hr>
+                                <hr class="mt-1">
 
                                 <a href ="admin_view_category.jsp">View all categories</a>
                             </div>
@@ -138,7 +138,7 @@
                                     <h5 class="container">Manage Product</h5>
                                 </div>
 
-                                <hr>
+                                <hr class="mt-1">
 
                                 <a href ="admin_view_products.jsp">View all products</a>
                             </div>
@@ -153,7 +153,7 @@
                                     <h5 class="container">Manage Orders</h5>
                                 </div>
 
-                                <hr>
+                                <hr class="mt-1">
 
                                 <a href ="viewOrders.jsp">Show all orders</a>
                                 
@@ -169,7 +169,7 @@
                                     <h5 class="container">Account Settings</h5>
                                 </div>
 
-                                <hr>
+                                <hr class="mt-1">
 
                                 <a href ="#">Change password</a>
                             </div>
@@ -215,7 +215,7 @@
 
                             <div class="card-body text-center">
 
-                                <img src="pictures/profile.png" alt="avatar"
+                                <img src="pictures/user.png" alt="avatar"
                                      class="rounded-circle img-fluid" style="width: 150px;">
                                 <h5 class="my-3"><span>Name : </span><%= user.getUserName()%></h5>
 
@@ -238,7 +238,7 @@
                                     <h5 class="container">My Cart</h5>
                                 </div>
 
-                                <hr>
+                                <hr class="mt-1">
 
                                 <a href ="cart.jsp">Show my cart items</a>
                             </div>
@@ -253,7 +253,7 @@
                                     <h5 class="container">Orders</h5>
                                 </div>
 
-                                <hr>
+                                <hr class="mt-1">
 
                                 <a href ="viewOrders.jsp">Show my orders</a>
                             </div>
@@ -268,9 +268,9 @@
                                     <h5 class="container">Account Settings</h5>
                                 </div>
 
-                                <hr>
+                                <hr class="mt-1">
 
-                                <a href ="#">Change password</a>
+                                <a href ="LogoutServlet?source=changePassword">Change password</a>
                             </div>
 
                         </div>

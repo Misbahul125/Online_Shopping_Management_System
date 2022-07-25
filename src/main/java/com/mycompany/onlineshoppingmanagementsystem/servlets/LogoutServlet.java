@@ -31,10 +31,21 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-           
+
             HttpSession httpSession = request.getSession();
-            httpSession.removeAttribute("current-user");
-            response.sendRedirect("login.jsp");
+
+            if (request.getParameter("source") != null && request.getParameter("source").matches("changePassword")) {
+                
+                httpSession.removeAttribute("current-user");
+                httpSession.setAttribute("negativeMessage", "You have been logged out. Please use \"Reset Password\" to change your current password.");
+                response.sendRedirect("login.jsp");
+                
+            } else {
+
+                httpSession.removeAttribute("current-user");
+                response.sendRedirect("login.jsp");
+
+            }
         }
     }
 

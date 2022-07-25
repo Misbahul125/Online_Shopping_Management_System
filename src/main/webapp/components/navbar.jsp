@@ -80,7 +80,7 @@
             <ul class="navbar-nav ml-auto">
 
                 <li class="nav-item active">
-                    <a class="nav-link" href="adminProfile.jsp"><%=user1.getUserName()%> </a>
+                    <a class="nav-link" href="profile.jsp"><%=user1.getUserName()%> </a>
                 </li>
 
                 <li class="nav-item active">
@@ -107,7 +107,7 @@
                 </li>
 
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">My Orders <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="viewOrders.jsp">My Orders <span class="sr-only">(current)</span></a>
                 </li>
 
                 <li class="nav-item active">
@@ -147,7 +147,7 @@
         } else {
         %>
 
-        <a class="navbar-brand" href="index.jsp">OSMS</a>
+        <a style="font-size: 30px;" class="navbar-brand" href="index.jsp">OSMS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -171,7 +171,7 @@
 
             <form class="form-inline my-2 my-lg-0" action="search.jsp" method="post">
                 <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search anything..." aria-label="Search">
-                <button style="background-color: lightgrey; color: black" class="btn  custom-bg text-white my-2 my-sm-0" type="submit">Search</button>
+                <button style="background-color: lightgrey; color: black" class="btn my-2 my-sm-0" type="submit">Search</button>
             </form>
 
         </div>

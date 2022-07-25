@@ -127,4 +127,26 @@ public class OrdersDAO {
 
     }
     
+    //get orders of an user by user ID
+    public List<Orders> getOrdersOfAnUser(int userId) {
+
+        Session session = null;
+        List<Orders> orders = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            Query query = session.createQuery("from Orders as o where o.user.userId =: uid order by orderId desc");
+            query.setParameter("uid", userId);
+            orders = query.list();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        } finally {
+            session.close();
+            return orders;
+        }
+
+    }
 }

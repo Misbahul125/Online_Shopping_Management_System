@@ -49,7 +49,7 @@ public class EmailHelper {
 
         final String toEmail = user.getEmail();
         final String fromEmail = "misbahulhaque2001@gmail.com";
-        final String password = "";
+        final String password = "plxmjcyteimnfptq";
 
         try {
 

@@ -87,6 +87,9 @@ public class OrderOperationServlet extends HttpServlet {
                     razorpayPaymentId = (String) jSONObject.get("razorpay_payment_id");
                     razorpaySignatureId = (String) jSONObject.get("razorpay_signature");
                     netAmount = (int) jSONObject.get("amount");
+                    
+                    
+                    
                 } else {
                     paymentMethod = Constants.COD.toString();
                     boolean isAvailable = isProductQuantityAvailable(request, response, responseHelper, pid);

@@ -161,10 +161,6 @@ async function initiateOrder(pid, amount, paymentMethod, dDate) {
 }
 
 
-
-
-
-
 // const initiateOrder = (pid, amount, paymentMethod) => {
 //    console.log("payment initiated-1");
 //    //let amount = $("#amt").val();
@@ -247,5 +243,3 @@ async function initiateOrder(pid, amount, paymentMethod, dDate) {
 //    );
 
 // };
-
-

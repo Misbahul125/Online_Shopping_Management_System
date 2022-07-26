@@ -54,7 +54,7 @@
 
             <div class="row mt-5">
 
-                <div class="col-md-8 offset-md-2">
+                <div class="col-md-8 offset-md-4">
 
                     <div class="card">
 
@@ -98,7 +98,9 @@
 
                                 <div class="container text-center">
                                     <button class="btn btn-outline-success">Update Changes</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <A href="admin_home.jsp">
+                                        <button type="button" class="btn btn-secondary">Cancel</button>
+                                    </a>
                                 </div>
 
                             </form>
@@ -131,7 +133,9 @@
 
                                 <div class="container text-center">
                                     <button class="btn btn-outline-success">Add Category</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <A href="admin_home.jsp">
+                                        <button type="button" class="btn btn-secondary">Cancel</button>
+                                    </a>
                                 </div>
 
                             </form>

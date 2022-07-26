@@ -68,28 +68,21 @@
 
                     <div class="list-group mt-4">
 
-                        <ul>
-                            <li><a href="index.jsp?categoryId=all" class="list-group-item list-group-item-action active">All Categories</a></li>
+                        <a href="index.jsp?categoryId=all" class="list-group-item list-group-item-action active">All Categories</a>
 
-                            <%
-                                for (Category c : categories) {
-                            %>
+                        <%
+                            for (Category c : categories) {
+                        %>
 
-                            <li><a href="index.jsp?categoryId=<%= c.getCategoryId()%>" class="list-group-item list-group-item-action"><%= c.getCategoryTitle()%></a></li>
+                        <a href="index.jsp?categoryId=<%= c.getCategoryId()%>" class="list-group-item list-group-item-action"><%= c.getCategoryTitle()%></a>
 
-                            <%
-                                }
-                            %>
-                        </ul>
-
-
+                        <%
+                            }
+                        %>
 
                     </div>
 
                 </div>
-
-
-
 
                 <!-- display products in this column -->
                 <div class="col-md-10">

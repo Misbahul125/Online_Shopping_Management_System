@@ -154,7 +154,7 @@
                                 <div class="container text-center">
                                     <button class="btn btn-outline-success">Update Changes</button>
                                     
-                                    <a href="admin_view_products.jsp">
+                                    <a href="admin_home.jsp">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                     </a>
                                 </div>
@@ -233,7 +233,7 @@
                                 <div class="container text-center">
                                     <button class="btn btn-outline-success">Add Product</button>
 
-                                    <a href="admin_view_products.jsp">
+                                    <a href="admin_home.jsp">
                                         <button type="button" class="btn btn-secondary">Cancel</button>
                                     </a>
                                 </div>

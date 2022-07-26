@@ -215,7 +215,7 @@
                             <div class="col-12">
 
                                 <img src="pictures/invoice/signature.png" class="img-fluid" alt="">
-                                <p class="text-center m-0"> Director Signature </p>
+                                <p style="margin-left: 40px;" class="text-center"> Director Signature </p>
 
                             </div>
 

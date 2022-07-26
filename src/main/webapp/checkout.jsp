@@ -256,11 +256,11 @@
                             
                             <input type="hidden" id="dDate" value="<%= deliveryDate %>" />
 
-                            <div class="container text-center" style="margin-top: 5px; margin-bottom: 3px;">
+<!--                            <div class="container text-center" style="margin-top: 5px; margin-bottom: 3px;">
                                 <a href="#">
                                     <button class="btn btn-change-address">Change Address</button>
                                 </a>
-                            </div>
+                            </div>-->
 
                         </div>
 

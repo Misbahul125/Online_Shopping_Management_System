@@ -88,9 +88,6 @@
 
                 </div>
 
-
-
-
                 <!-- display products in this column -->
                 <div class="col-md-10">
 

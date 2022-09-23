@@ -153,7 +153,7 @@
                                     </div>
 
                                     <div class="card-footer text-center">
-
+                                        <!-- this button is for adding a product into a cart -->
                                         <button class="btn custom-bg text-white custom-btn" data-toggle="modal" data-target="#cart-login-modal">Add to Cart</button>
 
                                         <button class="btn btn-success" data-toggle="modal" data-target="#buy-login-modal"> 
